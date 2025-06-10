@@ -1,0 +1,98 @@
+/* style.css */
+body {
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+.dark body {
+  background-color: #111827;
+  color: #f3f4f6; 
+}
+header a {
+  transition: color 0.3s ease;
+}
+button {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+button:hover {
+  transform: scale(1.02);
+}
+footer {
+  border-top: 1px solid #e5e7eb;
+}
+.dark footer {
+  background-color: #1f2937; 
+  color: #d1d5db; 
+  border-top-color: #374151; 
+}
+input, textarea, select {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #1f2937; 
+  color: #f3f4f6;           
+  border-color: #4b5563;    
+/* greenmap logo */
+.logo-img {
+  height: 40px;
+}
+@media (min-width: 768px) {
+  .logo-img {
+    height: 48px;
+  }
+}
+.hero-box {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.dark .hero-box {
+  background-color: #1f2937;
+}
+/* transitioon */
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+
+/* layer toogle */
+..layer-toggle-controls {
+  position: absolute;
+  top: 100px;
+  right: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.layer-toggle-controls button {
+  padding: 6px 12px;
+  font-size: 13px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* about.html styling */
+.about-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.about-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+.dark .about-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  font-size: 20px;
+  font-weight: bold;
+}

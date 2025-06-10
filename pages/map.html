@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GreenMap Nairobi – Interactive Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.css" />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+
+    .control-panel {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: white;
+      padding: 10px;
+      z-index: 1000;
+      border-radius: 8px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.3);
+      width: 200px;
+    }
+
+    .control-panel label,
+    .control-panel input,
+    .control-panel button {
+      display: block;
+      margin-bottom: 8px;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .control-panel input[type="range"] {
+      width: 100%;
+    }
+
+    #report-btn {
+      padding: 8px;
+      background-color: #2E8B57;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #report-btn:hover {
+      background-color: #247148;
+    }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- Floating Controls -->
+<div class="control-panel">
+  <label><input type="checkbox" id="ndvi-toggle" checked> Show NDVI</label>
+  <label>NDVI Opacity:</label>
+  <input type="range" id="ndvi-opacity" min="0" max="1" step="0.1" value="0.7" />
+
+  <label><input type="checkbox" id="lst-toggle" checked> Show LST</label>
+  <label>LST Opacity:</label>
+  <input type="range" id="lst-opacity" min="0" max="1" step="0.1" value="0.7" />
+
+  <label><input type="checkbox" id="satellite-toggle"> Satellite View</label>
+  <label><input type="checkbox" id="reports-toggle" checked> Community Reports</label>
+
+  <button id="report-btn">📍 Report</button>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.js"></script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<!-- Custom JS -->
+<script src="../js/firebase.js"></script>
+<script src="../js/map.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GreenMap Nairobi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          screens: {
+            'xs': '475px',
+          },
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="font-sans bg-white dark:bg-gray-900 flex flex-col min-h-screen">
+
+<!-- HEADER -->
+<header class="w-full bg-[#104F1F] dark:bg-[#0f3b17] shadow-md fixed top-0 z-50 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <a href="index.html" class="flex items-center space-x-2">
+        <span class="text-xl sm:text-2xl font-bold tracking-tight">GreenMap</span>
+        <img src="assets/logo.png" alt="GreenMap Logo" class="h-8 sm:h-10 w-auto" />
+      </a>
+      <nav class="hidden md:flex items-center space-x-4 lg:space-x-6 font-medium text-sm sm:text-[15px]">
+        <a href="index.html" class="hover:text-lime-300 transition">Home</a>
+        <a href="pages/dashboard.html" class="hover:text-lime-300 transition">Dashboard</a>
+        <a href="pages/about.html" class="hover:text-lime-300 transition">About</a>
+        <button id="theme-toggle" title="Toggle Theme" class="ml-2 sm:ml-4 p-2 rounded-full bg-black text-white hover:bg-gray-800">🌙</button>
+      </nav>
+      <button id="mobile-menu-toggle" class="md:hidden p-2 focus:outline-none">
+        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 pt-2 space-y-2 bg-[#104F1F] dark:bg-[#0f3b17] text-sm font-medium">
+    <a href="index.html" class="block hover:text-lime-300 py-2">Home</a>
+    <a href="pages/map.html" class="block hover:text-lime-300 py-2">Map</a>
+    <a href="pages/dashboard.html" class="block hover:text-lime-300 py-2">Dashboard</a>
+    <a href="pages/reports.html" class="block hover:text-lime-300 py-2">Reports</a>
+    <a href="pages/about.html" class="block hover:text-lime-300 py-2">About</a>
+    <button id="theme-toggle-mobile" class="w-full text-left py-2 hover:text-lime-300">Toggle Theme</button>
+  </div>
+</header>
+
+<!-- MAIN SECTION -->
+<main class="relative flex-grow pt-16">
+  <!-- Hero Section -->
+<section class="relative min-h-screen sm:min-h-[calc(100vh-80px)] bg-cover bg-center bg-no-repeat flex items-center justify-center text-white"
+  style="background-image: url('../assets/nairobi-bg.webp');">
+  <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-24 text-center md:text-left flex flex-col md:flex-row items-center gap-8 md:gap-12">
+    <div class="md:w-1/2 space-y-4 sm:space-y-6">
+      <h1 class="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">
+        Welcome to GreenMap Nairobi
+      </h1>
+      <p class="text-sm sm:text-base lg:text-xl text-gray-200 max-w-lg">
+        Discover real-time satellite insights on vegetation (NDVI) and temperature (LST). Join us in building a smarter, greener city.
+      </p>
+      <div class="flex flex-col xs:flex-row gap-2 sm:gap-4 mt-3 sm:mt-6">
+        <a href="/pages/map.html" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium shadow-md text-sm sm:text-base">
+          Explore the Map
+        </a>
+        <a href="/pages/reports.html" class="bg-white hover:bg-gray-100 text-green-700 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium shadow-md text-sm sm:text-base">
+          Submit a Report
+        </a>
+      </div>
+    </div>
+
+    <!-- Feature Boxes -->
+    <div class="md:w-1/2 grid grid-cols-2 gap-2 sm:gap-4 md:gap-6 lg:gap-8">
+      <div class="bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 backdrop-blur-md rounded-lg p-3 sm:p-6 shadow-lg">
+        <h3 class="text-green-700 dark:text-green-400 text-sm sm:text-lg font-semibold mb-1">🌳 NDVI Insights</h3>
+        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300">View vegetation health trends across Nairobi.</p>
+      </div>
+      <div class="bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 backdrop-blur-md rounded-lg p-3 sm:p-6 shadow-lg">
+        <h3 class="text-green-700 dark:text-green-400 text-sm sm:text-lg font-semibold mb-1">🔥 Urban Heat</h3>
+        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Track ward-level surface temperatures (LST).</p>
+      </div>
+      <div class="bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 backdrop-blur-md rounded-lg p-3 sm:p-6 shadow-lg">
+        <h3 class="text-green-700 dark:text-green-400 text-sm sm:text-lg font-semibold mb-1">📍 Citizen Reports</h3>
+        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Submit environmental incidents like waste, deforestation, fires.</p>
+      </div>
+      <div class="bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 backdrop-blur-md rounded-lg p-3 sm:p-6 shadow-lg">
+        <h3 class="text-green-700 dark:text-green-400 text-sm sm:text-lg font-semibold mb-1">🌍 Sustainable Goals</h3>
+        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Aligned with SDG 11, 13, and 15 for cities, climate, and life on land.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+    <div>
+      <p class="text-gray-800 dark:text-white font-semibold mb-2">&copy; 2025 GreenMap. All rights reserved.</p>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-800 dark:text-white mb-1">Contact Us</p>
+      <p>Email: <a href="mailto:contact@greenmap.org" class="text-green-700 hover:underline">contact@greenmap.org</a></p>
+      <p>Phone: <a href="tel:+254757439204" class="text-green-700 hover:underline">+254 757 439 204</a></p>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-800 dark:text-white mb-1">Follow Us</p>
+      <div class="flex justify-center md:justify-start space-x-4 mt-1">
+        <a href="https://linkedin.com/in/greenmap" target="_blank" class="hover:text-green-700">🔗</a>
+        <a href="https://instagram.com/greenmap_ke" target="_blank" class="hover:text-green-700">📸</a>
+        <a href="https://x.com/greenmap_ke" target="_blank" class="hover:text-green-700">🐦</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPT -->
+<script>
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+  const html = document.documentElement;
+
+  function toggleTheme() {
+    const isDark = html.classList.contains('dark');
+    html.classList.toggle('dark');
+    const icon = isDark ? '🌙' : '☀';
+    if (themeToggle) themeToggle.textContent = icon;
+    if (themeToggleMobile) themeToggleMobile.textContent = isDark ? '☀ Light Mode' : '🌙 Dark Mode';
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  }
+
+  if (localStorage.getItem('theme') === 'dark' ||
+    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    html.classList.add('dark');
+    if (themeToggle) themeToggle.textContent = '☀';
+    if (themeToggleMobile) themeToggleMobile.textContent = '☀ Light Mode';
+  }
+
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuToggle.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+</script>
+
+</body>
+</html>
