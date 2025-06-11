@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Dashboard - GreenMap</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -23,11 +23,11 @@
 
 <!-- Header -->
 <header class="w-full bg-[#104F1F] dark:bg-[#0f3b17] shadow-md fixed top-0 z-50 text-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
     <div class="flex justify-between items-center h-16">
       <a href="/index.html" class="flex items-center space-x-2">
-        <span class="text-xl sm:text-2xl font-bold tracking-tight">GreenMap</span>
-        <img src="../assets/logo.png" alt="GreenMap Logo" class="h-8 sm:h-10 w-auto" />
+        <span class="text-lg sm:text-2xl font-bold tracking-tight">GreenMap</span>
+        <img src="../assets/logo.png" alt="GreenMap Logo" class="h-6 sm:h-10 w-auto" />
       </a>
       <nav class="hidden md:flex items-center space-x-4 lg:space-x-6 font-medium text-sm sm:text-[15px]">
         <a href="../index.html" class="hover:text-lime-300 transition">Home</a>
@@ -42,7 +42,7 @@
       </button>
     </div>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 pt-2 space-y-2 bg-[#104F1F] dark:bg-[#0f3b17] text-sm font-medium">
+  <div id="mobile-menu" class="hidden md:hidden px-2 pb-4 pt-2 space-y-2 bg-[#104F1F] dark:bg-[#0f3b17] text-sm font-medium">
     <a href="../index.html" class="block py-2 hover:text-lime-300">Home</a>
     <a href="/pages/map.html" class="block py-2 hover:text-lime-300">Map</a>
     <a href="/pages/dashboard.html" class="block py-2 hover:text-lime-300">Dashboard</a>
@@ -52,92 +52,92 @@
 </header>
 
 <!-- Main Content -->
-<main class="flex-grow pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+<main class="flex-grow pt-28 px-2 sm:px-4 lg:px-8 max-w-7xl mx-auto space-y-8">
 
   <!-- Top Stats -->
-  <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
-      <h3 class="text-sm text-gray-500">Reports Submitted</h3>
-      <p id="report-count" class="text-2xl font-bold mt-1">--</p>
+  <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div class="bg-white dark:bg-gray-800 shadow p-3 rounded">
+      <h3 class="text-xs sm:text-sm text-gray-500">Reports Submitted</h3>
+      <p id="report-count" class="text-xl sm:text-2xl font-bold mt-1">--</p>
     </div>
-    <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
-      <h3 class="text-sm text-gray-500">Most Affected Ward</h3>
-      <p id="hottest-ward" class="text-xl sm:text-2xl font-bold mt-1">--</p>
+    <div class="bg-white dark:bg-gray-800 shadow p-3 rounded">
+      <h3 class="text-xs sm:text-sm text-gray-500">Most Affected Ward</h3>
+      <p id="hottest-ward" class="text-lg sm:text-2xl font-bold mt-1">--</p>
     </div>
-    <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
-      <h3 class="text-sm text-gray-500">Avg. NDVI</h3>
-      <p id="avg-ndvi" class="text-2xl font-bold mt-1">--</p>
+    <div class="bg-white dark:bg-gray-800 shadow p-3 rounded">
+      <h3 class="text-xs sm:text-sm text-gray-500">Avg. NDVI</h3>
+      <p id="avg-ndvi" class="text-xl sm:text-2xl font-bold mt-1">--</p>
     </div>
   </section>
 
   <!-- Priority Zones -->
   <section>
-    <h2 class="text-xl font-bold mb-4">Priority Zones</h2>
-    <p class="text-gray-600 dark:text-gray-300 mb-4">
+    <h2 class="text-lg sm:text-xl font-bold mb-3">Priority Zones</h2>
+    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-3">
       These wards need urgent attention due to poor vegetation and high heat levels.
     </p>
-    <ul id="priority-zones" class="space-y-3"></ul>
+    <ul id="priority-zones" class="space-y-2"></ul>
   </section>
 
   <!-- Bar Chart -->
   <section>
-    <h2 class="text-xl font-bold mb-4">Vegetation & Heat per Ward</h2>
-    <div class="flex flex-col sm:flex-row gap-3 mb-2">
-      <button id="btn-ndvi" class="px-3 py-1 bg-green-600 text-white rounded">NDVI</button>
-      <button id="btn-lst" class="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded">LST</button>
+    <h2 class="text-lg sm:text-xl font-bold mb-3">Vegetation & Heat per Ward</h2>
+    <div class="flex flex-col sm:flex-row gap-2 mb-2">
+      <button id="btn-ndvi" class="px-2 py-1 text-xs sm:text-sm bg-green-600 text-white rounded">NDVI</button>
+      <button id="btn-lst" class="px-2 py-1 text-xs sm:text-sm bg-gray-200 dark:bg-gray-700 rounded">LST</button>
     </div>
-    <canvas id="wardChart" class="w-full h-80 bg-white rounded shadow"></canvas>
-    <div class="mt-4 flex flex-col sm:flex-row gap-4">
-      <button id="download-chart" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Download Chart</button>
-      <button id="export-reports" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Export Reports CSV</button>
+    <canvas id="wardChart" class="w-full h-64 sm:h-80 bg-white rounded shadow"></canvas>
+    <div class="mt-3 flex flex-col sm:flex-row gap-3">
+      <button id="download-chart" class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Download Chart</button>
+      <button id="export-reports" class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-green-600 text-white rounded hover:bg-green-700">Export Reports CSV</button>
     </div>
   </section>
 
   <!-- Report Insights -->
   <section>
-    <h2 class="text-xl font-bold mb-4">Reports Insights</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-        <h3 class="text-lg font-semibold mb-2">Report Types Distribution</h3>
-        <canvas id="report-type-chart" class="w-full h-64"></canvas>
+    <h2 class="text-lg sm:text-xl font-bold mb-3">Reports Insights</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-white dark:bg-gray-800 p-3 rounded shadow">
+        <h3 class="text-base sm:text-lg font-semibold mb-2">Report Types Distribution</h3>
+        <canvas id="report-type-chart" class="w-full h-48 sm:h-64"></canvas>
       </div>
-      <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-        <h3 class="text-lg font-semibold mb-2">Reports per Month</h3>
-        <canvas id="reports-month-chart" class="w-full h-64"></canvas>
+      <div class="bg-white dark:bg-gray-800 p-3 rounded shadow">
+        <h3 class="text-base sm:text-lg font-semibold mb-2">Reports per Month</h3>
+        <canvas id="reports-month-chart" class="w-full h-48 sm:h-64"></canvas>
       </div>
     </div>
   </section>
 
   <!-- Filters -->
-  <section class="flex flex-wrap items-center gap-4">
-    <label class="text-sm font-medium">Filter by Type:</label>
-    <select id="filter-type" class="text-sm px-3 py-1 border rounded dark:bg-gray-800 dark:border-gray-700">
+  <section class="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+    <label class="font-medium">Filter by Type:</label>
+    <select id="filter-type" class="px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700">
       <option value="All">All Types</option>
       <option value="Tree Cutting">Tree Cutting</option>
       <option value="Waste Dumping">Waste Dumping</option>
       <option value="Fire Incident">Fire Incident</option>
       <option value="Blocked Drainage">Blocked Drainage</option>
     </select>
-    <label class="text-sm font-medium">Start Date:</label>
-    <input type="date" id="filter-start" class="text-sm px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
-    <label class="text-sm font-medium">End Date:</label>
-    <input type="date" id="filter-end" class="text-sm px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
-    <button id="reset-filters" class="text-sm px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600">Reset</button>
+    <label class="font-medium">Start Date:</label>
+    <input type="date" id="filter-start" class="px-1 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
+    <label class="font-medium">End Date:</label>
+    <input type="date" id="filter-end" class="px-1 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
+    <button id="reset-filters" class="px-2 py-1 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600">Reset</button>
   </section>
 
   <!-- Report Table -->
   <section>
-    <h2 class="text-xl font-bold mb-4">Recent Reports</h2>
+    <h2 class="text-lg sm:text-xl font-bold mb-3">Recent Reports</h2>
     <div class="overflow-x-auto">
-      <table class="min-w-full text-sm text-left bg-white dark:bg-gray-800 rounded shadow">
+      <table class="min-w-full text-xs sm:text-sm text-left bg-white dark:bg-gray-800 rounded shadow">
         <thead>
           <tr class="bg-green-600 text-white">
-            <th class="p-2">Title</th>
-            <th class="p-2">Type</th>
-            <th class="p-2">Location</th>
-            <th class="p-2">Date</th>
-            <th class="p-2">Image</th>
-            <th class="p-2">Action</th>
+            <th class="p-1 sm:p-2">Title</th>
+            <th class="p-1 sm:p-2">Type</th>
+            <th class="p-1 sm:p-2">Location</th>
+            <th class="p-1 sm:p-2">Date</th>
+            <th class="p-1 sm:p-2">Image</th>
+            <th class="p-1 sm:p-2">Action</th>
           </tr>
         </thead>
         <tbody id="report-table-body" class="divide-y divide-gray-300 dark:divide-gray-700"></tbody>
@@ -147,10 +147,10 @@
 </main>
 
 <!-- Footer -->
-<footer class="w-full bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 py-6 mt-10">
-  <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+<footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-4 mt-8">
+  <div class="max-w-7xl mx-auto px-2 grid grid-cols-1 md:grid-cols-3 gap-4 text-center md:text-left">
     <div>
-      <p class="text-gray-800 dark:text-white font-semibold mb-2">&copy; 2025 GreenMap. All rights reserved.</p>
+      <p class="text-gray-800 dark:text-white font-semibold mb-1">&copy; 2025 GreenMap. All rights reserved.</p>
     </div>
     <div>
       <p class="font-semibold text-gray-800 dark:text-white mb-1">Contact Us</p>
@@ -159,7 +159,7 @@
     </div>
     <div>
       <p class="font-semibold text-gray-800 dark:text-white mb-1">Follow Us</p>
-      <div class="flex justify-center md:justify-start space-x-4 mt-1">
+      <div class="flex justify-center md:justify-start space-x-3 mt-1">
         <a href="https://linkedin.com/in/greenmap" target="_blank" class="hover:text-green-700">LinkedIn</a>
         <a href="https://instagram.com/greenmap_ke" target="_blank" class="hover:text-green-700">Instagram</a>
         <a href="https://x.com/greenmap_ke" target="_blank" class="hover:text-green-700">Twitter/X</a>
