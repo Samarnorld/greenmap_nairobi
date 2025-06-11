@@ -1,212 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard - GreenMap</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { darkMode: 'class' };
-  </script>
-  <link rel="stylesheet" href="../assets/style.css" />
-
-  <!-- Mobile Fixes -->
-  <style>
-    @media (max-width: 768px) {
-      .dashboard-buttons {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .filters-responsive {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-      }
-
-      .filters-responsive label,
-      .filters-responsive select,
-      .filters-responsive input,
-      .filters-responsive button {
-        width: 100%;
-      }
-
-      footer .grid {
-        grid-template-columns: 1fr !important;
-        text-align: center !important;
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          screens: {
+            'xs': '475px',
+          },
+        }
       }
     }
-  </style>
+  </script>
+  <link rel="stylesheet" href="../assets/style.css" />
 </head>
+<body class="font-sans bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
 
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans">
-  <!-- Header -->
-  <header class="w-full bg-[#104F1F] dark:bg-[#0f3b17] shadow-md fixed top-0 z-50 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <a href="/index.html" class="flex items-center space-x-2">
-          <span class="text-2xl font-bold tracking-tight">GreenMap</span>
-          <img src="../assets/logo.png" alt="GreenMap Logo" class="h-10 w-auto" />
-        </a>
-        <nav class="hidden md:flex items-center space-x-6 font-medium text-[15px]">
-          <a href="../index.html" class="hover:text-lime-300 transition">Home</a>
-          <a href="/pages/dashboard.html" class="hover:text-lime-300 transition">Dashboard</a>
-          <a href="/pages/about.html" class="hover:text-lime-300 transition">About</a>
-          <button id="theme-toggle" title="Toggle Theme" class="ml-4 p-2 rounded-full bg-black text-white hover:bg-gray-800 text-sm">🌙</button>
-        </nav>
-        <button id="mobile-menu-toggle" class="md:hidden p-2 focus:outline-none">
-          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 pt-2 space-y-2 bg-[#104F1F] dark:bg-[#0f3b17] text-sm font-medium">
-      <a href="../index.html" class="block hover:text-lime-300">Home</a>
-      <a href="/pages/map.html" class="block hover:text-lime-300">Map</a>
-      <a href="/pages/dashboard.html" class="block hover:text-lime-300">Dashboard</a>
-      <a href="/pages/reports.html" class="block hover:text-lime-300">Reports</a>
-      <a href="/pages/about.html" class="block hover:text-lime-300">About</a>
-    </div>
-  </header>
-
-  <!-- Main -->
-  <main class="flex-grow px-6 py-10 pt-24 max-w-7xl mx-auto space-y-12">
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
-        <h3 class="text-sm text-gray-500">Reports Submitted</h3>
-        <p id="report-count" class="text-2xl font-bold mt-1">--</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
-        <h3 class="text-sm text-gray-500">Most Affected Ward</h3>
-        <p id="hottest-ward" class="text-2xl font-bold mt-1">--</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
-        <h3 class="text-sm text-gray-500">Avg. NDVI</h3>
-        <p id="avg-ndvi" class="text-2xl font-bold mt-1">--</p>
-      </div>
-    </section>
-
-    <!-- Priority Zones -->
-    <section class="mt-12">
-      <h2 class="text-xl font-bold mb-4">Priority Zones</h2>
-      <p class="text-gray-600 dark:text-gray-300 mb-4">
-        These wards need urgent attention due to poor vegetation and high heat levels.
-      </p>
-      <ul id="priority-zones" class="space-y-3"></ul>
-    </section>
-
-    <!-- Bar Chart -->
-    <section class="mt-10">
-      <h2 class="text-xl font-bold mb-4">Vegetation & Heat per Ward</h2>
-      <div class="flex gap-3 mb-2">
-        <button id="btn-ndvi" class="px-3 py-1 bg-green-600 text-white rounded">NDVI</button>
-        <button id="btn-lst" class="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded">LST</button>
-      </div>
-      <canvas id="wardChart" class="w-full h-80 bg-white rounded shadow"></canvas>
-      <div class="mt-4 flex gap-4 dashboard-buttons">
-        <button id="download-chart" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Download Chart</button>
-        <button id="export-reports" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Export Reports CSV</button>
-      </div>
-    </section>
-
-    <!-- Reports Insights -->
-    <section class="mt-12">
-      <h2 class="text-xl font-bold mb-4">Reports Insights</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <h3 class="text-lg font-semibold mb-2">Report Types Distribution</h3>
-          <canvas id="report-type-chart" class="max-w-xs h-64"></canvas>
-        </div>
-        <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <h3 class="text-lg font-semibold mb-2">Reports per Month</h3>
-          <canvas id="reports-month-chart" class="w-full h-64"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <!-- Filters -->
-    <div class="mb-6 flex flex-wrap items-center gap-4 filters-responsive">
-      <label class="text-sm font-medium">Filter by Type:</label>
-      <select id="filter-type" class="text-sm px-3 py-1 border rounded dark:bg-gray-800 dark:border-gray-700">
-        <option value="All">All Types</option>
-        <option value="Tree Cutting">Tree Cutting</option>
-        <option value="Waste Dumping">Waste Dumping</option>
-        <option value="Fire Incident">Fire Incident</option>
-        <option value="Blocked Drainage">Blocked Drainage</option>
-      </select>
-      <label class="text-sm font-medium">Start Date:</label>
-      <input type="date" id="filter-start" class="text-sm px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
-      <label class="text-sm font-medium">End Date:</label>
-      <input type="date" id="filter-end" class="text-sm px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
-      <button id="reset-filters" class="text-sm px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600">
-        Reset
+<!-- Header -->
+<header class="w-full bg-[#104F1F] dark:bg-[#0f3b17] shadow-md fixed top-0 z-50 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <a href="/index.html" class="flex items-center space-x-2">
+        <span class="text-xl sm:text-2xl font-bold tracking-tight">GreenMap</span>
+        <img src="../assets/logo.png" alt="GreenMap Logo" class="h-8 sm:h-10 w-auto" />
+      </a>
+      <nav class="hidden md:flex items-center space-x-4 lg:space-x-6 font-medium text-sm sm:text-[15px]">
+        <a href="../index.html" class="hover:text-lime-300 transition">Home</a>
+        <a href="/pages/dashboard.html" class="hover:text-lime-300 transition">Dashboard</a>
+        <a href="/pages/about.html" class="hover:text-lime-300 transition">About</a>
+        <button id="theme-toggle" class="ml-2 sm:ml-4 p-2 rounded-full bg-black text-white hover:bg-gray-800">🌙</button>
+      </nav>
+      <button id="mobile-menu-toggle" class="md:hidden p-2 focus:outline-none">
+        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
       </button>
     </div>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 pt-2 space-y-2 bg-[#104F1F] dark:bg-[#0f3b17] text-sm font-medium">
+    <a href="../index.html" class="block py-2 hover:text-lime-300">Home</a>
+    <a href="/pages/map.html" class="block py-2 hover:text-lime-300">Map</a>
+    <a href="/pages/dashboard.html" class="block py-2 hover:text-lime-300">Dashboard</a>
+    <a href="/pages/reports.html" class="block py-2 hover:text-lime-300">Reports</a>
+    <a href="/pages/about.html" class="block py-2 hover:text-lime-300">About</a>
+  </div>
+</header>
 
-    <!-- Report Table -->
-    <section>
-      <h2 class="text-xl font-bold mb-4">Recent Reports</h2>
-      <div class="overflow-x-auto">
-        <table class="min-w-full text-sm text-left bg-white dark:bg-gray-800 rounded shadow">
-          <thead>
-            <tr class="bg-green-600 text-white">
-              <th class="p-2">Title</th>
-              <th class="p-2">Type</th>
-              <th class="p-2">Location</th>
-              <th class="p-2">Date</th>
-              <th class="p-2">Image</th>
-              <th class="p-2">Action</th>
-            </tr>
-          </thead>
-          <tbody id="report-table-body" class="divide-y divide-gray-300 dark:divide-gray-700"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+<!-- Main Content -->
+<main class="flex-grow pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
 
-  <!-- Footer -->
-  <footer class="w-full bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 py-6">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-      <div>
-        <p class="text-gray-800 dark:text-white font-semibold mb-2">&copy; 2025 GreenMap. All rights reserved.</p>
+  <!-- Top Stats -->
+  <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
+      <h3 class="text-sm text-gray-500">Reports Submitted</h3>
+      <p id="report-count" class="text-2xl font-bold mt-1">--</p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
+      <h3 class="text-sm text-gray-500">Most Affected Ward</h3>
+      <p id="hottest-ward" class="text-xl sm:text-2xl font-bold mt-1">--</p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
+      <h3 class="text-sm text-gray-500">Avg. NDVI</h3>
+      <p id="avg-ndvi" class="text-2xl font-bold mt-1">--</p>
+    </div>
+  </section>
+
+  <!-- Priority Zones -->
+  <section>
+    <h2 class="text-xl font-bold mb-4">Priority Zones</h2>
+    <p class="text-gray-600 dark:text-gray-300 mb-4">
+      These wards need urgent attention due to poor vegetation and high heat levels.
+    </p>
+    <ul id="priority-zones" class="space-y-3"></ul>
+  </section>
+
+  <!-- Bar Chart -->
+  <section>
+    <h2 class="text-xl font-bold mb-4">Vegetation & Heat per Ward</h2>
+    <div class="flex flex-col sm:flex-row gap-3 mb-2">
+      <button id="btn-ndvi" class="px-3 py-1 bg-green-600 text-white rounded">NDVI</button>
+      <button id="btn-lst" class="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded">LST</button>
+    </div>
+    <canvas id="wardChart" class="w-full h-80 bg-white rounded shadow"></canvas>
+    <div class="mt-4 flex flex-col sm:flex-row gap-4">
+      <button id="download-chart" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Download Chart</button>
+      <button id="export-reports" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Export Reports CSV</button>
+    </div>
+  </section>
+
+  <!-- Report Insights -->
+  <section>
+    <h2 class="text-xl font-bold mb-4">Reports Insights</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <h3 class="text-lg font-semibold mb-2">Report Types Distribution</h3>
+        <canvas id="report-type-chart" class="w-full h-64"></canvas>
       </div>
-      <div>
-        <p class="font-semibold text-gray-800 dark:text-white mb-1">Contact Us</p>
-        <p>Email: <a href="mailto:contact@greenmap.org" class="text-green-700 hover:underline">contact@greenmap.org</a></p>
-        <p>Phone: <a href="tel:+254757439204" class="text-green-700 hover:underline">+254 757 439 204</a></p>
-      </div>
-      <div>
-        <p class="font-semibold text-gray-800 dark:text-white mb-1">Follow Us</p>
-        <div class="flex justify-center md:justify-start space-x-4 mt-1">
-          <a href="https://linkedin.com/in/greenmap" target="_blank" class="hover:text-green-700">LinkedIn</a>
-          <a href="https://instagram.com/greenmap_ke" target="_blank" class="hover:text-green-700">Instagram</a>
-          <a href="https://x.com/greenmap_ke" target="_blank" class="hover:text-green-700">Twitter/X</a>
-        </div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <h3 class="text-lg font-semibold mb-2">Reports per Month</h3>
+        <canvas id="reports-month-chart" class="w-full h-64"></canvas>
       </div>
     </div>
-  </footer>
+  </section>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-  <script src="../js/firebase.js"></script>
-  <script src="../js/dashboard.js"></script>
+  <!-- Filters -->
+  <section class="flex flex-wrap items-center gap-4">
+    <label class="text-sm font-medium">Filter by Type:</label>
+    <select id="filter-type" class="text-sm px-3 py-1 border rounded dark:bg-gray-800 dark:border-gray-700">
+      <option value="All">All Types</option>
+      <option value="Tree Cutting">Tree Cutting</option>
+      <option value="Waste Dumping">Waste Dumping</option>
+      <option value="Fire Incident">Fire Incident</option>
+      <option value="Blocked Drainage">Blocked Drainage</option>
+    </select>
+    <label class="text-sm font-medium">Start Date:</label>
+    <input type="date" id="filter-start" class="text-sm px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
+    <label class="text-sm font-medium">End Date:</label>
+    <input type="date" id="filter-end" class="text-sm px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
+    <button id="reset-filters" class="text-sm px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600">Reset</button>
+  </section>
 
-  <script>
-    const toggleBtn = document.getElementById('theme-toggle');
-    toggleBtn.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      toggleBtn.textContent = document.documentElement.classList.contains('dark') ? '☀' : '🌙';
-    });
+  <!-- Report Table -->
+  <section>
+    <h2 class="text-xl font-bold mb-4">Recent Reports</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm text-left bg-white dark:bg-gray-800 rounded shadow">
+        <thead>
+          <tr class="bg-green-600 text-white">
+            <th class="p-2">Title</th>
+            <th class="p-2">Type</th>
+            <th class="p-2">Location</th>
+            <th class="p-2">Date</th>
+            <th class="p-2">Image</th>
+            <th class="p-2">Action</th>
+          </tr>
+        </thead>
+        <tbody id="report-table-body" class="divide-y divide-gray-300 dark:divide-gray-700"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
 
-    const mobileToggle = document.getElementById('mobile-menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    mobileToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-  </script>
+<!-- Footer -->
+<footer class="w-full bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 py-6 mt-10">
+  <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+    <div>
+      <p class="text-gray-800 dark:text-white font-semibold mb-2">&copy; 2025 GreenMap. All rights reserved.</p>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-800 dark:text-white mb-1">Contact Us</p>
+      <p>Email: <a href="mailto:contact@greenmap.org" class="text-green-700 hover:underline">contact@greenmap.org</a></p>
+      <p>Phone: <a href="tel:+254757439204" class="text-green-700 hover:underline">+254 757 439 204</a></p>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-800 dark:text-white mb-1">Follow Us</p>
+      <div class="flex justify-center md:justify-start space-x-4 mt-1">
+        <a href="https://linkedin.com/in/greenmap" target="_blank" class="hover:text-green-700">LinkedIn</a>
+        <a href="https://instagram.com/greenmap_ke" target="_blank" class="hover:text-green-700">Instagram</a>
+        <a href="https://x.com/greenmap_ke" target="_blank" class="hover:text-green-700">Twitter/X</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="../js/firebase.js"></script>
+<script src="../js/dashboard.js"></script>
+
+<script>
+  // Theme toggle
+  const toggleBtn = document.getElementById('theme-toggle');
+  toggleBtn.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    toggleBtn.textContent = document.documentElement.classList.contains('dark') ? '☀' : '🌙';
+  });
+
+  // Mobile menu toggle
+  const mobileToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  mobileToggle.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+</script>
 </body>
 </html>
