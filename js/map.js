@@ -13,12 +13,12 @@ const satellite = L.tileLayer(
   }
 );
 
-// NDVI, LST, NDVI > 0.3
+// Dynamic layers
 let ndviLayer = null;
 let lstLayer = null;
 let ndviMaskLayer = null;
 
-// Load NDVI
+// Fetch and show NDVI layer
 fetch('http://localhost:3000/ndvi')
   .then(res => res.json())
   .then(data => {
@@ -27,7 +27,7 @@ fetch('http://localhost:3000/ndvi')
     control.addOverlay(ndviLayer, "🌿 NDVI");
   }).catch(err => console.error("NDVI error:", err));
 
-// Load LST
+// Fetch and show LST layer
 fetch('http://localhost:3000/lst')
   .then(res => res.json())
   .then(data => {
@@ -36,7 +36,7 @@ fetch('http://localhost:3000/lst')
     control.addOverlay(lstLayer, "🔥 LST");
   }).catch(err => console.error("LST error:", err));
 
-// Load NDVI Mask > 0.3
+// Fetch and show NDVI Mask > 0.3
 fetch('http://localhost:3000/ndvi-mask')
   .then(res => res.json())
   .then(data => {
@@ -44,19 +44,19 @@ fetch('http://localhost:3000/ndvi-mask')
     control.addOverlay(ndviMaskLayer, "✅ NDVI > 0.3");
   }).catch(err => console.error("NDVI Mask error:", err));
 
-// Layer toggle
+// Layer control
 const baseMaps = {
   "🗺️ OpenStreetMap": osm,
   "🛰️ Satellite": satellite
 };
-
-const overlayMaps = {}; // Will fill later
+const overlayMaps = {};
 const control = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 
-// Wards
+// Add Nairobi wards
 fetch('../data/wards.geojson')
   .then(res => res.json())
   .then(data => {
+    console.log("Loaded GeoJSON properties:", data.features[0].properties); // DEBUG: see property names
     L.geoJSON(data, {
       style: {
         color: 'gray',
@@ -64,10 +64,14 @@ fetch('../data/wards.geojson')
         fillOpacity: 0
       },
       onEachFeature: (feature, layer) => {
-        const ward = feature.properties.wards || feature.properties.Name_3 || 'Unnamed';
-        const ndvi = feature.properties.mean_NDVI?.toFixed(2) || 'N/A';
-        const lst = feature.properties.mean_LST?.toFixed(1) || 'N/A';
-        layer.bindPopup(`<strong>${ward}</strong><br>🌿 NDVI: ${ndvi}<br>🔥 LST: ${lst}°C`);
+        const props = feature.properties;
+        const name = props.WARD || props.ward || props.NAME_3 || props.name || "Unnamed";
+        const ndvi = props.mean_NDVI?.toFixed(2) || "N/A";
+        const lst = props.mean_LST?.toFixed(1) || "N/A";
+        layer.bindPopup(`<strong>${name}</strong><br>🌿 NDVI: ${ndvi}<br>🔥 LST: ${lst}°C`);
       }
     }).addTo(map);
+  })
+  .catch(err => {
+    console.error("Failed to load wards.geojson:", err);
   });

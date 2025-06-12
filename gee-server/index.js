@@ -45,10 +45,13 @@ function getTileUrl(eeImage, visParams, res) {
       console.error("❌ Tile error:", err);
       return res.status(500).json({ error: "Tile generation failed" });
     }
+
+    // FIXED: Correctly build the tile URL
     const tileUrl = `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/${map.mapid}/tiles/{z}/{x}/{y}`;
     res.json({ urlFormat: tileUrl });
   });
 }
+
 
 // NDVI
 app.get('/ndvi', (req, res) => {
