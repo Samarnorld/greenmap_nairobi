@@ -3,57 +3,58 @@ const cors = require('cors');
 const ee = require('@google/earthengine');
 const { GoogleAuth } = require('google-auth-library');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = 3000;
 
-// Middleware
 app.use(cors());
 
 // Load service account key
-const PRIVATE_KEY_PATH = path.join(__dirname, 'gee-service-account.json');
+const KEY_PATH = path.join(__dirname, 'greenmap-tileserver-58f62e8e9b43.json');
+const privateKey = JSON.parse(fs.readFileSync(KEY_PATH, 'utf8'));
 
-async function initializeEE() {
+async function initEE() {
   const auth = new GoogleAuth({
-    keyFile: PRIVATE_KEY_PATH,
+    credentials: privateKey,
     scopes: ['https://www.googleapis.com/auth/cloud-platform'],
   });
 
   const client = await auth.getClient();
-  const credentials = await auth.getCredentials();
+  const token = await client.getAccessToken();
 
-  ee.data.authenticateViaPrivateKey({
-    client_email: credentials.client_email,
-    private_key: credentials.private_key,
-  }, () => {
-    ee.initialize(null, null, () => {
-      console.log('✅ Earth Engine initialized');
-    }, err => {
-      console.error('❌ EE init failed:', err);
-    });
-  }, err => {
-    console.error('❌ Auth failed:', err);
-  });
+  ee.data.authenticateViaPrivateKey(
+    {
+      client_email: privateKey.client_email,
+      private_key: privateKey.private_key,
+    },
+    () => {
+      ee.initialize(null, null, () => {
+        console.log('✅ Earth Engine initialized');
+      }, (err) => {
+        console.error('❌ EE init error:', err);
+      });
+    },
+    (err) => {
+      console.error('❌ Auth error:', err);
+    }
+  );
 }
 
-initializeEE();
+initEE();
 
-// Helper: Generate map ID and token
 function getTileUrl(eeImage, visParams, res) {
   eeImage.visualize(visParams).getMap({}, (map, err) => {
     if (err) {
-      console.error("❌ Tile error:", err);
+      console.error("Tile error:", err);
       return res.status(500).json({ error: "Tile generation failed" });
     }
-
-    // FIXED: Correctly build the tile URL
     const tileUrl = `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/${map.mapid}/tiles/{z}/{x}/{y}`;
     res.json({ urlFormat: tileUrl });
   });
 }
 
-
-// NDVI
+// NDVI endpoint
 app.get('/ndvi', (req, res) => {
   const wards = ee.FeatureCollection('projects/nice-etching-459905-u0/assets/kenya_wards')
     .filter(ee.Filter.eq('NAME_1', 'Nairobi'));
@@ -75,7 +76,29 @@ app.get('/ndvi', (req, res) => {
   }, res);
 });
 
-// NDVI > 0.3 mask
+// LST endpoint
+app.get('/lst', (req, res) => {
+  const wards = ee.FeatureCollection('projects/nice-etching-459905-u0/assets/kenya_wards')
+    .filter(ee.Filter.eq('NAME_1', 'Nairobi'));
+
+  const lst = ee.ImageCollection('MODIS/061/MOD11A1')
+    .filterBounds(wards)
+    .filterDate('2024-01-01', '2025-05-25')
+    .select('LST_Day_1km')
+    .mean()
+    .multiply(0.02)
+    .subtract(273.15)
+    .rename('LST_C')
+    .clip(wards);
+
+  getTileUrl(lst, {
+    min: 25,
+    max: 45,
+    palette: ['blue', 'yellow', 'red']
+  }, res);
+});
+
+// NDVI Mask > 0.3
 app.get('/ndvi-mask', (req, res) => {
   const wards = ee.FeatureCollection('projects/nice-etching-459905-u0/assets/kenya_wards')
     .filter(ee.Filter.eq('NAME_1', 'Nairobi'));
@@ -96,28 +119,6 @@ app.get('/ndvi-mask', (req, res) => {
     min: 0.3,
     max: 0.8,
     palette: ['yellow', 'green']
-  }, res);
-});
-
-// LST
-app.get('/lst', (req, res) => {
-  const wards = ee.FeatureCollection('projects/nice-etching-459905-u0/assets/kenya_wards')
-    .filter(ee.Filter.eq('NAME_1', 'Nairobi'));
-
-  const lst = ee.ImageCollection('MODIS/061/MOD11A1')
-    .filterBounds(wards)
-    .filterDate('2024-01-01', '2025-05-25')
-    .select('LST_Day_1km')
-    .mean()
-    .multiply(0.02)
-    .subtract(273.15)
-    .rename('LST_C')
-    .clip(wards);
-
-  getTileUrl(lst, {
-    min: 25,
-    max: 45,
-    palette: ['blue', 'yellow', 'red']
   }, res);
 });
 
