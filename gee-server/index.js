@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
@@ -43,13 +43,14 @@ async function initEE() {
 
 initEE();
 
+// ✅ FIXED TILE URL
 function getTileUrl(eeImage, visParams, res) {
   eeImage.visualize(visParams).getMap({}, (map, err) => {
     if (err) {
       console.error("Tile error:", err);
       return res.status(500).json({ error: "Tile generation failed" });
     }
-    const tileUrl = `https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/${map.mapid}/tiles/{z}/{x}/{y}`;
+    const tileUrl = `https://earthengine.googleapis.com/v1alpha/maps/${map.mapid}/tiles/{z}/{x}/{y}`;
     res.json({ urlFormat: tileUrl });
   });
 }
