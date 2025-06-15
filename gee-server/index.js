@@ -1,3 +1,4 @@
+// index.js
 const express = require('express');
 const cors = require('cors');
 const ee = require('@google/earthengine');
@@ -7,17 +8,15 @@ const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 app.use(cors());
 
-// Load service account key
 const KEY_PATH = path.join(__dirname, 'greenmap-tileserver-58f62e8e9b43.json');
 const privateKey = JSON.parse(fs.readFileSync(KEY_PATH, 'utf8'));
 
 async function initEE() {
   const auth = new GoogleAuth({
     credentials: privateKey,
-    scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    scopes: ['https://www.googleapis.com/auth/cloud-platform']
   });
 
   const client = await auth.getClient();
@@ -32,34 +31,33 @@ async function initEE() {
       ee.initialize(null, null, () => {
         console.log('✅ Earth Engine initialized');
       }, (err) => {
-        console.error('❌ EE init error:', err);
+        console.error('❌ Initialization error:', err);
       });
     },
     (err) => {
-      console.error('❌ Auth error:', err);
+      console.error('❌ Authentication error:', err);
     }
   );
 }
 
 initEE();
 
-// ✅ FIXED TILE URL
-function getTileUrl(eeImage, visParams, res) {
-  eeImage.visualize(visParams).getMap({}, (map, err) => {
-    if (err) {
-      console.error("Tile error:", err);
-      return res.status(500).json({ error: "Tile generation failed" });
+function getMapTileUrl(image, visParams, res) {
+  const styled = image.visualize(visParams);
+  styled.getMap((mapInfo) => {
+    if (!mapInfo) {
+      return res.status(500).json({ error: 'Map info not available' });
     }
-    const tileUrl = `https://earthengine.googleapis.com/v1alpha/maps/${map.mapid}/tiles/{z}/{x}/{y}`;
-    res.json({ urlFormat: tileUrl });
+    const url = `https://earthengine.googleapis.com/map/${mapInfo.mapid}/{z}/{x}/{y}?token=${mapInfo.token}`;
+    res.json({ urlFormat: url });
   });
 }
 
-// NDVI endpoint
-app.get('/ndvi', (req, res) => {
-  const wards = ee.FeatureCollection('projects/nice-etching-459905-u0/assets/kenya_wards')
-    .filter(ee.Filter.eq('NAME_1', 'Nairobi'));
+const wards = ee.FeatureCollection('projects/nice-etching-459905-u0/assets/kenya_wards')
+  .filter(ee.Filter.eq('NAME_1', 'Nairobi'));
 
+// NDVI route
+app.get('/ndvi', (req, res) => {
   const s2 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
     .filterBounds(wards)
     .filterDate('2024-01-01', '2025-05-25')
@@ -70,18 +68,15 @@ app.get('/ndvi', (req, res) => {
     .rename('NDVI')
     .clip(wards);
 
-  getTileUrl(ndvi, {
+  getMapTileUrl(ndvi, {
     min: 0,
     max: 0.8,
     palette: ['red', 'yellow', 'green']
   }, res);
 });
 
-// LST endpoint
+// LST route
 app.get('/lst', (req, res) => {
-  const wards = ee.FeatureCollection('projects/nice-etching-459905-u0/assets/kenya_wards')
-    .filter(ee.Filter.eq('NAME_1', 'Nairobi'));
-
   const lst = ee.ImageCollection('MODIS/061/MOD11A1')
     .filterBounds(wards)
     .filterDate('2024-01-01', '2025-05-25')
@@ -92,18 +87,15 @@ app.get('/lst', (req, res) => {
     .rename('LST_C')
     .clip(wards);
 
-  getTileUrl(lst, {
+  getMapTileUrl(lst, {
     min: 25,
     max: 45,
     palette: ['blue', 'yellow', 'red']
   }, res);
 });
 
-// NDVI Mask > 0.3
+// NDVI > 0.3 Mask
 app.get('/ndvi-mask', (req, res) => {
-  const wards = ee.FeatureCollection('projects/nice-etching-459905-u0/assets/kenya_wards')
-    .filter(ee.Filter.eq('NAME_1', 'Nairobi'));
-
   const s2 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
     .filterBounds(wards)
     .filterDate('2024-01-01', '2025-05-25')
@@ -116,7 +108,7 @@ app.get('/ndvi-mask', (req, res) => {
 
   const mask = ndvi.updateMask(ndvi.gt(0.3));
 
-  getTileUrl(mask, {
+  getMapTileUrl(mask, {
     min: 0.3,
     max: 0.8,
     palette: ['yellow', 'green']
@@ -124,5 +116,5 @@ app.get('/ndvi-mask', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 GreenMap backend running on http://localhost:${PORT}`);
+  console.log(`🚀 GreenMap backend running on port ${PORT}`);
 });
