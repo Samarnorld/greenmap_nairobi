@@ -1,4 +1,5 @@
-// Initialize map
+// js/map.js
+// Initialize Leaflet map
 const map = L.map('map').setView([-1.286389, 36.817223], 11);
 
 // Base layers
@@ -13,7 +14,8 @@ const satellite = L.tileLayer(
 );
 
 // Layer containers
-let ndviLayer, lstLayer, ndviMaskLayer, reportsLayer = L.layerGroup().addTo(map);
+let ndviLayer, lstLayer, ndviMaskLayer;
+const reportsLayer = L.layerGroup().addTo(map);
 
 // Controls
 const baseMaps = {
@@ -46,11 +48,11 @@ fetch('../data/wards.geojson')
     }).addTo(map);
   });
 
-// Add Firebase reports
+// Add Firebase Community Reports
 firebase.firestore().collection("reports").get().then(snapshot => {
   snapshot.forEach(doc => {
     const data = doc.data();
-    if (data.location && data.location.lat && data.location.lng) {
+    if (data.location?.lat && data.location?.lng) {
       const marker = L.marker([data.location.lat, data.location.lng]).bindPopup(`
         <strong>${data.title}</strong><br>
         <em>${data.type}</em><br>
@@ -62,37 +64,46 @@ firebase.firestore().collection("reports").get().then(snapshot => {
   });
 });
 
-// Add NDVI
-fetch('https://greenmap-nairobi.onrender.com/ndvi')
+// 🌐 USE LOCALHOST FOR TESTING BEFORE DEPLOYMENT
+const BACKEND_URL = 'http://localhost:3000';
+
+// Fetch NDVI
+fetch(`${BACKEND_URL}/ndvi`)
   .then(res => res.json())
   .then(data => {
     ndviLayer = L.tileLayer(data.urlFormat, { opacity: 0.7 });
     overlayMaps["🌿 NDVI"] = ndviLayer;
     control.addOverlay(ndviLayer, "🌿 NDVI");
     ndviLayer.addTo(map);
-  });
+    addOpacitySlider(ndviLayer, "NDVI");
+  })
+  .catch(err => console.error("NDVI error:", err));
 
-// Add LST
-fetch('https://greenmap-nairobi.onrender.com/lst')
+// Fetch LST
+fetch(`${BACKEND_URL}/lst`)
   .then(res => res.json())
   .then(data => {
     lstLayer = L.tileLayer(data.urlFormat, { opacity: 0.6 });
     overlayMaps["🔥 LST"] = lstLayer;
     control.addOverlay(lstLayer, "🔥 LST");
     lstLayer.addTo(map);
-  });
+    addOpacitySlider(lstLayer, "LST");
+  })
+  .catch(err => console.error("LST error:", err));
 
-// Add NDVI > 0.3
-fetch('https://greenmap-nairobi.onrender.com/ndvi-mask')
+// Fetch NDVI Mask
+fetch(`${BACKEND_URL}/ndvi-mask`)
   .then(res => res.json())
   .then(data => {
     ndviMaskLayer = L.tileLayer(data.urlFormat, { opacity: 0.75 });
     overlayMaps["✅ NDVI > 0.3"] = ndviMaskLayer;
     control.addOverlay(ndviMaskLayer, "✅ NDVI > 0.3");
     ndviMaskLayer.addTo(map);
-  });
+    addOpacitySlider(ndviMaskLayer, "NDVI > 0.3");
+  })
+  .catch(err => console.error("NDVI Mask error:", err));
 
-// Legend
+// 🧭 Add Legend
 const legend = L.control({ position: 'bottomright' });
 legend.onAdd = function () {
   const div = L.DomUtil.create('div', 'bg-white dark:bg-gray-900 text-sm p-3 rounded shadow space-y-2');
@@ -106,7 +117,7 @@ legend.onAdd = function () {
 };
 legend.addTo(map);
 
-// Share Button
+// 🔄 Share Button
 L.easyButton('fa-share-alt', () => {
   const center = map.getCenter();
   const zoom = map.getZoom();
@@ -115,13 +126,13 @@ L.easyButton('fa-share-alt', () => {
   alert("🔗 Map view copied:\n" + url);
 }).addTo(map);
 
-// Restore view from shared URL
+// 🌍 Restore shared map view
 const params = new URLSearchParams(window.location.search);
 if (params.has('lat') && params.has('lng') && params.has('zoom')) {
   map.setView([+params.get('lat'), +params.get('lng')], +params.get('zoom'));
 }
 
-// Opacity sliders
+// 🧪 Opacity slider for any layer
 function addOpacitySlider(layer, label) {
   const container = document.createElement("div");
   container.className = "opacity-slider";
@@ -133,10 +144,3 @@ function addOpacitySlider(layer, label) {
   input.oninput = () => layer.setOpacity(parseFloat(input.value));
   document.getElementById("sliders").appendChild(container);
 }
-
-// Wait for layers to load, then add sliders
-setTimeout(() => {
-  if (ndviLayer) addOpacitySlider(ndviLayer, "NDVI");
-  if (lstLayer) addOpacitySlider(lstLayer, "LST");
-  if (ndviMaskLayer) addOpacitySlider(ndviMaskLayer, "NDVI > 0.3");
-}, 3000);

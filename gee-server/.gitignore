@@ -1,8 +1,2 @@
-# Sensitive Earth Engine key (inside gee-server)
-gee-server/greenmap-tileserver-58f62e8e9b43.json
-
-# Node modules (inside gee-server)
-gee-server/node_modules/
-
-# Optional: logs and temp files
-gee-server/npm-debug.log
+node_modules/
+greenmap-backend-baf77194d59c.json
