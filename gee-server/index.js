@@ -6,13 +6,10 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Load service account key
-const privateKey = require('./greenmap-backend-baf77194d59c.json');
-
 // Enable CORS
 app.use(cors());
 
-// Initialize Earth Engine
+const privateKey = require('./greenmap-backend-baf77194d59c.json');
 ee.data.authenticateViaPrivateKey(privateKey, () => {
   ee.initialize(null, null, () => {
     console.log("✅ Earth Engine client initialized.");
@@ -20,9 +17,8 @@ ee.data.authenticateViaPrivateKey(privateKey, () => {
     console.error("Earth Engine init error:", err);
   });
 }, (err) => {
-  console.error("Authentication error:", err);
+  console.error("EE authentication error:", err);
 });
-
 // Load Nairobi wards asset
 const wards = ee.FeatureCollection("projects/greenmap-backend/assets/nairobi_wards_filtered");
 
