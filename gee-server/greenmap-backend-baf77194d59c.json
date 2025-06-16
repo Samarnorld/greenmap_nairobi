@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "greenmap-backend",
+  "private_key_id": "baf77194d59c526e1138e107dbe1981d854a8db4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC6z9LxRwXqlNUF\nywb7xMByDQqFuEAxz1uN7tsd2mo8CUqnfU8lqBcSjWMAlcwmnpwBopLeq9Ubn2up\nWZK7qoZo4FQlz+i9AOTbeESm1pvBQUYt8GqPXrsiXN/r0R2Yr2QBxrxP3K27ZElP\nQw7vkEGDhzaLCLVu0xdby8Sd84x+nos0dzZUMB4X/vKAuPaL/5mU7wtdGmhJipo+\ngj7GPMS/CjfPN/ubXe4CWxewSwZY0w2UH2wyHY9vUoQn//oLU6owkrmYUb+gG6Pn\n7atELPxy8UX2gT8lgeSawTjc7AszUjxwqXU05Znhz+UMRawIJVmJg/FAo2j+zY9I\nyS21pgP9AgMBAAECggEAEtt6sCdatgjLDhgl/tEoGfsuBjyIol6Ln+KuFK/hDGll\ns02HaUYz+gfyp/L3Fijpl5KpH7gZvX2UuRYVJUN76OdIJz76/+UwtOTJjUvZkiL8\nKhP8Nbe6zSex5NSJl8mQn0tH5AnjMajYa5tZzR3zNws1mshIxESjtXz2vnkAxCEh\nScdA71nOH58xi5564iQJ4hQa4iH7kGmMG/KthBR32Bo2+wLjALf2DQEMI3x1iAzw\n3JEAN2wl100AF7PDysyDEkLScIr+Z4GYG63PtGCoeyi3nvBXzw7BE9QBycl9WxE8\nSnr8y4kU/GRibqSIOkOl/fLwUBKHXyNhUaMaS/nPYQKBgQD9s8cdViX02w4Zf5qi\nVScHS2l2hNGVZG7a8fpawRjxd/mJADlchqvHhR6tIkyThlErWdZncxZu/Y7Hh2DO\neXANemI3YM1oCZ0qBt2ikZrxT7AUzHjihgSFVbE2CTwdMY0Tq9Yb4fOChS6eYL24\nxrqF/g6frkaZ8RoldCQfrw2tTQKBgQC8gPUHMAvYbBSxqCI8vWYCDxb8o+6/uYMM\nTmCOfV9ETw3HATp8MQEP/P2HMGu6aU+F4IN1m+VuSQ+96nsCEJwpxWHW7giwG3T9\nq6n0rxLfDK/G+Ty1kmhfsTem0DuBF42TlWRCLqwHjhvu2J1L8AXgFC1tyAqZZMdY\nEWvh7XAZcQKBgQDBU/8WrvBLr6YF7kRTEdqk52WdiEcBtb/4Hk9uWxl74LYKHV6Y\n0JMUfq/KtYlvHfq6s0H8ISpmN9hW2iX+EXI/AxTXKHA+qJzYStUYLibJXrVKlCpG\nTGQjixJ4n/7sLDdaVybYpo1e18iXrhbFOMMomlpgeniYlK8c/W0Nq+MbPQKBgQCE\nCsUYstQpVpQsWf0ZlQYmfRF6CQ8NZ9JfRWunhDS+ca3R749bPSxkWa/yCb38hxY4\nTitnr7tHxI/tVZmyuZXaQLQnTPfy/Fi39I6JojVS3t0mQKIBAjxwg3/bLtPvumLm\ntWfUYEMKy8XPShbtAYXsD9Y+pzideJWWoCV0zdCPUQKBgEJjN6/PS93WViqaarHx\n4mP2CVGdnuWykaKu04hisqmfInX9ZO0dzVhunZdr/fHh6WrpFSKhl8zWiIIUmAfT\nZsaCSqmSQR4mjU9MIeU/FIE7uI4F7ilVQJZ+znAfCzNcsb0f/r+8JOP49BWDfA/k\nIJNPsiON4PZwsmjnzI2WJ6PD\n-----END PRIVATE KEY-----\n",
+  "client_email": "earthengine-access@greenmap-backend.iam.gserviceaccount.com",
+  "client_id": "106940440828025319521",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/earthengine-access%40greenmap-backend.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
