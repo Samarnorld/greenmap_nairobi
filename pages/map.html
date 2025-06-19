@@ -41,6 +41,11 @@
   <!-- Firebase Config -->
   <script src="../js/firebase.js"></script>
 
+  <style>
+  .leaflet-top.leaflet-left {
+    margin-top: 9rem; /* Push zoom buttons down */
+  }
+</style>
   <link rel="stylesheet" href="../assets/style.css" />
 </head>
 <body class="font-sans bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
@@ -77,12 +82,20 @@
   </header>
 
   <!-- Sliders Panel (for opacity) -->
-  <div id="sliders" class="absolute top-24 right-2 z-[999] bg-white dark:bg-gray-800 p-3 rounded shadow space-y-2 text-xs"></div>
+<div id="sliders-wrapper" class="absolute top-24 left-2 z-[999] space-y-2 w-44 text-xs">
+  <!-- Toggle Button -->
+  <button id="toggle-sliders" class="w-full px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded text-center">
+    🛠️ Hide Sliders
+  </button>
+
+  <!-- Sliders Panel -->
+  <div id="sliders" class="bg-white dark:bg-gray-800 p-3 rounded shadow space-y-2"></div>
+</div>
 
   <!-- Main map container -->
-  <main class="flex-grow pt-24 relative z-0">
-    <div id="map" class="w-full h-screen"></div>
-  </main>
+<main class="flex-grow pt-24 relative z-0">
+  <div id="map" class="w-full" style="height: calc(100vh - 4rem);"></div>
+</main>
 
   <!-- Footer -->
   <footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
@@ -201,6 +214,16 @@
         }
       });
     });
+    // 🔁 Slider Toggle Logic
+const toggleBtn = document.getElementById("toggle-sliders");
+const slidersPanel = document.getElementById("sliders");
+
+toggleBtn.addEventListener("click", () => {
+  const isHidden = slidersPanel.classList.toggle("hidden");
+  toggleBtn.textContent = isHidden ? "🛠️ Show Sliders" : "🛠️ Hide Sliders";
+});
+
   </script>
+  
 </body>
 </html>

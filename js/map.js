@@ -1,8 +1,9 @@
 // js/map.js
-// Initialize Leaflet map
+
+// 🌍 Initialize Leaflet map
 const map = L.map('map').setView([-1.286389, 36.817223], 11);
 
-// Base layers
+// 🗺️ Base Layers
 const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
@@ -13,11 +14,11 @@ const satellite = L.tileLayer(
   }
 );
 
-// Layer containers
+// 🔄 Layer containers
 let ndviLayer, lstLayer, ndviMaskLayer;
 const reportsLayer = L.layerGroup().addTo(map);
 
-// Controls
+// 🧭 Layer control
 const baseMaps = {
   "🗺️ OpenStreetMap": osm,
   "🛰️ Satellite": satellite
@@ -29,7 +30,7 @@ const overlayMaps = {
 
 const control = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 
-// Add Wards
+// 📍 Add Wards
 fetch('../data/wards.geojson')
   .then(res => res.json())
   .then(data => {
@@ -40,15 +41,15 @@ fetch('../data/wards.geojson')
         fillOpacity: 0
       },
       onEachFeature: (feature, layer) => {
-        const name = feature.properties.wards || feature.properties.Name_3 || "Unnamed";
-        const ndvi = feature.properties.mean_NDVI?.toFixed(2) || "N/A";
-        const lst = feature.properties.mean_LST?.toFixed(1) || "N/A";
+        const name = feature.properties.ward || feature.properties.NAME_3 || "Unnamed";
+        const ndvi = feature.properties.ndvi?.toFixed(2) || "N/A";
+        const lst = feature.properties.lst?.toFixed(1) || "N/A";
         layer.bindPopup(`<strong>${name}</strong><br>🌿 NDVI: ${ndvi}<br>🔥 LST: ${lst} °C`);
       }
     }).addTo(map);
   });
 
-// Add Firebase Community Reports
+// 🔥 Firebase Community Reports
 firebase.firestore().collection("reports").get().then(snapshot => {
   snapshot.forEach(doc => {
     const data = doc.data();
@@ -64,44 +65,29 @@ firebase.firestore().collection("reports").get().then(snapshot => {
   });
 });
 
-// 🌐 USE LOCALHOST FOR TESTING BEFORE DEPLOYMENT
-const BACKEND_URL = 'http://localhost:3000';
+// 🌐 Backend Server
+const BACKEND_URL = 'https://greenmap-backend.onrender.com';
 
-// Fetch NDVI
-fetch(`${BACKEND_URL}/ndvi`)
-  .then(res => res.json())
-  .then(data => {
-    ndviLayer = L.tileLayer(data.urlFormat, { opacity: 0.7 });
-    overlayMaps["🌿 NDVI"] = ndviLayer;
-    control.addOverlay(ndviLayer, "🌿 NDVI");
-    ndviLayer.addTo(map);
-    addOpacitySlider(ndviLayer, "NDVI");
-  })
-  .catch(err => console.error("NDVI error:", err));
+// 📦 Helper to load tile layers
+function loadTileLayer(endpoint, label, opacity) {
+  fetch(`${BACKEND_URL}/${endpoint}`)
+    .then(res => res.json())
+    .then(data => {
+      const layer = L.tileLayer(data.urlFormat, { opacity });
+      overlayMaps[label] = layer;
+      control.addOverlay(layer, label);
+      layer.addTo(map);
+      addOpacitySlider(layer, label);
+    })
+    .catch(err => {
+      console.error(`${label} error:`, err);
+    });
+}
 
-// Fetch LST
-fetch(`${BACKEND_URL}/lst`)
-  .then(res => res.json())
-  .then(data => {
-    lstLayer = L.tileLayer(data.urlFormat, { opacity: 0.6 });
-    overlayMaps["🔥 LST"] = lstLayer;
-    control.addOverlay(lstLayer, "🔥 LST");
-    lstLayer.addTo(map);
-    addOpacitySlider(lstLayer, "LST");
-  })
-  .catch(err => console.error("LST error:", err));
-
-// Fetch NDVI Mask
-fetch(`${BACKEND_URL}/ndvi-mask`)
-  .then(res => res.json())
-  .then(data => {
-    ndviMaskLayer = L.tileLayer(data.urlFormat, { opacity: 0.75 });
-    overlayMaps["✅ NDVI > 0.3"] = ndviMaskLayer;
-    control.addOverlay(ndviMaskLayer, "✅ NDVI > 0.3");
-    ndviMaskLayer.addTo(map);
-    addOpacitySlider(ndviMaskLayer, "NDVI > 0.3");
-  })
-  .catch(err => console.error("NDVI Mask error:", err));
+// 📡 Load Tile Layers
+loadTileLayer('ndvi', '🌿 NDVI', 0.7);
+loadTileLayer('lst', '🔥 LST', 0.6);
+loadTileLayer('ndvi-mask', '✅ NDVI > 0.3', 0.75);
 
 // 🧭 Add Legend
 const legend = L.control({ position: 'bottomright' });
@@ -117,7 +103,7 @@ legend.onAdd = function () {
 };
 legend.addTo(map);
 
-// 🔄 Share Button
+// 🔗 Share Button
 L.easyButton('fa-share-alt', () => {
   const center = map.getCenter();
   const zoom = map.getZoom();
@@ -126,19 +112,20 @@ L.easyButton('fa-share-alt', () => {
   alert("🔗 Map view copied:\n" + url);
 }).addTo(map);
 
-// 🌍 Restore shared map view
+// 🧭 Restore URL state
 const params = new URLSearchParams(window.location.search);
 if (params.has('lat') && params.has('lng') && params.has('zoom')) {
   map.setView([+params.get('lat'), +params.get('lng')], +params.get('zoom'));
 }
 
-// 🧪 Opacity slider for any layer
+// 🌡️ Add opacity sliders
 function addOpacitySlider(layer, label) {
   const container = document.createElement("div");
   container.className = "opacity-slider";
   container.innerHTML = `
-    <label class="block text-xs text-gray-700 dark:text-gray-300">${label} Opacity</label>
-    <input type="range" min="0" max="1" step="0.05" value="${layer.options.opacity}" />
+    <label class="block text-xs text-gray-700 dark:text-gray-300 font-medium mb-1">${label} Opacity</label>
+    <input type="range" min="0" max="1" step="0.05" value="${layer.options.opacity}"
+           class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
   `;
   const input = container.querySelector("input");
   input.oninput = () => layer.setOpacity(parseFloat(input.value));

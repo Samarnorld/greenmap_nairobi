@@ -1,12 +1,12 @@
 // js/firebase.js
 // This the firebase configuration and my keys
 const firebaseConfig = {
-  apiKey: "AIzaSyCJLQxOTyG_rFXz9hdDkrAjGgzFbKr6nFM",
-  authDomain: "greenmap-9da10.firebaseapp.com",
-  projectId: "greenmap-9da10",
-  storageBucket: "greenmap-9da10.appspot.com",
-  messagingSenderId: "623355404185",
-  appId: "1:623355404185:web:6d157e920a12fe38ecfd08"
+  apiKey: "AIzaSyCMLft42d3eSj2RMAiqP9D0Q7ng9VFJBSQ",
+  authDomain: "greenmap-2.firebaseapp.com",
+  projectId: "greenmap-2",
+  storageBucket: "greenmap-2.appspot.com", // ✅ corrected bucket name
+  messagingSenderId: "1058885185947",
+  appId: "1:1058885185947:web:dc3fe6079510b8ac09313e"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
