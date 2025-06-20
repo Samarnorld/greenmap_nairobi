@@ -70,11 +70,12 @@ firebase.firestore().collection("reports").get().then(snapshot => {
 // 🌐 Backend Server
 const BACKEND_URL = 'https://greenmap-backend.onrender.com';
 
-function loadTileLayer(endpoint, label, opacity) {
+function loadTileLayer(endpoint, label, opacity, visible = true) {
   fetch(`${BACKEND_URL}/${endpoint}`)
     .then(res => res.json())
     .then(data => {
-      const layer = L.tileLayer(data.urlFormat, { opacity }).addTo(map);
+      const layer = L.tileLayer(data.urlFormat, { opacity });
+if (visible) map.addLayer(layer); // only add if visible = true
 
       // Create UI control
       const wrapper = document.createElement('div');
@@ -83,7 +84,8 @@ function loadTileLayer(endpoint, label, opacity) {
 wrapper.innerHTML = `
   <div class="flex items-center justify-between gap-2">
     <label class="flex items-center gap-2 font-semibold text-[13px] text-gray-800 dark:text-gray-200 tracking-tight">
-      <input type="checkbox" checked class="form-checkbox toggle-layer" data-label="${label}" />
+<input type="checkbox" ${visible ? 'checked' : ''} class="form-checkbox toggle-layer" data-label="${label}" />
+
       <span>${label}</span>
     </label>
   </div>
@@ -107,10 +109,29 @@ wrapper.innerHTML = `
     .catch(err => console.error(`${label} error:`, err));
 }
 
-// 📡 Load Tile Layers
-loadTileLayer('ndvi', 'NDVI ', 0.7);
-loadTileLayer('lst', 'LST Heatmap🔥', 0.6);
-loadTileLayer('ndvi-mask', 'Healthy Zones🌱', 0.75);
+// Function to load layers with optional date
+function loadAllLayers(date = null) {
+  document.getElementById('layer-controls').innerHTML = ''; // clear old controls
+
+  const query = date ? `?date=${date}` : '';
+  loadTileLayer(`ndvi${query}`, 'NDVI ', 0.7);
+  loadTileLayer(`lst${query}`, 'LST Heatmap🔥', 0.6);
+  loadTileLayer(`ndvi-mask${query}`, 'Healthy Zones🌱', 0.75);
+ loadTileLayer(`ndvi-anomaly${query}`, 'NDVI Anomaly🧭', 0.75, false); // pass `false` to prevent auto-load
+
+}
+
+// Load current date layers initially
+loadAllLayers();
+
+// 🔁 Listen for user-selected date
+window.addEventListener('map:loadDate', (e) => {
+  const selectedDate = e.detail.date;
+  if (selectedDate) {
+    loadAllLayers(selectedDate);
+  }
+});
+
 function loadCommunityReports() {
   const layer = reportsLayer;
 
@@ -138,28 +159,36 @@ const legend = L.control({ position: 'bottomright' });
 legend.onAdd = function () {
   const div = L.DomUtil.create('div', 'bg-white/90 dark:bg-gray-800/90 text-xs p-2 rounded shadow border border-gray-200 dark:border-gray-700');
   div.innerHTML = `
-    <div class="mb-1">
-      <div class="flex items-center gap-2">
-        <div class="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 to-green-500"></div>
-        <span class="font-medium">NDVI</span>
-      </div>
-      <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Plant health (low to high)</div>
+  <div class="mb-1">
+    <div class="flex items-center gap-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 to-green-500"></div>
+      <span class="font-medium">NDVI</span>
     </div>
-    <div class="mb-1">
-      <div class="flex items-center gap-2">
-        <div class="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-red-500"></div>
-        <span class="font-medium">LST</span>
-      </div>
-      <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Surface temperature (cool to hot)</div>
+    <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Plant health (low to high)</div>
+  </div>
+  <div class="mb-1">
+    <div class="flex items-center gap-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-red-500"></div>
+      <span class="font-medium">LST</span>
     </div>
-    <div>
-      <div class="flex items-center gap-2">
-        <div class="w-3 h-3 rounded-full bg-gradient-to-r from-yellow-400 to-green-500"></div>
-        <span class="font-medium">NDVI > 0.3</span>
-      </div>
-      <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Healthy vegetation areas</div>
+    <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Surface temperature (cool to hot)</div>
+  </div>
+  <div class="mb-1">
+    <div class="flex items-center gap-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-yellow-400 to-green-500"></div>
+      <span class="font-medium">NDVI > 0.3</span>
     </div>
-  `;
+    <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Healthy vegetation areas</div>
+  </div>
+  <div>
+    <div class="flex items-center gap-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-[#d7191c] via-[#ffffbf] to-[#1a9641]"></div>
+      <span class="font-medium">NDVI Anomaly</span>
+    </div>
+    <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Change in vegetation vs past year</div>
+  </div>
+`;
+
   return div;
 };
 legend.addTo(map);

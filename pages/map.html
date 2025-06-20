@@ -32,9 +32,9 @@
     };
   </script>
 
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Leaflet EasyButton -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
@@ -154,6 +154,19 @@
         <div class="relative">
           <!-- Map container -->
           <div class="sm:px-0 px-5">
+   <!-- Date Pickers: Load NDVI/LST for selected date -->
+<div class="mb-4 flex flex-wrap sm:flex-nowrap items-center gap-3">
+  <!-- Load Single Date -->
+  <label for="date-picker" class="text-sm font-medium text-gray-700 dark:text-gray-200">
+    Select Date:
+  </label>
+  <input type="date" id="date-picker" class="border border-gray-300 rounded px-3 py-1 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600" />
+  <button id="load-date-btn" class="bg-green-600 text-white px-4 py-1.5 rounded hover:bg-green-700 text-sm transition">
+    Load Layers
+  </button>
+</div>
+
+    
   <div id="map" class="w-full min-h-[calc(100vh-4rem)] sm:h-[75vh] rounded-2xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-[0_8px_24px_rgba(0,0,0,0.1)] hover:ring hover:ring-lime-400/40 transition-all duration-500 z-0 relative"></div>
 </div>
 
@@ -299,9 +312,19 @@
     </div>
   </footer>
 
+  <script>
+  document.getElementById('load-date-btn').addEventListener('click', () => {
+    const selectedDate = document.getElementById('date-picker').value;
+    if (!selectedDate) {
+      alert('Please select a date first.');
+      return;
+    }
 
-  <!-- JS -->
-  <script src="../js/map.js"></script>
+    // Dispatch event that map.js can listen for
+    window.dispatchEvent(new CustomEvent('map:loadDate', { detail: { date: selectedDate } }));
+  });
+</script>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const menuToggle = document.getElementById('mobile-menu-toggle');
@@ -372,5 +395,7 @@ document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link =
       });
     });
   </script>
+  <!-- JS -->
+  <script src="../js/map.js"></script>
 </body>
 </html>
