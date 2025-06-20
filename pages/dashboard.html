@@ -42,13 +42,16 @@
       </button>
     </div>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden px-2 pb-4 pt-2 space-y-2 bg-[#104F1F] dark:bg-[#0f3b17] text-sm font-medium">
-    <a href="../index.html" class="block py-2 hover:text-lime-300">Home</a>
-    <a href="/pages/map.html" class="block py-2 hover:text-lime-300">Map</a>
-    <a href="/pages/dashboard.html" class="block py-2 hover:text-lime-300">Dashboard</a>
-    <a href="/pages/reports.html" class="block py-2 hover:text-lime-300">Reports</a>
-    <a href="/pages/about.html" class="block py-2 hover:text-lime-300">About</a>
+  <div id="mobile-menu" class="hidden md:hidden absolute top-16 right-4 w-48 bg-[#104F1F] dark:bg-[#0f3b17] text-sm text-white font-medium rounded-lg shadow-xl ring-1 ring-green-600 z-50">
+  <div class="flex flex-col px-4 py-3 space-y-2 text-left">
+    <a href="../index.html" class="block hover:text-lime-300 transition">Home</a>
+    <a href="/pages/dashboard.html" class="block hover:text-lime-300 transition">Dashboard</a>
+    <a href="/pages/reports.html" class="block hover:text-lime-300 transition">Reports</a>
+    <a href="/pages/about.html" class="block hover:text-lime-300 transition">About</a>
+    <button id="theme-toggle-mobile" class="w-full text-left hover:text-lime-300 transition">🌙 Theme</button>
   </div>
+</div>
+
 </header>
 
 <!-- Main Content -->
@@ -176,20 +179,55 @@
 <script src="../js/firebase.js"></script>
 <script src="../js/dashboard.js"></script>
 
-<script>
   // Theme toggle
-  const toggleBtn = document.getElementById('theme-toggle');
-  toggleBtn.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-    toggleBtn.textContent = document.documentElement.classList.contains('dark') ? '☀' : '🌙';
-  });
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuToggle = document.getElementById('mobile-menu-toggle');
 
-  // Mobile menu toggle
-  const mobileToggle = document.getElementById('mobile-menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  mobileToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
+    function toggleTheme() {
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark');
+      const icon = isDark ? '🌙' : '☀';
+      if (themeToggle) themeToggle.textContent = icon;
+      if (themeToggleMobile) themeToggleMobile.textContent = icon + ' Theme';
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+      if (themeToggle) themeToggle.textContent = '☀';
+      if (themeToggleMobile) themeToggleMobile.textContent = '☀ Theme';
+    }
+
+    themeToggle?.addEventListener('click', toggleTheme);
+    themeToggleMobile?.addEventListener('click', toggleTheme);
+
+    // Mobile Menu Toggle
+    menuToggle?.addEventListener('click', e => {
+      e.stopPropagation();
+      mobileMenu?.classList.toggle('hidden');
+    });
+
+    // Auto-close when link or theme toggle is clicked
+    document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu?.classList.add('hidden');
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && e.target !== menuToggle) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
   });
 </script>
+
 </body>
 </html>

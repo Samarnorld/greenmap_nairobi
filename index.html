@@ -61,14 +61,16 @@
       </button>
     </div>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 pt-2 space-y-2 bg-[#104F1F] dark:bg-[#0f3b17] text-sm font-medium">
-    <a href="index.html" class="block hover:text-lime-300 py-2">Home</a>
-    <a href="pages/map.html" class="block hover:text-lime-300 py-2">Map</a>
-    <a href="pages/dashboard.html" class="block hover:text-lime-300 py-2">Dashboard</a>
-    <a href="pages/reports.html" class="block hover:text-lime-300 py-2">Reports</a>
-    <a href="pages/about.html" class="block hover:text-lime-300 py-2">About</a>
-    <button id="theme-toggle-mobile" class="w-full text-left py-2 hover:text-lime-300">Toggle Theme</button>
+<div id="mobile-menu" class="hidden md:hidden absolute top-16 right-4 w-48 bg-[#104F1F] dark:bg-[#0f3b17] text-sm text-white font-medium rounded-lg shadow-xl ring-1 ring-green-600 z-50">
+  <div class="flex flex-col px-4 py-3 space-y-2 text-left">
+    <a href="../index.html" class="block hover:text-lime-300 transition">Home</a>
+    <a href="/pages/dashboard.html" class="block hover:text-lime-300 transition">Dashboard</a>
+    <a href="/pages/reports.html" class="block hover:text-lime-300 transition">Reports</a>
+    <a href="/pages/about.html" class="block hover:text-lime-300 transition">About</a>
+    <button id="theme-toggle-mobile" class="w-full text-left hover:text-lime-300 transition">🌙 Theme</button>
   </div>
+</div>
+
 </header>
 
 <!-- MAIN SECTION -->
@@ -216,34 +218,54 @@
 
 
 <script>
-  const themeToggle = document.getElementById('theme-toggle');
-  const themeToggleMobile = document.getElementById('theme-toggle-mobile');
-  const html = document.documentElement;
+  document.addEventListener('DOMContentLoaded', () => {
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-  function toggleTheme() {
-    const isDark = html.classList.contains('dark');
-    html.classList.toggle('dark');
-    const icon = isDark ? '🌙' : '☀';
-    if (themeToggle) themeToggle.textContent = icon;
-    if (themeToggleMobile) themeToggleMobile.textContent = isDark ? '☀ Light Mode' : '🌙 Dark Mode';
-    localStorage.setItem('theme', isDark ? 'light' : 'dark');
-  }
+    // 🌙 Theme Toggle Logic
+    function toggleTheme() {
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark');
+      const icon = isDark ? '🌙' : '☀';
+      if (themeToggle) themeToggle.textContent = icon;
+      if (themeToggleMobile) themeToggleMobile.textContent = icon + ' Theme';
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
 
-  if (localStorage.getItem('theme') === 'dark' ||
-    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    html.classList.add('dark');
-    if (themeToggle) themeToggle.textContent = '☀';
-    if (themeToggleMobile) themeToggleMobile.textContent = '☀ Light Mode';
-  }
+    // 🌙 Restore Saved Theme
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+      if (themeToggle) themeToggle.textContent = '☀';
+      if (themeToggleMobile) themeToggleMobile.textContent = '☀ Theme';
+    }
 
-  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
-  if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+    // 🌙 Click Listeners
+    themeToggle?.addEventListener('click', toggleTheme);
+    themeToggleMobile?.addEventListener('click', toggleTheme);
 
-  // Mobile menu toggle
-  const menuToggle = document.getElementById('mobile-menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
+    // 📱 Toggle Mobile Menu
+    menuToggle?.addEventListener('click', e => {
+      e.stopPropagation();
+      mobileMenu?.classList.toggle('hidden');
+    });
+
+    // 📱 Auto-close mobile menu on link click
+    document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu?.classList.add('hidden');
+      });
+    });
+
+    // 📱 Close if user taps outside menu
+    document.addEventListener('click', e => {
+      if (!mobileMenu.contains(e.target) && e.target !== menuToggle) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
   });
 </script>
 

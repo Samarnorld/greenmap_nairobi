@@ -5,11 +5,6 @@ const map = L.map('map', {
   zoomControl: true
 }).setView([-1.286389, 36.817223], 11);
 
-// 🧭 Toggle custom layer panel
-document.getElementById('overlay-toggle').addEventListener('click', () => {
-  document.getElementById('custom-layer-panel').classList.toggle('hidden');
-});
-
 // 🗺️ Switch base layers
 document.querySelectorAll('input[name="basemap"]').forEach(radio => {
   radio.addEventListener('change', () => {
