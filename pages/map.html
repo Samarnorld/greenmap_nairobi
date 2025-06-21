@@ -156,6 +156,16 @@
           <div class="sm:px-0 px-5">
    <!-- Date Pickers: Load NDVI/LST for selected date -->
 <div class="mb-4 flex flex-wrap sm:flex-nowrap items-center gap-3">
+  <!-- Rainfall Range Selector -->
+<label for="rain-range" class="text-sm font-medium text-gray-700 dark:text-gray-200">
+  Rainfall Range:
+</label>
+<select id="rain-range" class="border border-gray-300 rounded px-3 py-1 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600">
+  <option value="30">30 days</option>
+  <option value="60">60 days</option>
+  <option value="90" selected>90 days</option>
+</select>
+
   <!-- Load Single Date -->
   <label for="date-picker" class="text-sm font-medium text-gray-700 dark:text-gray-200">
     Select Date:
@@ -321,7 +331,14 @@
     }
 
     // Dispatch event that map.js can listen for
-    window.dispatchEvent(new CustomEvent('map:loadDate', { detail: { date: selectedDate } }));
+   const selectedRange = document.getElementById('rain-range').value;
+window.dispatchEvent(new CustomEvent('map:loadDate', {
+  detail: {
+    date: selectedDate,
+    range: selectedRange
+  }
+}));
+
   });
 </script>
 

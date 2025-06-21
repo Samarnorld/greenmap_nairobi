@@ -32,24 +32,61 @@ const satellite = L.tileLayer(
 let ndviLayer, lstLayer, ndviMaskLayer;
 const reportsLayer = L.layerGroup().addTo(map);
 
-// 📍 Add Wards
-fetch('../data/wards.geojson')
-  .then(res => res.json())
-  .then(data => {
-    L.geoJSON(data, {
-      style: {
-        color: 'gray',
-        weight: 1,
-        fillOpacity: 0
-      },
-      onEachFeature: (feature, layer) => {
-        const name = feature.properties.ward || feature.properties.NAME_3 || "Unnamed";
-        const ndvi = feature.properties.ndvi?.toFixed(2) || "N/A";
-        const lst = feature.properties.lst?.toFixed(1) || "N/A";
-        layer.bindPopup(`<strong>${name}</strong><br>🌿 NDVI: ${ndvi}<br>🔥 LST: ${lst} °C`);
-      }
-    }).addTo(map);
+// 📍 Add Wards with Live Stats from Backend
+Promise.all([
+  fetch('../data/wards.geojson').then(res => res.json()),
+  fetch('https://greenmap-backend.onrender.com/wards').then(res => res.json())
+])
+.then(([geojsonData, statsData]) => {
+  const statsByWard = {};
+  statsData.features.forEach(f => {
+    const name = f.properties.NAME_3 || f.properties.ward;
+    statsByWard[name] = f.properties;
   });
+
+  L.geoJSON(geojsonData, {
+    style: {
+      color: 'gray',
+      weight: 1,
+      fillOpacity: 0
+    },
+    onEachFeature: (feature, layer) => {
+      const name = feature.properties.NAME_3 || feature.properties.ward;
+      const props = statsByWard[name];
+
+      if (props) {
+       const ndviNow = props.ndvi ?? null;
+const ndviPast = props.ndvi_past ?? null;
+const rainNow = props.rain_mm ?? null;
+const rainPast = props.rain_past ?? null;
+
+let ndviChange = 'N/A';
+if (ndviNow && ndviPast) {
+  const change = ((ndviNow - ndviPast) / ndviPast) * 100;
+  ndviChange = `${change.toFixed(1)}%`;
+}
+
+let rainChange = 'N/A';
+if (rainNow && rainPast) {
+  const change = ((rainNow - rainPast) / rainPast) * 100;
+  rainChange = `${change.toFixed(1)}%`;
+}
+
+layer.bindPopup(`
+  <strong>🗺️ ${name}</strong><br>
+  🌿 NDVI: ${ndviNow?.toFixed(2) || "N/A"} (${ndviChange})<br>
+  🔥 LST: ${props.lst?.toFixed(1) || "N/A"} °C<br>
+  🌧️ Rainfall: ${rainNow?.toFixed(1) || "N/A"} mm (${rainChange})<br>
+  📉 Anomaly: ${props.anomaly_mm?.toFixed(1) || "N/A"} mm
+`);
+
+      } else {
+        layer.bindPopup(`<strong>${name}</strong><br>No data available.`);
+      }
+    }
+  }).addTo(map);
+})
+.catch(err => console.error('Failed to load wards or stats:', err));
 
 // 🔥 Firebase Community Reports
 firebase.firestore().collection("reports").get().then(snapshot => {
@@ -70,11 +107,18 @@ firebase.firestore().collection("reports").get().then(snapshot => {
 // 🌐 Backend Server
 const BACKEND_URL = 'https://greenmap-backend.onrender.com';
 
-function loadTileLayer(endpoint, label, opacity, visible = true) {
+function loadTileLayer(endpoint, label, opacity, visible = true, range = null) {
+
   fetch(`${BACKEND_URL}/${endpoint}`)
     .then(res => res.json())
     .then(data => {
       const layer = L.tileLayer(data.urlFormat, { opacity });
+      // 🔁 Update rainfall legend if it's the Rainfall layer
+if (label.includes('Rainfall (mm)') && typeof range !== 'undefined') {
+  const legendLine = document.querySelector('.legend-rainfall-range');
+  if (legendLine) legendLine.textContent = `Total ${range}-day rainfall`;
+}
+
 if (visible) map.addLayer(layer); // only add if visible = true
 
       // Create UI control
@@ -110,14 +154,20 @@ wrapper.innerHTML = `
 }
 
 // Function to load layers with optional date
-function loadAllLayers(date = null) {
+function loadAllLayers(date = null, range = null) {
   document.getElementById('layer-controls').innerHTML = ''; // clear old controls
 
-  const query = date ? `?date=${date}` : '';
+ const params = new URLSearchParams();
+if (date) params.append('date', date);
+if (range) params.append('range', range);
+const query = params.toString() ? `?${params.toString()}` : '';
   loadTileLayer(`ndvi${query}`, 'NDVI ', 0.7);
   loadTileLayer(`lst${query}`, 'LST Heatmap🔥', 0.6);
   loadTileLayer(`ndvi-mask${query}`, 'Healthy Zones🌱', 0.75);
  loadTileLayer(`ndvi-anomaly${query}`, 'NDVI Anomaly🧭', 0.75, false); // pass `false` to prevent auto-load
+  loadTileLayer(`rainfall${query}`, '🌧️ Rainfall (mm)', 0.6, true, range);
+
+loadTileLayer(`rainfall-anomaly${query}`, '📉 Rainfall Anomaly', 0.6);
 
 }
 
@@ -186,6 +236,22 @@ legend.onAdd = function () {
       <span class="font-medium">NDVI Anomaly</span>
     </div>
     <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Change in vegetation vs past year</div>
+      <div class="mb-1">
+    <div class="flex items-center gap-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-[#e0f3f8] via-[#74add1] to-[#313695]"></div>
+      <span class="font-medium">Rainfall (mm)</span>
+    </div>
+   <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5 legend-rainfall-range">Total 30-day rainfall</div>
+
+  </div>
+  <div class="mb-1">
+    <div class="flex items-center gap-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-[#d73027] via-[#fee08b] to-[#1a9850]"></div>
+      <span class="font-medium">Rainfall Anomaly</span>
+    </div>
+    <div class="text-[0.65rem] text-gray-600 dark:text-gray-300 ml-5">Deviation from normal (mm)</div>
+  </div>
+
   </div>
 `;
 
