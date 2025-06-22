@@ -56,7 +56,7 @@
 </header>
 
 <!-- Main Content -->
-<main class="flex-grow pt-28 px-2 sm:px-4 lg:px-8 max-w-7xl mx-auto space-y-8">
+<main class="flex-grow pt-28 px-4 sm:px-6 lg:px-10 w-full space-y-10">
 
   <!-- Top Stats -->
   <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -75,30 +75,42 @@
   </section>
 
   <!-- Priority Zones -->
-  <section>
-    <h2 class="text-lg sm:text-xl font-bold mb-3">Priority Zones</h2>
-    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-3">
-      These wards need urgent attention due to poor vegetation and high heat levels.
-    </p>
-    <ul id="priority-zones" class="space-y-2"></ul>
-  </section>
+<section class="bg-white dark:bg-gray-800 shadow rounded-xl p-4 sm:p-6">
+  <h2 class="text-lg sm:text-xl font-bold mb-3">Priority Zones</h2>
+  <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-4">
+    These wards need urgent attention due to poor vegetation and high heat levels.
+  </p>
+  <ul id="priority-zones" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3"></ul>
+</section>
+
 
   <!-- Bar Chart -->
-  <section>
-    <h2 class="text-lg sm:text-xl font-bold mb-3">Vegetation & Heat per Ward</h2>
-    <div class="flex flex-col sm:flex-row gap-2 mb-2">
-      <button id="btn-ndvi" class="px-2 py-1 text-xs sm:text-sm bg-green-600 text-white rounded">NDVI</button>
-      <button id="btn-lst" class="px-2 py-1 text-xs sm:text-sm bg-gray-200 dark:bg-gray-700 rounded">LST</button>
-    </div>
-   <div class="w-full sm:w-[600px] mx-auto">
-  <canvas id="wardChart" class="w-full h-56 sm:h-72 bg-white rounded shadow"></canvas>
-</div>
+<!-- Bar Chart -->
+<section class="bg-white dark:bg-gray-800 shadow rounded-xl px-4 sm:px-8 py-6 w-full">
+  <h2 class="text-lg sm:text-xl font-bold mb-4">Vegetation & Heat per Ward</h2>
+  <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+    Explore how each ward compares in terms of vegetation health (NDVI) or heat intensity (LST).
+  </p>
 
-    <div class="mt-3 flex flex-col sm:flex-row gap-3">
-      <button id="download-chart" class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Download Chart</button>
-      <button id="export-reports" class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-green-600 text-white rounded hover:bg-green-700">Export Reports CSV</button>
-    </div>
-  </section>
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <button id="btn-ndvi" class="px-3 py-1 text-xs sm:text-sm bg-green-600 text-white rounded">NDVI</button>
+    <button id="btn-lst" class="px-3 py-1 text-xs sm:text-sm bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded">LST</button>
+  </div>
+
+  <div class="w-full">
+    <canvas id="wardChart" class="w-full h-[300px] sm:h-[370px] bg-white dark:bg-gray-700 rounded shadow"></canvas>
+  </div>
+
+  <div class="mt-4 flex flex-col sm:flex-row gap-3">
+    <button id="download-chart" class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
+      Download Chart
+    </button>
+    <button id="export-reports" class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-green-600 text-white rounded hover:bg-green-700">
+      Export Reports CSV
+    </button>
+  </div>
+</section>
+
 
   <!-- Report Insights -->
   <section>
@@ -115,13 +127,19 @@
    <div class="w-full sm:w-[300px] mx-auto">
   <canvas id="reports-month-chart" class="w-full h-48 sm:h-56"></canvas>
 </div>
-
       </div>
     </div>
   </section>
 <!-- NDVI + Rainfall Trend -->
 <section>
-  <h2 class="text-lg sm:text-xl font-bold mb-3">NDVI & Rainfall Trends</h2>
+ <h2 class="text-lg sm:text-xl font-bold mb-3 flex items-center gap-2 relative group">
+  NDVI & Rainfall Trends
+  <span class="text-xs font-bold bg-lime-200 text-green-900 px-1.5 py-0.5 rounded cursor-help">?</span>
+  <div class="absolute left-0 top-full mt-1 w-64 text-[11px] bg-green-100 text-green-900 border border-green-300 rounded px-2 py-1 shadow-lg hidden group-hover:block z-10">
+    This chart shows how vegetation (NDVI) and rainfall have changed over time. Use the dropdown to explore specific wards.
+  </div>
+</h2>
+
   <div class="mb-4">
     <label for="ward-selector" class="block text-sm font-medium mb-1">Select Ward:</label>
     <select id="ward-selector" class="w-full max-w-xs px-3 py-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700 text-sm">
@@ -129,7 +147,8 @@
     </select>
   </div>
   <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-    <canvas id="ndviRainTrendChart" class="w-full h-[300px] sm:h-[360px]"></canvas>
+    <canvas id="ndviRainTrendChart" class="w-full h-[220px] sm:h-[250px]"></canvas>
+
   </div>
 </section>
 

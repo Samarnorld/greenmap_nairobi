@@ -138,7 +138,7 @@ function highlightPriorityZones() {
       : "N/A";
 
     const item = document.createElement("li");
-item.className = "bg-red-100 dark:bg-red-800 text-red-900 dark:text-white p-3 rounded shadow max-w-[300px]";
+item.className = "bg-red-100 dark:bg-red-800 text-red-900 dark:text-white p-2 sm:p-3 rounded-lg shadow-sm text-xs sm:text-sm leading-snug";
 
     item.innerHTML = `
       <strong>#${index + 1} ${ward.name}</strong><br />
