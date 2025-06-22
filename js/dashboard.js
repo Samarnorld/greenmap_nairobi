@@ -142,7 +142,7 @@ item.className = "bg-red-100 dark:bg-red-800 text-red-900 dark:text-white p-2 sm
 
     item.innerHTML = `
       <strong>#${index + 1} ${ward.name}</strong><br />
-      🌿 NDVI: ${ward.ndvi?.toFixed(2) || "N/A"} (${ndviChange})<br />
+      🌳 NDVI: ${ward.ndvi?.toFixed(2) || "N/A"} (${ndviChange})<br />
       🔥 LST: ${ward.lst?.toFixed(1) || "N/A"}°C<br />
       🌧️ Rainfall: ${ward.rain?.toFixed(1) || "N/A"} mm (${rainChange})<br />
       📉 Anomaly: ${ward.anomaly?.toFixed(1) || "N/A"} mm

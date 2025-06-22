@@ -134,18 +134,24 @@
 <section>
  <h2 class="text-lg sm:text-xl font-bold mb-3 flex items-center gap-2 relative group">
   NDVI & Rainfall Trends
-  <span class="text-xs font-bold bg-lime-200 text-green-900 px-1.5 py-0.5 rounded cursor-help">?</span>
-  <div class="absolute left-0 top-full mt-1 w-64 text-[11px] bg-green-100 text-green-900 border border-green-300 rounded px-2 py-1 shadow-lg hidden group-hover:block z-10">
-    This chart shows how vegetation (NDVI) and rainfall have changed over time. Use the dropdown to explore specific wards.
-  </div>
 </h2>
 
-  <div class="mb-4">
+  <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:gap-6">
+  <!-- Ward Dropdown -->
+  <div class="flex-shrink-0 w-full sm:w-auto">
     <label for="ward-selector" class="block text-sm font-medium mb-1">Select Ward:</label>
-    <select id="ward-selector" class="w-full max-w-xs px-3 py-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700 text-sm">
+    <select id="ward-selector" class="w-full sm:w-[220px] px-3 py-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700 text-sm">
       <option value="">All Nairobi</option>
     </select>
   </div>
+
+  <!-- Explanation beside dropdown -->
+  <div class="mt-2 sm:mt-5 sm:mt-0 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md px-4 py-2 text-xs text-gray-700 dark:text-gray-300 max-w-md shadow-sm">
+    <strong class="text-green-700 dark:text-green-300 font-semibold block mb-1">📊 NDVI & Rainfall:</strong>
+    This chart shows how vegetation and rainfall have changed over time. It helps monitor climate trends and green efforts in each ward.
+  </div>
+</div>
+
   <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
     <canvas id="ndviRainTrendChart" class="w-full h-[220px] sm:h-[250px]"></canvas>
 

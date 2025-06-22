@@ -193,7 +193,7 @@
           </div>
 
           <!-- Layer Panel -->
-<div id="custom-layer-panel" style="width:5.0cm; height:5.5cm;" class="hidden absolute top-16 right-3 overflow-hidden flex flex-col bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl p-3 z-[999] text-sm animate-slide-in">
+<div id="custom-layer-panel" style="width:6.0cm; height:6.5cm;" class="hidden absolute top-16 right-3 overflow-hidden flex flex-col bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl p-3 z-[999] text-sm animate-slide-in">
   <div class="flex justify-between items-center mb-3">
     <h3 class="font-bold text-gray-800 dark:text-gray-200 text-base flex items-center gap-2">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 dark:text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -247,6 +247,28 @@
     </div>
   </div>
 </div>
+<!-- 🧭 Interactive Map Tutorial Modal -->
+<div id="map-tutorial-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[2000] hidden flex items-center justify-center px-4">
+  <div class="bg-white dark:bg-gray-900 rounded-xl max-w-xl w-full p-6 shadow-xl text-sm sm:text-base relative animate-fade-in">
+    <button id="close-tutorial" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 dark:hover:text-white transition text-lg">✖</button>
+    
+    <div id="tutorial-step-content" class="space-y-4"></div>
+    
+    <div class="flex items-center justify-between mt-6 text-xs sm:text-sm font-normal text-gray-600 dark:text-gray-300">
+      <label class="flex items-center gap-2">
+        <input type="checkbox" id="dont-show-again" class="form-checkbox">
+        Don’t show this tutorial again
+      </label>
+      <div class="flex gap-2">
+        <button id="prev-step" class="bg-gray-200 dark:bg-gray-700 px-4 py-1.5 rounded disabled:opacity-50">← Back</button>
+        <button id="next-step" class="bg-green-600 text-white px-4 py-1.5 rounded hover:bg-green-700">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
   <footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <!-- Mobile Footer - Stacked -->
