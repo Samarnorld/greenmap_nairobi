@@ -3,27 +3,39 @@ let chart;
 let wardStats = [];
 async function loadWardStats() {
   try {
-    const res = await fetch("../data/ward_stats.csv");
-    const text = await res.text();
-    const rows = text.trim().split("\n").slice(1); // skip header
+    const res = await fetch("https://greenmap-backend.onrender.com/wards");
+    const json = await res.json();
 
-    wardStats = rows.map(row => {
-      const [ward, ndvi, lst] = row.split(",");
+ wardStats = json.features.map(f => {
+
+
+      const props = f.properties;
+      const name = props.NAME_3 || props.ward;
+
       return {
-        name: ward.trim(),
-        ndvi: parseFloat(ndvi),
-        lst: parseFloat(lst)
+        name,
+        ndvi: props.ndvi ?? null,
+        ndviPast: props.ndvi_past ?? null,
+        lst: props.lst ?? null,
+        rain: props.rain_mm ?? null,
+        rainPast: props.rain_past ?? null,
+        anomaly: props.anomaly_mm ?? null
       };
     });
-    const avgNDVI = (wardStats.reduce((sum, w) => sum + w.ndvi, 0) / wardStats.length).toFixed(2);
-    const hottest = wardStats.reduce((a, b) => a.lst > b.lst ? a : b);
+
+    const avgNDVI = (
+      wardStats.reduce((sum, w) => sum + (w.ndvi ?? 0), 0) / wardStats.length
+    ).toFixed(2);
+    const hottest = wardStats.reduce((a, b) => (a.lst > b.lst ? a : b));
     document.getElementById("avg-ndvi").textContent = avgNDVI;
-    document.getElementById("hottest-ward").textContent = `${hottest.name} (${hottest.lst.toFixed(1)}°C)`;
-    renderWardChart("ndvi"); // draw chart after loading
+    document.getElementById("hottest-ward").textContent = `${hottest.name} (${hottest.lst?.toFixed(1)}°C)`;
+    renderWardChart("ndvi");
   } catch (err) {
-    console.error("Failed to load ward_stats.csv:", err);
+    console.error("Failed to load ward data from backend:", err);
   }
 }
+
+
 async function loadReportsFromFirebase() {
   const reportTable = document.getElementById("report-table-body");
   reportTable.innerHTML = "";
@@ -108,22 +120,37 @@ function renderWardChart(type = "ndvi") {
 function highlightPriorityZones() {
   const container = document.getElementById("priority-zones");
   container.innerHTML = "";
+
   const sorted = [...wardStats].sort((a, b) => {
-  const aScore = a.ndvi - a.lst;
-  const bScore = b.ndvi - b.lst;
-   return aScore - bScore; 
+    const aScore = a.ndvi - a.lst;
+    const bScore = b.ndvi - b.lst;
+    return aScore - bScore;
   });
-  const topWards = sorted.slice(0, 5); 
+
+  const topWards = sorted.slice(0, 5);
   topWards.forEach((ward, index) => {
+    const ndviChange = ward.ndvi && ward.ndviPast
+      ? `${(((ward.ndvi - ward.ndviPast) / ward.ndviPast) * 100).toFixed(1)}%`
+      : "N/A";
+
+    const rainChange = ward.rain && ward.rainPast
+      ? `${(((ward.rain - ward.rainPast) / ward.rainPast) * 100).toFixed(1)}%`
+      : "N/A";
+
     const item = document.createElement("li");
-    item.className = "bg-red-100 dark:bg-red-800 text-red-900 dark:text-white p-3 rounded shadow";
+item.className = "bg-red-100 dark:bg-red-800 text-red-900 dark:text-white p-3 rounded shadow max-w-[300px]";
+
     item.innerHTML = `
       <strong>#${index + 1} ${ward.name}</strong><br />
-      NDVI: ${ward.ndvi.toFixed(2)}, LST: ${ward.lst.toFixed(1)}°C
+      🌿 NDVI: ${ward.ndvi?.toFixed(2) || "N/A"} (${ndviChange})<br />
+      🔥 LST: ${ward.lst?.toFixed(1) || "N/A"}°C<br />
+      🌧️ Rainfall: ${ward.rain?.toFixed(1) || "N/A"} mm (${rainChange})<br />
+      📉 Anomaly: ${ward.anomaly?.toFixed(1) || "N/A"} mm
     `;
     container.appendChild(item);
   });
 }
+
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("btn-ndvi").addEventListener("click", () => {
     renderWardChart("ndvi");
@@ -133,11 +160,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderWardChart("lst");
     setActive("btn-lst", "btn-ndvi");
   });
-  await loadWardStats();               
+    await loadWardStats();               
   await loadReportsFromFirebase();
   highlightPriorityZones();  
-await generateReportCharts();  // Phase 8: show analytics
+  await generateReportCharts();  // Phase 8: show analytics
   renderWardChart("ndvi");
+
+  await loadNdviRainfallTrend();
+  await populateWardDropdown();
+  document.getElementById('ward-selector').addEventListener('change', async (e) => {
+    await loadNdviRainfallTrend(e.target.value);
+  });
+
 });
 function setActive(onId, offId) {
   document.getElementById(onId).classList.add("bg-green-600", "text-white");
@@ -258,3 +292,83 @@ document.getElementById("reset-filters").addEventListener("click", () => {
   document.getElementById("filter-end").value = "";
   loadReportsFromFirebase();
 });
+let trendChart;
+
+async function loadNdviRainfallTrend(ward = null) {
+  try {
+    const url = new URL('https://greenmap-backend.onrender.com/trend');
+    if (ward) url.searchParams.append('ward', ward);
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const labels = data.map(d => d.date);
+    const ndviValues = data.map(d => d.ndvi ?? null);
+    const rainValues = data.map(d => d.rain ?? null);
+
+    const ctx = document.getElementById("ndviRainTrendChart").getContext("2d");
+    if (trendChart) trendChart.destroy();
+    trendChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: "NDVI",
+            data: ndviValues,
+            borderColor: "#22c55e",
+            backgroundColor: "#22c55e33",
+            yAxisID: 'y'
+          },
+          {
+            label: "Rainfall (mm)",
+            data: rainValues,
+            borderColor: "#3b82f6",
+            backgroundColor: "#3b82f633",
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        stacked: false,
+        plugins: {
+          legend: { position: 'bottom' }
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            title: { display: true, text: 'NDVI' },
+            min: 0,
+            max: 1
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: 'Rainfall (mm)' }
+          }
+        }
+      }
+    });
+  } catch (err) {
+    console.error("Trend chart load failed:", err);
+  }
+}
+
+async function populateWardDropdown() {
+  try {
+    const res = await fetch("https://greenmap-backend.onrender.com/wards");
+    const data = await res.json();
+
+    const select = document.getElementById("ward-selector");
+ const names = [...new Set(data.features.map(f => f.properties.NAME_3 || f.properties.ward))].sort();
+
+
+    select.innerHTML = `<option value="">All Nairobi</option>` + names.map(n => `<option>${n}</option>`).join('');
+  } catch (err) {
+    console.error("Ward list load failed:", err);
+  }
+}
