@@ -298,8 +298,30 @@ loadTileLayer(`rainfall-anomaly${query}`, '📉 Rainfall Anomaly', 0.6, false);
 
 }
 
-// Load current date layers initially
-loadAllLayers();
+// Load current date layers after short delay to prioritize UI
+const loadingMsg = document.createElement('div');
+loadingMsg.id = 'loading-map-msg';
+loadingMsg.textContent = '🌿 Loading GreenMap Layers...';
+loadingMsg.style.cssText = `
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 5px;
+  z-index: 9999;
+  font-size: 14px;
+`;
+document.getElementById('map').appendChild(loadingMsg);
+
+setTimeout(() => {
+  loadAllLayers();
+}, 800);
+document.getElementById('loading-map-msg')?.remove();
+
 
 // 🔁 Listen for user-selected date
 window.addEventListener('map:loadDate', (e) => {
