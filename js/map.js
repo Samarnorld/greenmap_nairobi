@@ -53,7 +53,7 @@ if (window.innerWidth <= 768) {
     map.keyboard.enable();
     if (map.tap) map.tap.enable();
     isInteractive = true;
-    hint.textContent = '✋ Tap again to stop interacting';
+    hint.textContent = 'Tap to stop map interaction';
   }
 
   // Initially disable map interaction
