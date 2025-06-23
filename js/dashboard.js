@@ -150,6 +150,12 @@ item.className = "bg-red-100 dark:bg-red-800 text-red-900 dark:text-white p-2 sm
     container.appendChild(item);
   });
 }
+// 🔁 Respond to ward click from map
+window.addEventListener("ward:selected", async (e) => {
+  const wardName = e.detail.name;
+  document.getElementById("ward-selector").value = wardName;
+  await loadNdviRainfallTrend(wardName);
+});
 
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("btn-ndvi").addEventListener("click", () => {
@@ -294,13 +300,23 @@ document.getElementById("reset-filters").addEventListener("click", () => {
 });
 let trendChart;
 
-async function loadNdviRainfallTrend(ward = null) {
+async function loadNdviRainfallTrend(ward = null, trendMode = "both") {
   try {
     const url = new URL('https://greenmap-backend.onrender.com/trend');
     if (ward) url.searchParams.append('ward', ward);
+    if (trendMode === "rain") url.searchParams.append('rainOnly', 'true');
 
     const res = await fetch(url);
     const data = await res.json();
+
+    console.log("Trend API response:", data); // 🔍 Inspect here
+
+    if (!Array.isArray(data)) {
+      console.error("Trend data is not an array:", data);
+      return;
+    }
+
+    // ... your chart code continues
 
     const labels = data.map(d => d.date);
     const ndviValues = data.map(d => d.ndvi ?? null);

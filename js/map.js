@@ -148,6 +148,11 @@ layer.bindPopup(`
   🌧️ Rainfall: ${rainNow?.toFixed(1) || "N/A"} mm (${rainChange})<br>
   📉 Anomaly: ${props.anomaly_mm?.toFixed(1) || "N/A"} mm
 `);
+layer.on('click', () => {
+  const event = new CustomEvent("ward:selected", { detail: { name } });
+  window.dispatchEvent(event);
+});
+
 
       } else {
         layer.bindPopup(`<strong>${name}</strong><br>No data available.`);
