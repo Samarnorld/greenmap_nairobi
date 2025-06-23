@@ -4,8 +4,9 @@
 const map = L.map('map', {
   zoomControl: true
 }).setView([-1.286389, 36.817223], 11);
-// ✅ Mobile scroll-friendly interaction toggle
+// ✅ Scroll-friendly mobile map interaction toggle
 if (window.innerWidth < 768) {
+  // Disable all interactions by default
   map.dragging.disable();
   map.touchZoom.disable();
   map.doubleClickZoom.disable();
@@ -14,15 +15,30 @@ if (window.innerWidth < 768) {
   map.keyboard.disable();
   if (map.tap) map.tap.disable();
 
+  // Create tap-to-enable hint
   const hint = document.createElement('div');
-  hint.id = 'map-hint';
-  hint.textContent = 'Tap to interact with the map';
-  hint.className =
-    'absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-xs bg-black/60 px-3 py-1 rounded-md z-[999] sm:hidden';
+  hint.id = 'map-touch-hint';
+  hint.textContent = '👆 Tap to interact with the map';
+  hint.style.cssText = `
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    z-index: 999;
+    pointer-events: auto;
+    user-select: none;
+    cursor: pointer;
+  `;
   document.getElementById('map')?.appendChild(hint);
 
-  // 🌿 First tap on the map enables interaction
-  map.once('click', function () {
+  let mapInteractive = false;
+
+  function enableMapInteraction() {
     map.dragging.enable();
     map.touchZoom.enable();
     map.doubleClickZoom.enable();
@@ -31,38 +47,34 @@ if (window.innerWidth < 768) {
     map.keyboard.enable();
     if (map.tap) map.tap.enable();
 
-    hint.textContent = 'Tap here again to exit map';
-    hint.classList.add('cursor-pointer');
-    hint.style.pointerEvents = 'auto'; // ✅ Make it clickable
+    mapInteractive = true;
+    hint.textContent = '✋ Tap here again to stop interacting';
+  }
 
-    // 🧭 Clicking the hint disables interaction again
-    hint.addEventListener('click', () => {
-      map.dragging.disable();
-      map.touchZoom.disable();
-      map.doubleClickZoom.disable();
-      map.scrollWheelZoom.disable();
-      map.boxZoom.disable();
-      map.keyboard.disable();
-      if (map.tap) map.tap.disable();
+  function disableMapInteraction() {
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    if (map.tap) map.tap.disable();
 
-      hint.textContent = 'Tap to interact with the map';
-      hint.classList.remove('cursor-pointer');
-      hint.style.pointerEvents = 'none'; // Disable again until map is tapped
+    mapInteractive = false;
+    hint.textContent = '👆 Tap to interact with the map';
+  }
 
-      map.once('click', function () {
-        map.dragging.enable();
-        map.touchZoom.enable();
-        map.doubleClickZoom.enable();
-        map.scrollWheelZoom.enable();
-        map.boxZoom.enable();
-        map.keyboard.enable();
-        if (map.tap) map.tap.enable();
+  // First tap on map activates it
+  map.on('click', () => {
+    if (!mapInteractive) enableMapInteraction();
+  });
 
-        hint.textContent = 'Tap here again to exit map';
-        hint.classList.add('cursor-pointer');
-        hint.style.pointerEvents = 'auto';
-      });
-    });
+  // Clicking the hint toggles off again
+  hint.addEventListener('click', (e) => {
+    e.stopPropagation(); // prevent map click
+    if (mapInteractive) {
+      disableMapInteraction();
+    }
   });
 }
 
