@@ -4,38 +4,51 @@
 const map = L.map('map', {
   zoomControl: true
 }).setView([-1.286389, 36.817223], 11);
-// ✅ Disable map interaction by default on mobile
-const isMobile = window.innerWidth <= 768;
+// ✅ Re-enable map interaction on first tap, show 'Tap to exit'
+map.once('click', function () {
+  map.dragging.enable();
+  map.touchZoom.enable();
+  map.doubleClickZoom.enable();
+  map.scrollWheelZoom.enable();
+  map.boxZoom.enable();
+  map.keyboard.enable();
+  if (map.tap) map.tap.enable();
 
-if (isMobile) {
-  map.dragging.disable();
-  map.touchZoom.disable();
-  map.doubleClickZoom.disable();
-  map.scrollWheelZoom.disable();
-  map.boxZoom.disable();
-  map.keyboard.disable();
-  if (map.tap) map.tap.disable();
+  const hint = document.getElementById('map-hint');
+  if (hint) hint.textContent = 'Tap here again to exit map';
+  hint.classList.add('cursor-pointer');
+  hint.classList.remove('pointer-events-none');
 
-  // 👇 Optional: show tap hint overlay
-  const hint = document.createElement('div');
-  hint.id = 'map-hint';
-  hint.className = 'absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-xs bg-black/60 px-3 py-1 rounded-md z-[999] pointer-events-none sm:hidden';
-  hint.textContent = 'Tap to interact with the map';
-  document.getElementById('map')?.appendChild(hint);
+  // ✅ Second tap disables again
+  hint.addEventListener('click', () => {
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    if (map.tap) map.tap.disable();
 
-  // ✅ Re-enable map interaction on first tap
-  map.once('click', function () {
-    map.dragging.enable();
-    map.touchZoom.enable();
-    map.doubleClickZoom.enable();
-    map.scrollWheelZoom.enable();
-    map.boxZoom.enable();
-    map.keyboard.enable();
-    if (map.tap) map.tap.enable();
+    hint.textContent = 'Tap to interact with the map';
+    hint.classList.add('pointer-events-none');
+    hint.classList.remove('cursor-pointer');
 
-    document.getElementById('map-hint')?.remove();
+    // Reset behavior to allow enabling again
+    map.once('click', function () {
+      map.dragging.enable();
+      map.touchZoom.enable();
+      map.doubleClickZoom.enable();
+      map.scrollWheelZoom.enable();
+      map.boxZoom.enable();
+      map.keyboard.enable();
+      if (map.tap) map.tap.enable();
+
+      hint.textContent = 'Tap here again to exit map';
+      hint.classList.remove('pointer-events-none');
+      hint.classList.add('cursor-pointer');
+    });
   });
-}
+});
 
 // 🗺️ Switch base layers
 document.querySelectorAll('input[name="basemap"]').forEach(radio => {
