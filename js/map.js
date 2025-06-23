@@ -4,7 +4,7 @@
 const map = L.map('map', {
   zoomControl: true
 }).setView([-1.286389, 36.817223], 11);
-// ✅ Mobile scroll-friendly: Disable map interaction by default on small screens
+// ✅ Mobile scroll-friendly interaction toggle
 if (window.innerWidth < 768) {
   map.dragging.disable();
   map.touchZoom.disable();
@@ -18,10 +18,10 @@ if (window.innerWidth < 768) {
   hint.id = 'map-hint';
   hint.textContent = 'Tap to interact with the map';
   hint.className =
-    'absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-xs bg-black/60 px-3 py-1 rounded-md z-[999] pointer-events-none sm:hidden';
+    'absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-xs bg-black/60 px-3 py-1 rounded-md z-[999] sm:hidden';
   document.getElementById('map')?.appendChild(hint);
 
-  // 🌿 First tap enables interaction, second tap disables again
+  // 🌿 First tap on the map enables interaction
   map.once('click', function () {
     map.dragging.enable();
     map.touchZoom.enable();
@@ -32,9 +32,10 @@ if (window.innerWidth < 768) {
     if (map.tap) map.tap.enable();
 
     hint.textContent = 'Tap here again to exit map';
-    hint.classList.remove('pointer-events-none');
     hint.classList.add('cursor-pointer');
+    hint.style.pointerEvents = 'auto'; // ✅ Make it clickable
 
+    // 🧭 Clicking the hint disables interaction again
     hint.addEventListener('click', () => {
       map.dragging.disable();
       map.touchZoom.disable();
@@ -45,8 +46,8 @@ if (window.innerWidth < 768) {
       if (map.tap) map.tap.disable();
 
       hint.textContent = 'Tap to interact with the map';
-      hint.classList.add('pointer-events-none');
       hint.classList.remove('cursor-pointer');
+      hint.style.pointerEvents = 'none'; // Disable again until map is tapped
 
       map.once('click', function () {
         map.dragging.enable();
@@ -58,68 +59,8 @@ if (window.innerWidth < 768) {
         if (map.tap) map.tap.enable();
 
         hint.textContent = 'Tap here again to exit map';
-        hint.classList.remove('pointer-events-none');
         hint.classList.add('cursor-pointer');
-      });
-    });
-  });
-}
-// ✅ Mobile scroll-friendly: Disable map interaction by default on small screens
-if (window.innerWidth < 768) {
-  map.dragging.disable();
-  map.touchZoom.disable();
-  map.doubleClickZoom.disable();
-  map.scrollWheelZoom.disable();
-  map.boxZoom.disable();
-  map.keyboard.disable();
-  if (map.tap) map.tap.disable();
-
-  const hint = document.createElement('div');
-  hint.id = 'map-hint';
-  hint.textContent = 'Tap to interact with the map';
-  hint.className =
-    'absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-xs bg-black/60 px-3 py-1 rounded-md z-[999] pointer-events-none sm:hidden';
-  document.getElementById('map')?.appendChild(hint);
-
-  // 🌿 First tap enables interaction, second tap disables again
-  map.once('click', function () {
-    map.dragging.enable();
-    map.touchZoom.enable();
-    map.doubleClickZoom.enable();
-    map.scrollWheelZoom.enable();
-    map.boxZoom.enable();
-    map.keyboard.enable();
-    if (map.tap) map.tap.enable();
-
-    hint.textContent = 'Tap here again to exit map';
-    hint.classList.remove('pointer-events-none');
-    hint.classList.add('cursor-pointer');
-
-    hint.addEventListener('click', () => {
-      map.dragging.disable();
-      map.touchZoom.disable();
-      map.doubleClickZoom.disable();
-      map.scrollWheelZoom.disable();
-      map.boxZoom.disable();
-      map.keyboard.disable();
-      if (map.tap) map.tap.disable();
-
-      hint.textContent = 'Tap to interact with the map';
-      hint.classList.add('pointer-events-none');
-      hint.classList.remove('cursor-pointer');
-
-      map.once('click', function () {
-        map.dragging.enable();
-        map.touchZoom.enable();
-        map.doubleClickZoom.enable();
-        map.scrollWheelZoom.enable();
-        map.boxZoom.enable();
-        map.keyboard.enable();
-        if (map.tap) map.tap.enable();
-
-        hint.textContent = 'Tap here again to exit map';
-        hint.classList.remove('pointer-events-none');
-        hint.classList.add('cursor-pointer');
+        hint.style.pointerEvents = 'auto';
       });
     });
   });
