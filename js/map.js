@@ -2,8 +2,20 @@
 
 // 🌍 Initialize Leaflet map
 const map = L.map('map', {
-  zoomControl: true
+  zoomControl: true,
+  scrollWheelZoom: window.innerWidth > 768
 }).setView([-1.286389, 36.817223], 11);
+
+// Disable double-tap zoom (optional)
+map.doubleClickZoom.disable();
+
+// On mobile, enable zoom only after a tap
+if (window.innerWidth <= 768) {
+  map.on('click', () => {
+    map.scrollWheelZoom.enable();
+  });
+}
+
 
 // 🗺️ Switch base layers
 document.querySelectorAll('input[name="basemap"]').forEach(radio => {
