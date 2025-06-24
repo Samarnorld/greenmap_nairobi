@@ -392,11 +392,16 @@ document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link =
       }
 
       const saved = localStorage.getItem('theme');
-      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        html.classList.add('dark');
-        if (themeToggle) themeToggle.textContent = '☀';
-        if (themeToggleMobile) themeToggleMobile.textContent = '☀ Light Mode';
-      }
+if (saved === 'dark') {
+  html.classList.add('dark');
+  if (themeToggle) themeToggle.textContent = '☀';
+  if (themeToggleMobile) themeToggleMobile.textContent = '☀ Theme';
+} else {
+  html.classList.remove('dark'); // Force light mode as default
+  if (themeToggle) themeToggle.textContent = '🌙';
+  if (themeToggleMobile) themeToggleMobile.textContent = '🌙 Theme';
+}
+
 
       themeToggle?.addEventListener('click', toggleTheme);
       themeToggleMobile?.addEventListener('click', toggleTheme);

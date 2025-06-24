@@ -62,12 +62,13 @@
 
   <form id="report-form" class="bg-white dark:bg-gray-800 p-6 rounded shadow-md space-y-5 max-w-2xl">
 
-    <!-- Title -->
+   <!-- Title -->
     <div>
       <label class="block font-semibold mb-1">Title</label>
       <input type="text" placeholder="e.g. Tree Cutting in Westlands"
         class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
     </div>
+
 
     <!-- Report Type -->
     <div>
@@ -76,24 +77,25 @@
         class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
         <option value="" disabled selected>-- Select Report Type --</option>
         <option value="Illegal Dumping">Illegal Dumping</option>
-        <option value="Illegal Tree Cutting">Illegal Tree Cutting</option>
-        <option value="Heat Spot">Heat Spot</option>
+        <option value="Illegal Tree Cutting">Vegetation loss/ Illegal Tree Cutting</option>
+        <option value="Extreme Urban Heat Zone">Urban Heat Spot</option>
         <option value="Restoration">Restoration</option>
-        <option value="Wildlife">Wildlife</option>
-        <option value="Blocked Drainage">Blocked Drainage</option>
+        <option value="Wildlife">Wildlife spotting</option>
+        <option value="Blocked Drainage">Environmental hazard (e.g blocked Drainage)</option>
       <option value="Other">Other</option>
+      
       </select>
     </div>
 
     <!-- Severity -->
-    <div>
-      <label class="block font-semibold mb-1">Severity</label>
-      <div class="flex gap-4 text-sm">
-        <label><input type="radio" name="severity" value="Low" class="mr-1">Low</label>
-        <label><input type="radio" name="severity" value="Medium" class="mr-1">Medium</label>
-        <label><input type="radio" name="severity" value="High" class="mr-1">High</label>
-      </div>
-    </div>
+<div>
+  <label class="block font-semibold mb-1">Severity</label>
+  <div class="flex gap-4 text-sm">
+    <label><input type="radio" name="severity" value="Minor" class="mr-1">🚶 Minor</label>
+    <label><input type="radio" name="severity" value="Moderate" class="mr-1">⚠️ Moderate</label>
+    <label><input type="radio" name="severity" value="Urgent" class="mr-1">🚨 Urgent</label>
+  </div>
+</div>
 
     <!-- Description -->
     <div>
@@ -131,6 +133,29 @@
         class="w-full text-sm border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
       <p class="text-xs text-gray-500 mt-1">Tip: Upload clear photos for faster resolution.</p>
     </div>
+<!-- Video Evidence (Optional) -->
+<div>
+  <label class="block font-semibold mb-1">Video Evidence (Optional)</label>
+  
+  <!-- Upload File -->
+  <input type="file" accept="video/*"
+    class="mb-2 w-full text-sm border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+  <p class="text-xs text-gray-500 mb-3">Upload a short video clip (MP4, MOV, etc.).</p>
+  
+  <!-- OR Paste Link -->
+  <input type="url" placeholder="Or paste YouTube or TikTok link"
+    class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+  <p class="text-xs text-gray-500 mt-1">Paste a public link to your video if hosted online.</p>
+</div>
+
+<!-- Optional Contact -->
+<div>
+  <label class="block font-semibold mb-1">Your Email or Phone (Optional)</label>
+  <input type="text"
+    placeholder="To get updates about your report"
+    class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+  <p class="text-xs text-gray-500 mt-1">We won’t share your contact info publicly.</p>
+</div>
 
     <!-- Submit -->
     <button type="submit"
@@ -202,11 +227,15 @@
     }
 
     const saved = localStorage.getItem('theme');
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      html.classList.add('dark');
-      if (themeToggle) themeToggle.textContent = '☀️';
-      if (themeToggleMobile) themeToggleMobile.textContent = '☀️ Theme';
-    }
+if (saved === 'dark') {
+  html.classList.add('dark');
+  if (themeToggle) themeToggle.textContent = '☀';
+  if (themeToggleMobile) themeToggleMobile.textContent = '☀ Theme';
+} else {
+  html.classList.remove('dark'); // Force light mode as default
+  if (themeToggle) themeToggle.textContent = '🌙';
+  if (themeToggleMobile) themeToggleMobile.textContent = '🌙 Theme';
+}
 
     themeToggle?.addEventListener('click', toggleTheme);
     themeToggleMobile?.addEventListener('click', toggleTheme);
