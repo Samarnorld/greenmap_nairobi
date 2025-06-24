@@ -35,6 +35,24 @@
       }
     }
   </script>
+  <style>
+  @media (max-width: 767px) {
+    .mobile-cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem; /* 20px */
+    }
+
+    .mobile-cards-grid > div {
+      width: 100%;
+    }
+
+    .mobile-cards-grid .col-span-2 {
+      width: 100%;
+    }
+  }
+</style>
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" />
   <link rel="stylesheet" href="assets/style.css" />
 </head>
@@ -97,7 +115,8 @@
           </a>
         </div>
       </div>
-<div class="md:w-1/2 grid grid-cols-2 gap-3 sm:gap-5 md:gap-6 animate-fade-in" style="animation-delay: 0.7s;">
+<div class="md:w-1/2 grid grid-cols-2 gap-3 sm:gap-5 md:gap-6 animate-fade-in mobile-cards-grid" style="animation-delay: 0.7s;">
+
 
   <!-- 🌳 Green Coverage -->
 <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 text-green-200">
