@@ -121,33 +121,35 @@
 
  <!-- 🔥 Heat Alert Zones -->
 <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-red-300 text-sm sm:text-base">
-  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+  <div class="grid grid-cols-[auto,1fr] items-start gap-2 mb-1">
     <span class="text-lg">🔥</span>
-    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
-      Heat alert zones
-      <button onclick="toggleExplanation('info-heat')" class="hover:underline text-red-300">ℹ️</button>
-    </p>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
+      <p class="text-xs text-gray-300 uppercase tracking-wide flex gap-1 leading-snug sm:leading-none">
+        <span class="block sm:inline">Heat alert<br class="block sm:hidden">zones</span>
+        <button onclick="toggleExplanation('info-heat')" class="hover:underline text-red-300 sm:ml-2">ℹ️</button>
+      </p>
+    </div>
   </div>
   <div class="pl-[2.15rem]">
     <h3 class="text-2xl font-bold mt-0 text-left">
       <span id="heat-zones" class="block w-fit"></span>
     </h3>
     <div id="info-heat" class="hidden text-xs mt-1 text-red-100 bg-red-900/20 p-2 rounded-md">
-      Number of areas where surface temperatures exceed 30°C – may feel hotter and need climate cooling efforts.
+      Number of areas where surface temperatures exceed 30°C - may feel hotter and need climate cooling efforts.
     </div>
   </div>
 </div>
 
-
-
-  <!-- 🌧️ Rainfall Anomaly -->
+<!-- 🌧️ Rainfall Anomaly -->
 <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-blue-300 text-sm sm:text-base">
-  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+  <div class="grid grid-cols-[auto,1fr] items-start gap-2 mb-1">
     <span class="text-lg">🌧️</span>
-    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
-      Rainfall anomaly
-      <button onclick="toggleExplanation('info-anomaly')" class="hover:underline text-blue-300">ℹ️</button>
-    </p>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
+      <p class="text-xs text-gray-300 uppercase tracking-wide flex gap-1 leading-snug sm:leading-none">
+        <span class="block sm:inline">Rainfall<br class="block sm:hidden">anomaly</span>
+        <button onclick="toggleExplanation('info-anomaly')" class="hover:underline text-blue-300 sm:ml-2">ℹ️</button>
+      </p>
+    </div>
   </div>
   <div class="pl-[2.15rem]">
     <h3 class="text-2xl font-bold mt-0 text-left">
@@ -158,6 +160,7 @@
     </div>
   </div>
 </div>
+
 
 
 
