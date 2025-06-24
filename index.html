@@ -119,43 +119,45 @@
     </div>
   </div>
 
-  <!-- 🔥 Heat Alert Zones -->
-  <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-red-300 text-sm sm:text-base">
-    <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
-      <span class="text-lg">🔥</span>
-      <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
-        Heat Alert Zones
-        <button onclick="toggleExplanation('info-heat')" class="hover:underline text-red-300">ℹ️</button>
-      </p>
-    </div>
-    <div class="pl-[2.15rem]">
-      <h3 class="text-2xl font-bold mt-0 text-left">
-        <span id="heat-zones" class="block w-fit"></span>
-      </h3>
-      <div id="info-heat" class="hidden text-xs mt-1 text-red-100 bg-red-900/20 p-2 rounded-md">
-        Number of areas where surface temperatures exceed 30°C - may feel hotter and need climate cooling efforts.
-      </div>
+ <!-- 🔥 Heat Alert Zones -->
+<div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-red-300 text-sm sm:text-base">
+  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+    <span class="text-lg">🔥</span>
+    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
+      Heat Alert Zones
+      <button onclick="toggleExplanation('info-heat')" class="hover:underline text-red-300">ℹ️</button>
+    </p>
+  </div>
+  <div class="pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="heat-zones" class="block w-fit"></span>
+    </h3>
+    <div id="info-heat" class="hidden text-xs mt-1 text-red-100 bg-red-900/20 p-2 rounded-md">
+      Number of areas where surface temperatures exceed 30°C - may feel hotter and need climate cooling efforts.
     </div>
   </div>
+</div>
+
 
   <!-- 🌧️ Rainfall Anomaly -->
-  <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-blue-300 text-sm sm:text-base">
-    <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
-      <span class="text-lg">🌧️</span>
-      <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
-        Rainfall Anomaly
-        <button onclick="toggleExplanation('info-anomaly')" class="hover:underline text-blue-300">ℹ️</button>
-      </p>
-    </div>
-    <div class="pl-[2.15rem]">
-      <h3 class="text-2xl font-bold mt-0 text-left">
-        <span id="veg-anomaly" class="block w-fit"></span>
-      </h3>
-      <div id="info-anomaly" class="hidden text-xs mt-1 text-blue-100 bg-blue-900/20 p-2 rounded-md">
-        Compares this month's rainfall to the usual level in Nairobi. Big differences (±20mm or more) could signal drought or shifting patterns.
-      </div>
+<div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-blue-300 text-sm sm:text-base">
+  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+    <span class="text-lg">🌧️</span>
+    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
+      Rainfall Anomaly
+      <button onclick="toggleExplanation('info-anomaly')" class="hover:underline text-blue-300">ℹ️</button>
+    </p>
+  </div>
+  <div class="pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="veg-anomaly" class="block w-fit"></span>
+    </h3>
+    <div id="info-anomaly" class="hidden text-xs mt-1 text-blue-100 bg-blue-900/20 p-2 rounded-md">
+      Compares this month's rainfall to the usual level in Nairobi. Big differences (±20mm or more) could signal drought or shifting patterns.
     </div>
   </div>
+</div>
+
 
   <!-- 📈 Greening Trend -->
   <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-emerald-200 text-sm sm:text-base">
