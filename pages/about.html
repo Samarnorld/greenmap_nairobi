@@ -8,41 +8,54 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     darkMode: 'class',
     theme: {
       extend: {
         animation: {
-          'fade-in': 'fadeIn 1s ease-in-out',
-          'drop-bounce': 'dropBounce 1.2s ease-out forwards',
-          'zoom-fade': 'zoomFade 1.4s ease-in-out'
+          'zoom-fade': 'zoomFade 1.8s ease-in-out forwards',
+          'drop-bounce': 'dropBounce 1.4s ease-out forwards',
         },
         keyframes: {
-          fadeIn: {
-            '0%': { opacity: '0' },
-            '100%': { opacity: '1' }
+          zoomFade: {
+            '0%': {
+              opacity: '0',
+              transform: 'scale(0.85)',
+            },
+            '100%': {
+              opacity: '1',
+              transform: 'scale(1)',
+            },
           },
           dropBounce: {
-            '0%': { opacity: '0', transform: 'translateY(-200px)', boxShadow: '0 0 0 rgba(0,0,0,0)' },
-            '60%': { opacity: '1', transform: 'translateY(20px)', boxShadow: '0 20px 30px rgba(0,0,0,0.2)' },
-            '80%': { transform: 'translateY(-5px)', boxShadow: '0 10px 20px rgba(0,0,0,0.15)' },
-            '100%': { transform: 'translateY(0)', boxShadow: '0 0 0 rgba(0,0,0,0)' }
+            '0%': {
+              opacity: '0',
+              transform: 'translateY(-200px)',
+              boxShadow: '0 0 0 rgba(0,0,0,0)',
+            },
+            '60%': {
+              opacity: '1',
+              transform: 'translateY(20px)',
+              boxShadow: '0 25px 40px rgba(0,0,0,0.15)',
+            },
+            '80%': {
+              transform: 'translateY(-6px)',
+              boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+            },
+            '100%': {
+              transform: 'translateY(0)',
+              boxShadow: '0 0 0 rgba(0,0,0,0)',
+            },
           },
-          zoomFade: {
-            '0%': { opacity: '0', transform: 'scale(0.85)' },
-            '100%': { opacity: '1', transform: 'scale(1)' }
-          }
         },
         screens: {
-          'xs': '475px'
-        }
-      }
-    }
-  }
+          'xs': '475px',
+        },
+      },
+    },
+  };
 </script>
-
 
 
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
@@ -92,14 +105,19 @@
   <!-- Main -->
   <main class="flex-grow bg-gray-50 dark:bg-gray-900 pt-28 md:pt-24 pb-12">
     <section class="max-w-5xl mx-auto px-4 sm:px-6">
-  <div class="bg-gradient-to-br from-emerald-100 via-white to-lime-100 dark:from-gray-800 dark:via-gray-900 dark:to-emerald-900 rounded-xl p-8 sm:p-10 text-center mb-12 sm:mb-16 shadow-[0_4px_30px_rgba(0,128,0,0.15)] animate-zoom-fade">
-    <h1 class="text-3xl xs:text-4xl sm:text-5xl font-bold text-green-700 dark:text-green-400 mb-4 sm:mb-6">About GreenMap</h1>
-    <div class="max-w-3xl mx-auto">
-      <p class="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-        GreenMap is an environmental intelligence platform aimed at equipping communities, policymakers, and researchers with actionable knowledge regarding Nairobi's ecological health.
-      </p>
-    </div>
+  <!-- About Intro with Smooth Zoom-Fade Animation -->
+<div class="bg-gradient-to-br from-green-200 via-slate-50 to-emerald-100 dark:from-[#0c2e14] dark:via-gray-900 dark:to-[#104f1f] rounded-xl p-8 sm:p-10 text-center mb-12 sm:mb-16 shadow-[0_4px_30px_rgba(0,128,0,0.15)] animate-zoom-fade will-change-transform">
+
+  <h1 class="text-3xl xs:text-4xl sm:text-5xl font-bold text-green-700 dark:text-green-400 mb-4 sm:mb-6">
+    About GreenMap
+  </h1>
+  <div class="max-w-3xl mx-auto">
+    <p class="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+      GreenMap is an environmental intelligence platform aimed at equipping communities, policymakers, and researchers with actionable knowledge regarding Nairobi's ecological health.
+    </p>
   </div>
+</div>
+
 
       <!-- Mission & Vision Row -->
 <div class="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
