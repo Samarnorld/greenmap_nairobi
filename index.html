@@ -97,40 +97,105 @@
           </a>
         </div>
       </div>
+<div class="md:w-1/2 grid grid-cols-2 gap-3 sm:gap-5 md:gap-6 animate-fade-in" style="animation-delay: 0.7s;">
 
-      <!-- Feature Boxes -->
-      <div class="md:w-1/2 grid grid-cols-2 gap-3 sm:gap-5 md:gap-6 animate-fade-in" style="animation-delay: 0.7s;">
-        <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 transition-all hover:border-lime-300/30 hover:shadow-2xl">
-          <div class="bg-green-500/20 w-10 h-10 rounded-lg flex items-center justify-center mb-3">
-            <span class="text-xl">🌳</span>
-          </div>
-          <h3 class="text-lime-200 text-lg sm:text-xl font-semibold mb-2">NDVI Insights</h3>
-          <p class="text-gray-100 text-sm sm:text-base leading-relaxed">Track vegetation health with Normalized Difference Vegetation Index across all wards.</p>
-        </div>
-        <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 transition-all hover:border-lime-300/30 hover:shadow-2xl">
-          <div class="bg-orange-500/20 w-10 h-10 rounded-lg flex items-center justify-center mb-3">
-            <span class="text-xl">🔥</span>
-          </div>
-          <h3 class="text-lime-200 text-lg sm:text-xl font-semibold mb-2">Urban Heat</h3>
-          <p class="text-gray-100 text-sm sm:text-base leading-relaxed">Monitor Land Surface Temperature patterns to identify heat islands.</p>
-        </div>
-        <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 transition-all hover:border-lime-300/30 hover:shadow-2xl">
-          <div class="bg-blue-500/20 w-10 h-10 rounded-lg flex items-center justify-center mb-3">
-            <span class="text-xl">📍</span>
-          </div>
-          <h3 class="text-lime-200 text-lg sm:text-xl font-semibold mb-2">Citizen Reports</h3>
-          <p class="text-gray-100 text-sm sm:text-base leading-relaxed">Contribute environmental observations to our crowdsourced database.</p>
-        </div>
-        <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 transition-all hover:border-lime-300/30 hover:shadow-2xl">
-          <div class="bg-purple-500/20 w-10 h-10 rounded-lg flex items-center justify-center mb-3">
-            <span class="text-xl">🌍</span>
-          </div>
-          <h3 class="text-lime-200 text-lg sm:text-xl font-semibold mb-2">SDG Alignment</h3>
-          <p class="text-gray-100 text-sm sm:text-base leading-relaxed">Supporting Sustainable Cities, Climate Action & Life on Land.</p>
-        </div>
-      </div>
+  <!-- 🌳 Green Coverage -->
+<div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 text-green-200">
+  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+    <span class="text-lg">🌳</span>
+    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
+      Green Coverage
+      <button onclick="toggleExplanation('info-green')" class="hover:underline text-green-300">ℹ️</button>
+    </p>
+  </div>
+  <div class="pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="green-coverage" class="block w-fit"></span>
+    </h3>
+    <div id="info-green" class="hidden text-xs mt-1 text-green-100 bg-green-900/20 p-2 rounded-md">
+      Higher % means more green vegetation in your area - bringing cooler air, shade, and greener neighborhoods. Below 30% means the area may be drying or less green.
+
     </div>
-    
+  </div>
+</div>
+
+<!-- 🔥 Heat Alert Zones -->
+<div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 text-red-300">
+  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+    <span class="text-lg">🔥</span>
+    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
+      Heat Alert Zones
+      <button onclick="toggleExplanation('info-heat')" class="hover:underline text-red-300">ℹ️</button>
+    </p>
+  </div>
+  <div class="pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="heat-zones" class="block w-fit"></span>
+    </h3>
+    <div id="info-heat" class="hidden text-xs mt-1 text-red-100 bg-red-900/20 p-2 rounded-md">
+      Number of areas where surface temperatures exceed 30°C - may feel hotter and need climate cooling efforts.
+    </div>
+  </div>
+</div>
+
+<!-- 🌧️ Rainfall Anomaly -->
+<div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 text-blue-300">
+  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+    <span class="text-lg">🌧️</span>
+    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
+      Rainfall Anomaly
+      <button onclick="toggleExplanation('info-anomaly')" class="hover:underline text-blue-300">ℹ️</button>
+    </p>
+  </div>
+  <div class="pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="veg-anomaly" class="block w-fit"></span>
+    </h3>
+    <div id="info-anomaly" class="hidden text-xs mt-1 text-blue-100 bg-blue-900/20 p-2 rounded-md">
+      Compares this month's rainfall to the usual level in Nairobi. Big differences (±20mm or more) could signal drought or shifting patterns.
+    </div>
+  </div>
+</div>
+
+<!-- 📈 Greening Trend -->
+<div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 text-emerald-200">
+  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+    <span class="text-lg">📈</span>
+    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
+      Greening Trend
+      <button onclick="toggleExplanation('info-trend')" class="hover:underline text-emerald-200">ℹ️</button>
+    </p>
+  </div>
+  <div class="pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="veg-trend" class="block w-fit"></span>
+    </h3>
+    <div id="info-trend" class="hidden text-xs mt-1 text-emerald-100 bg-emerald-900/20 p-2 rounded-md">
+      A positive % means vegetation is growing. A negative one signals drying areas or possible tree loss.
+    </div>
+  </div>
+</div>
+
+<!-- 📉 Rainfall Deficit Zones (Full Width) -->
+<div class="col-span-2 bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 sm:p-6 shadow-xl border border-white/10 text-indigo-200">
+  <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
+    <span class="text-lg">📉</span>
+    <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
+      Rainfall Deficit Zones
+      <button onclick="toggleExplanation('info-deficit')" class="hover:underline text-indigo-200">ℹ️</button>
+    </p>
+  </div>
+  <div class="pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="rain-deficit" class="block w-fit"></span>
+    </h3>
+    <div id="info-deficit" class="hidden text-xs mt-1 text-indigo-100 bg-indigo-900/20 p-2 rounded-md">
+      Number of wards with below-normal rainfall than Nairobi's average for this time of year . May impact water availability and stress vegetation or crops.
+    </div>
+  </div>
+</div>
+
+
     <!-- Scrolling indicator -->
     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
       <svg class="w-6 h-6 text-lime-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,57 +227,6 @@
     </div>
   </div>
 </section>
-
- <section id="quick-stats" class="max-w-6xl mx-auto px-4 sm:px-6 py-8 animate-fade-in">
-  <div class="flex flex-wrap justify-between items-center gap-4 sm:gap-6 text-center">
-    <!-- Green Coverage -->
-    <div class="flex-1 min-w-[140px] bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-green-700 dark:text-green-300 border-t-4 border-green-500">
-      <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Green Coverage</p>
- <h3 id="green-coverage" class="text-2xl font-bold mt-1">
-  <div class="w-16 h-6 rounded-md bg-gray-300 dark:bg-gray-700 animate-pulse mx-auto"></div>
-</h3>
-
-
-    </div>
-
-    <!-- Heat Alert Zones -->
-    <div class="flex-1 min-w-[140px] bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-red-600 dark:text-red-300 border-t-4 border-red-500">
-      <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Heat Alert Zones</p>
-   <h3 id="heat-zones" class="text-2xl font-bold mt-1">
-  <div class="w-10 h-6 rounded-md bg-gray-300 dark:bg-gray-700 animate-pulse mx-auto"></div>
-</h3>
-
-    </div>
-
-    <!-- Vegetation Anomaly -->
-    <div class="flex-1 min-w-[140px] bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-blue-700 dark:text-blue-300 border-t-4 border-blue-500">
-     <p class="text-sm text-gray-500 dark:text-gray-400 uppercase">Rainfall Anomaly</p>
-    <h3 id="veg-anomaly" class="text-2xl font-bold mt-1">
-  <div class="w-20 h-6 rounded-md bg-gray-300 dark:bg-gray-700 animate-pulse mx-auto"></div>
-</h3>
-
-    </div>
-
-    <!-- Greening Trend -->
-    <div class="flex-1 min-w-[140px] bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-emerald-700 dark:text-emerald-300 border-t-4 border-emerald-500">
-      <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Greening Trend</p>
-    <h3 id="veg-trend" class="text-2xl font-bold mt-1">
-  <div class="w-16 h-6 rounded-md bg-gray-300 dark:bg-gray-700 animate-pulse mx-auto"></div>
-</h3>
-
-    </div>
-
-    <!-- Rainfall Deficit Zones -->
-    <div class="flex-1 min-w-[140px] bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-indigo-700 dark:text-indigo-300 border-t-4 border-indigo-500">
-      <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Rainfall Deficit Zones</p>
-  <h3 id="rain-deficit" class="text-2xl font-bold mt-1">
-  <div class="w-10 h-6 rounded-md bg-gray-300 dark:bg-gray-700 animate-pulse mx-auto"></div>
-</h3>
-
-    </div>
-  </div>
-</section>
-
 
 
 </main>
@@ -355,6 +369,12 @@
 
 
 <script src="js/home-stats-live.js"></script>
+<script>
+  function toggleExplanation(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle("hidden");
+  }
+</script>
 
 </body>
 </html>
