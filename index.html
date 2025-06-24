@@ -294,6 +294,7 @@
   </footer>
 
 
+<!-- ✅ Theme Toggle & Mobile Menu -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const html = document.documentElement;
@@ -302,42 +303,43 @@
     const menuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    // 🌙 Theme Toggle Logic
-    function toggleTheme() {
-      const isDark = html.classList.contains('dark');
-      html.classList.toggle('dark');
-      const icon = isDark ? '🌙' : '☀';
-      if (themeToggle) themeToggle.textContent = icon;
-      if (themeToggleMobile) themeToggleMobile.textContent = icon + ' Theme';
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    }
-
-    // 🌙 Restore Saved Theme
+    // ✅ Theme Setup: default to light, use saved preference if exists
     const saved = localStorage.getItem('theme');
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (saved === 'dark') {
       html.classList.add('dark');
       if (themeToggle) themeToggle.textContent = '☀';
       if (themeToggleMobile) themeToggleMobile.textContent = '☀ Theme';
+    } else {
+      html.classList.remove('dark');
+      if (themeToggle) themeToggle.textContent = '🌙';
+      if (themeToggleMobile) themeToggleMobile.textContent = '🌙 Theme';
     }
 
-    // 🌙 Click Listeners
+    // ✅ Toggle theme on button click
+    function toggleTheme() {
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark');
+      const newTheme = isDark ? 'light' : 'dark';
+      localStorage.setItem('theme', newTheme);
+      if (themeToggle) themeToggle.textContent = newTheme === 'dark' ? '☀' : '🌙';
+      if (themeToggleMobile) themeToggleMobile.textContent = newTheme === 'dark' ? '☀ Theme' : '🌙 Theme';
+    }
+
     themeToggle?.addEventListener('click', toggleTheme);
     themeToggleMobile?.addEventListener('click', toggleTheme);
 
-    // 📱 Toggle Mobile Menu
+    // 📱 Mobile menu logic
     menuToggle?.addEventListener('click', e => {
       e.stopPropagation();
       mobileMenu?.classList.toggle('hidden');
     });
 
-    // 📱 Auto-close mobile menu on link click
     document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu?.classList.add('hidden');
       });
     });
 
-    // 📱 Close if user taps outside menu
     document.addEventListener('click', e => {
       if (!mobileMenu.contains(e.target) && e.target !== menuToggle) {
         mobileMenu.classList.add('hidden');
@@ -345,6 +347,7 @@
     });
   });
 </script>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script> 
