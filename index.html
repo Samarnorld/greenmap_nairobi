@@ -119,15 +119,15 @@
     </div>
   </div>
 
- <!-- 🔥 Heat Alert Zones -->
+<!-- 🔥 Heat Alert Zones -->
 <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-red-300 text-sm sm:text-base">
-  <div class="grid grid-cols-[auto,1fr] items-start gap-2 mb-1">
+  <div class="flex items-center gap-2 mb-1">
     <span class="text-lg">🔥</span>
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
-      <p class="text-xs text-gray-300 uppercase tracking-wide flex gap-1 leading-snug sm:leading-none">
+    <div class="flex-1 flex justify-between items-center translate-y-[1px] sm:translate-y-0">
+      <p class="text-xs text-gray-300 uppercase tracking-wide leading-snug sm:leading-none">
         <span class="block sm:inline">Heat alert<br class="block sm:hidden">zones</span>
-        <button onclick="toggleExplanation('info-heat')" class="hover:underline text-red-300 sm:ml-2">ℹ️</button>
       </p>
+      <button onclick="toggleExplanation('info-heat')" class="hover:underline text-red-300 ml-2">ℹ️</button>
     </div>
   </div>
   <div class="pl-[2.15rem]">
