@@ -5,28 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About - GreenMap</title>
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
   tailwind.config = {
     darkMode: 'class',
     theme: {
       extend: {
         animation: {
           'fade-in': 'fadeIn 1s ease-in-out',
+          'drop-bounce': 'dropBounce 1.2s ease-out forwards',
+          'zoom-fade': 'zoomFade 1.4s ease-in-out'
         },
         keyframes: {
           fadeIn: {
             '0%': { opacity: '0' },
-            '100%': { opacity: '1' },
+            '100%': { opacity: '1' }
+          },
+          dropBounce: {
+            '0%': { opacity: '0', transform: 'translateY(-200px)', boxShadow: '0 0 0 rgba(0,0,0,0)' },
+            '60%': { opacity: '1', transform: 'translateY(20px)', boxShadow: '0 20px 30px rgba(0,0,0,0.2)' },
+            '80%': { transform: 'translateY(-5px)', boxShadow: '0 10px 20px rgba(0,0,0,0.15)' },
+            '100%': { transform: 'translateY(0)', boxShadow: '0 0 0 rgba(0,0,0,0)' }
+          },
+          zoomFade: {
+            '0%': { opacity: '0', transform: 'scale(0.85)' },
+            '100%': { opacity: '1', transform: 'scale(1)' }
           }
         },
         screens: {
-          'xs': '475px',
-        },
+          'xs': '475px'
+        }
       }
     }
   }
-  </script>
+</script>
+
+
+
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -72,74 +92,92 @@
   <!-- Main -->
   <main class="flex-grow bg-gray-50 dark:bg-gray-900 pt-28 md:pt-24 pb-12">
     <section class="max-w-5xl mx-auto px-4 sm:px-6">
-      <div class="text-center mb-12 sm:mb-16 animate-fade-in">
-        <h1 class="text-3xl xs:text-4xl sm:text-5xl font-bold text-green-700 dark:text-green-500 mb-4 sm:mb-6">About GreenMap</h1>
-        <div class="max-w-3xl mx-auto">
-          <p class="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-            GreenMap is an environmental intelligence platform aimed at equipping communities, policymakers, and researchers with actionable knowledge regarding Nairobi's ecological health.
-          </p>
-        </div>
-      </div>
+  <div class="bg-gradient-to-br from-emerald-100 via-white to-lime-100 dark:from-gray-800 dark:via-gray-900 dark:to-emerald-900 rounded-xl p-8 sm:p-10 text-center mb-12 sm:mb-16 shadow-[0_4px_30px_rgba(0,128,0,0.15)] animate-zoom-fade">
+    <h1 class="text-3xl xs:text-4xl sm:text-5xl font-bold text-green-700 dark:text-green-400 mb-4 sm:mb-6">About GreenMap</h1>
+    <div class="max-w-3xl mx-auto">
+      <p class="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+        GreenMap is an environmental intelligence platform aimed at equipping communities, policymakers, and researchers with actionable knowledge regarding Nairobi's ecological health.
+      </p>
+    </div>
+  </div>
 
       <!-- Mission & Vision Row -->
-      <div class="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
-        <!-- Mission -->
-        <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600">
-          <div class="flex items-center mb-4">
-            <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Mission</h2>
-          </div>
-          <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
-            To drive data-driven environmental action by democratizing access to vegetation and urban heat data in Nairobi. GreenMap aims to bridge the gap between science and society.
-          </p>
-        </div>
+<div class="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
+  <!-- Mission -->
+ <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600 animate-drop-bounce delay-100">
 
-        <!-- Vision -->
-        <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600">
-          <div class="flex items-center mb-4">
-            <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Vision</h2>
-          </div>
-          <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
-            Building a greener, cooler, and more resilient Nairobi - powered by data and community action aiming to inspire climate-smart cities across Africa and beyond.
-          </p>
-        </div>
-      </div>
+    <div class="flex items-center mb-4">
+      <lottie-player 
+        src="https://assets2.lottiefiles.com/packages/lf20_u4yrau.json"
+        background="transparent" 
+        speed="1" 
+        loop 
+        autoplay 
+        style="width: 40px; height: 40px; filter: drop-shadow(0 0 4px rgba(0, 255, 0, 0.6));">
+      </lottie-player>
+      <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Mission</h2>
+    </div>
+    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+      To empower communities and decision-makers with actionable environmental insights by democratizing access to vegetation, urban heat, and citizen-reported data - transforming science into community-driven solutions.
+    </p>
+  </div>
 
-      <!-- Solutions -->
-      <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg mb-8 sm:mb-12">
-        <div class="flex items-center mb-4 sm:mb-6">
-          <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Solutions</h2>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
-          <div class="flex items-start">
-            <div class="flex-shrink-0 mt-1">
-              <div class="h-5 w-5 text-green-600 dark:text-green-400">✓</div>
-            </div>
-            <p class="ml-3 text-gray-700 dark:text-gray-300">Interactive NDVI and LST maps showing vegetation health and urban heat zones</p>
-          </div>
-          <div class="flex items-start">
-            <div class="flex-shrink-0 mt-1">
-              <div class="h-5 w-5 text-green-600 dark:text-green-400">✓</div>
-            </div>
-            <p class="ml-3 text-gray-700 dark:text-gray-300">Citizen-powered reporting system for environmental hazards</p>
-          </div>
-          <div class="flex items-start">
-            <div class="flex-shrink-0 mt-1">
-              <div class="h-5 w-5 text-green-600 dark:text-green-400">✓</div>
-            </div>
-            <p class="ml-3 text-gray-700 dark:text-gray-300">Wards-based analysis to support local government decision-making</p>
-          </div>
-          <div class="flex items-start">
-            <div class="flex-shrink-0 mt-1">
-              <div class="h-5 w-5 text-green-600 dark:text-green-400">✓</div>
-            </div>
-            <p class="ml-3 text-gray-700 dark:text-gray-300">Open GeoJSON and PNG data layers for researchers</p>
-          </div>
-        </div>
-      </div>
+  <!-- Vision -->
+  <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600 animate-drop-bounce delay-200">
+
+    <div class="flex items-center mb-4">
+      <span class="text-2xl">🔭</span>
+      <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Vision</h2>
+    </div>
+    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+      Building a greener, cooler, and more resilient Nairobi - powered by data and community action aiming to inspire climate-smart cities across Africa and beyond.
+    </p>
+  </div>
+</div>
+
+
+<!-- Our Solutions -->
+<div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg mb-8 sm:mb-12 animate-drop-bounce delay-300">
+
+  <div class="flex items-center mb-4 sm:mb-6">
+    <span class="text-2xl sm:text-3xl">🛠️</span>
+    <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Solutions</h2>
+  </div>
+  <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
+    <div class="flex items-start">
+      <div class="flex-shrink-0 mt-1 text-green-600 dark:text-green-400">✓</div>
+      <p class="ml-3 text-gray-700 dark:text-gray-300">Live NDVI and LST maps from Earth Engine, visualizing vegetation health and urban heat</p>
+    </div>
+    <div class="flex items-start">
+      <div class="flex-shrink-0 mt-1 text-green-600 dark:text-green-400">✓</div>
+      <p class="ml-3 text-gray-700 dark:text-gray-300">Citizen-powered reporting system to track environmental hazards like dumping, flooding, and tree loss</p>
+    </div>
+    <div class="flex items-start">
+      <div class="flex-shrink-0 mt-1 text-green-600 dark:text-green-400">✓</div>
+      <p class="ml-3 text-gray-700 dark:text-gray-300">Ward-level environmental insights for localized decision-making and climate action</p>
+    </div>
+    <div class="flex items-start">
+      <div class="flex-shrink-0 mt-1 text-green-600 dark:text-green-400">✓</div>
+      <p class="ml-3 text-gray-700 dark:text-gray-300">Real-time Firebase dashboard tracking reports, wards, green spaces, and engagement</p>
+    </div>
+    <div class="flex items-start">
+      <div class="flex-shrink-0 mt-1 text-green-600 dark:text-green-400">✓</div>
+      <p class="ml-3 text-gray-700 dark:text-gray-300">Open, reusable data layers (GeoJSON, PNG tiles) for researchers, developers, and planners</p>
+    </div>
+    <div class="flex items-start">
+      <div class="flex-shrink-0 mt-1 text-green-600 dark:text-green-400">✓</div>
+      <p class="ml-3 text-gray-700 dark:text-gray-300">Tools to engage schools, sponsors, and citizens in environmental monitoring and action</p>
+    </div>
+  </div>
+</div>
+
+
 
       <!-- Impact -->
       <div class="about-card bg-gradient-to-r from-green-700 to-green-600 p-6 sm:p-8 rounded-xl shadow-lg text-white">
+
         <div class="flex items-center mb-4 sm:mb-6">
+          <span class="text-2xl">📊</span>
           <h2 class="text-xl sm:text-2xl font-semibold ml-3">Our Impact</h2>
         </div>
         <p class="leading-relaxed">
@@ -156,7 +194,7 @@
     <div class="p-6 md:w-1/2">
       <h2 class="text-2xl sm:text-3xl font-bold text-green-800 dark:text-green-300 mb-3">Join the Green Movement</h2>
       <p class="text-gray-700 dark:text-gray-200 text-sm sm:text-base leading-relaxed mb-4">
-        Be part of a data-driven environmental revolution. Whether you're a student, developer, activist, or policymaker — your voice and actions matter. 
+        Be part of a data-driven environmental revolution. Whether you're a student, developer, activist, or policymaker your voice and actions matter. 
         GreenMap empowers you to turn insights into impact. Together, we can green Nairobi.
       </p>
       <a href="contact.html" class="inline-block bg-green-600 text-white text-sm font-medium px-4 py-2 rounded hover:bg-green-700 transition">
