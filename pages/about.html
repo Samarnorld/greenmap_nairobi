@@ -357,11 +357,14 @@ if (saved === 'dark') {
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init({
-    duration: 1000, // Animation duration (ms)
-    once: true,     // Only animate once per scroll
-    offset: 80,     // Trigger point
+    once: false, // ❗ animations repeat every time you scroll into view
+    duration: 800, // animation speed in ms
+    easing: 'ease-in-out', // smooth animation
+    offset: 100, // trigger offset from viewport
+    mirror: true // animate again when scrolling back up
   });
 </script>
+
 
 </body>
 </html>
