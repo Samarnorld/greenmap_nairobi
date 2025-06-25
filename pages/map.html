@@ -6,31 +6,37 @@
   <title>GreenMap Nairobi</title>
 
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          screens: { 'xs': '475px' },
-          animation: { 
-            'fade-in': 'fadeIn 0.3s ease-in-out',
-            'slide-in': 'slideIn 0.3s ease-out'
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        screens: { 'xs': '475px' },
+        animation: {
+          'fade-in': 'fadeIn 0.3s ease-in-out',
+          'slide-in': 'slideIn 0.3s ease-out',
+          'marquee': 'marquee 10s linear infinite'
+        },
+        keyframes: {
+          fadeIn: {
+            '0%': { opacity: '0' },
+            '100%': { opacity: '1' }
           },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0' },
-              '100%': { opacity: '1' }
-            },
-            slideIn: {
-              '0%': { transform: 'translateY(-10px)', opacity: '0' },
-              '100%': { transform: 'translateY(0)', opacity: '1' }
-            }
+          slideIn: {
+            '0%': { transform: 'translateY(-10px)', opacity: '0' },
+            '100%': { transform: 'translateY(0)', opacity: '1' }
+          },
+          marquee: {
+            '0%': { transform: 'translateX(100%)' },
+            '100%': { transform: 'translateX(-100%)' }
           }
         }
       }
-    };
-  </script>
+    }
+  };
+</script>
+
 
   <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -106,6 +112,11 @@
     input:checked + .toggle-slider:before {
       transform: translateX(16px);
     }
+    .animate-marquee:hover {
+  animation-play-state: paused;
+  cursor: pointer;
+}
+
   </style>
 
   <link rel="stylesheet" href="../assets/style.css" />
@@ -174,13 +185,14 @@
   <button id="load-date-btn" class="bg-green-600 text-white px-4 py-1.5 rounded hover:bg-green-700 text-sm transition">
     Load Layers
   </button>
+     <button id="open-tutorial" class="text-sm font-medium text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-800 px-3 py-1 rounded-full border border-green-400 shadow-sm hover:bg-green-200 dark:hover:bg-green-700 transition">
+    Help me understand the map
+  </button>
 </div>
 
     
  <div id="map" class="w-full h-[calc(100vh-64px)] sm:h-[75vh] rounded-2xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-[0_8px_24px_rgba(0,0,0,0.1)] hover:ring hover:ring-lime-400/40 transition-all duration-500 z-0 relative"></div>
 </div>
-
-
 
 
           <!-- Floating Map Controls -->

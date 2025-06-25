@@ -429,21 +429,6 @@ legend.onAdd = function () {
 
   return wrapper;
 };
-// 🆘 Add Help Button above legend
-const helpBtnContainer = L.control({ position: 'bottomright' });
-
-helpBtnContainer.onAdd = function () {
-  const btnWrapper = L.DomUtil.create('div', 'mb-2');
-  btnWrapper.innerHTML = `
-    <button id="help-map-btn" class="text-xs sm:text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded shadow font-semibold transition">
-      Help Me Understand This Map
-    </button>
-  `;
-  return btnWrapper;
-};
-
-helpBtnContainer.addTo(map);
-
 
 legend.addTo(map);
 // 🔗 Share Button
@@ -490,39 +475,165 @@ window.addEventListener("resize", () => {
   map.invalidateSize();
 });
 // 🌿 Tutorial Logic
+// 🌿 Map Tutorial Slides – Full, Modern Version
 const tutorialSteps = [
   {
     title: "Welcome to GreenMap 🌍",
-    content: "This guide will help you explore Nairobi’s vegetation, heat, rainfall, and community insights through interactive map layers."
+    content: `
+      <p>This guide will help you explore Nairobi’s environment using layers for vegetation (NDVI), land temperature (LST), rainfall, and real-time community field reports.</p>
+      <p class="text-xs mt-1 text-gray-500">Tap <strong>Next →</strong> to begin your map tour.</p>
+    `
   },
   {
-    title: "NDVI🌳 - Greenness",
-    content: `<p>Shows plant health and cover: green = healthy vegetation, yellow = low vegetation, red = bare/dry land.</p>
-              <p class="text-xs mt-1 text-gray-500"><b>💡 Action Idea:</b> Plant trees, protect green cover, and track urban greening.</p>`
+    title: "🗺️ Zoom & Reset Controls",
+    content: `
+      <p>Use the <strong>+ and -</strong> buttons on the top left to zoom in/out. Below them, the <strong>Reset</strong> button recenters the map to Nairobi.</p>
+      <div class="text-xs mt-1 text-gray-500">💡 Tip: Double-tap the map to zoom quickly on mobile.</div>
+    `
   },
+ {
+  title: "📅 Date & Rainfall Range Pickers",
+  content: `
+    <p class="text-sm">Use the top-left sidebar to explore satellite data over time:</p>
+    <ul class="list-disc list-inside text-sm mt-2 space-y-1">
+      <li><span class="font-semibold">Date Picker:</span> Select a specific date to load NDVI, LST, and rainfall layers for that day.</li>
+      <li><span class="font-semibold">Rainfall Range:</span> Choose the number of recent days of rainfall to visualize.</li>
+    </ul>
+    <div class="mt-2 text-sm">
+      <span class="font-semibold">Options:</span> <code>30</code>, <code>60</code>, or <code>90</code> days
+    </div>
+    <p class="text-xs mt-2 text-gray-500">💡 Useful for comparing wet vs. dry seasons and spotting recent storms or droughts.</p>
+  `
+},
+
   {
-    title: "🔥 LST - Land Surface Temperature",
-    content: `<p>Red = heat hotspots, blue = cool/shaded zones -  Useful for spotting regions that need tree cover or are heat stressed.</p>
-              <p class="text-xs mt-1 text-gray-500"><b>💡 Action Idea:</b> Add shade, reduce concrete, and cool down heat zones.</p>`
+    title: "🧭 Layers Panel – What’s That?",
+    content: `
+      <p>Click the <strong>🧭 Layers</strong> button on the map to open the full environmental controls sidebar.</p>
+      <p>Each group (Vegetation, Temperature, Rainfall, Field Reports) contains checkboxes to toggle map layers and sliders to adjust their opacity.</p>
+    `
   },
+ {
+  title: "🌳 NDVI Layer – Greenness",
+  content: `
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 via-yellow-400 to-green-500"></div>
+      <span class="text-sm">NDVI = Plant Health</span>
+    </div>
+    <p class="text-sm leading-relaxed">
+      <span class="text-green-600 font-semibold">Green</span>: healthy vegetation<br>
+      <span class="text-yellow-500 font-semibold">Yellow</span>: low vegetation<br>
+      <span class="text-red-500 font-semibold">Red</span>: bare/dry/damaged land
+    </p>
+    <p class="text-xs mt-2 text-gray-500">
+      💡 <b>Action:</b> Track urban green zones, protect green cover & identify dry areas to restore.
+    </p>
+  `
+},
+{
+  title: "🧭 NDVI Anomaly Layer",
+  content: `
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-[#d7191c] via-[#ffffbf] to-[#1a9641]"></div>
+      <span class="text-sm">NDVI Change vs. Last Year</span>
+    </div>
+    <p class="text-sm leading-relaxed">
+      <span class="text-red-600 font-semibold">Red</span>: vegetation loss<br>
+      <span class="text-green-600 font-semibold">Green</span>: vegetation gain/recovery
+    </p>
+    <p class="text-xs mt-2 text-gray-500">
+      💡 <b>Action:</b> Monitor deforestation or regreening efforts and track land degradation.
+    </p>
+  `
+},
+
+{
+  title: "🔥 LST Heatmap – Surface Temperature",
+  content: `
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 via-yellow-400 to-red-600"></div>
+      <span class="text-sm">LST = Land Surface Temperature</span>
+    </div>
+    <p class="text-sm leading-relaxed">
+      <span class="text-blue-600 font-semibold">Blue</span>: Cool zones (trees, grass, shaded)<br>
+      <span class="text-yellow-500 font-semibold">Yellow</span>: Moderate warmth<br>
+      <span class="text-red-600 font-semibold">Red</span>: Hot zones (bare land, concrete, roads)
+    </p>
+    <p class="text-xs mt-2 text-gray-500">
+      💡 <b>Action Tip:</b> Add tree cover, reduce paved surfaces, and cool down hotspots.
+    </p>
+  `
+},
+
   {
-    title: "NDVI Anomaly🧭",
-   content: `<p>Red = loss of vegetation, green = vegetation gain since last year - helps track land degradation or recovery.</p>
-              <p class="text-xs mt-1 text-gray-500"><b>💡 Action Idea:</b> Monitor degraded zones and support tree planting.</p>`
-  },
+  title: "✅ Healthy Zones",
+  content: `
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-3 h-3 rounded-full bg-green-500"></div>
+      <span class="text-sm">NDVI > 0.3 = Healthy</span>
+    </div>
+    <p class="text-sm leading-relaxed">
+      These zones have <span class="text-green-600 font-semibold">NDVI above 0.3</span> – good for crops, urban green spaces, and tree health.
+    </p>
+  `
+},
   {
-    title: "🌧️ Rainfall & Anomaly",
-    content: `<p>Rainfall map shows where rain fell recently: light blue = little rain, dark = heavy rain.<br>
-              Rainfall Anomaly compares it to average levels, helping spot floods or drought: red = drier than usual, green = wetter than usual.</p>
-              <p class="text-xs mt-1 text-gray-500"><b>💡 Action Idea:</b> Use for farming, flood warning, and drought prep.</p>`
-  },
+  title: "🌧️ Rainfall (mm)",
+  content: `
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-[#e0f3f8] via-[#74add1] to-[#313695]"></div>
+      <span class="text-sm">Recent Rainfall (mm)</span>
+    </div>
+    <p class="text-sm leading-relaxed">
+      <span class="text-blue-400 font-semibold">Light blue</span>: little rain<br>
+      <span class="text-blue-900 font-semibold">Dark</span>: more rain<br>
+      Uses selected range (e.g., 30, 60, 90 days).
+    </p>
+    <p class="text-xs mt-2 text-gray-500">
+      💡 <b>Tip:</b> Great for analyzing drought or wet seasons.
+    </p>
+  `
+},
+{
+  title: "📉 Rainfall Anomaly",
+  content: `
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-3 h-3 rounded-full bg-gradient-to-r from-[#d73027] via-[#fee08b] to-[#1a9850]"></div>
+      <span class="text-sm">Deviation from Average</span>
+    </div>
+    <p class="text-sm leading-relaxed">
+      <span class="text-red-600 font-semibold">Red</span>: drier than usual<br>
+      <span class="text-green-600 font-semibold">Green</span>: wetter than usual
+    </p>
+    <p class="text-xs mt-2 text-gray-500">
+      💡 <b>Use:</b> Detect flood risks or monitor drought-prone zones.
+    </p>
+  `
+},
   {
-    title: "🗣️ Community Reports",
-    content: "Markers show field reports like dumping, tree cutting, or fires. Click to view and respond locally."
+    title: "🗣️ Field Reports",
+    content: `
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-3 h-3 rounded-full bg-pink-600"></div>
+        <span class="text-sm">Field Reports</span>
+      </div>
+      <p>Markers on the map submitted by citizens – about tree cutting, fires, pollution, or planting.</p>
+      <p class="text-xs mt-1 text-gray-500">💡 You can contribute too from the GreenMap dashboard.</p>
+    `
   },
   {
     title: "✅ You're Ready!",
-    content: "Toggle layers,  zoom in, click wards to explore live data, and help make Nairobi greener with GreenMap!"
+    content: `
+      <p>Toggle layers, zoom in, click anywhere on the map to explore live ward data like:</p>
+      <ul class="list-disc list-inside text-sm mt-2">
+        <li>🌳 NDVI (Greenness)</li>
+        <li>🔥 Temperature</li>
+        <li>🌧️ Rainfall</li>
+        <li>📉 Environmental Anomalies</li>
+        <li>🗣️ Community Reports</li>
+      </ul>
+      <p class="mt-3 text-green-700 font-semibold">Let’s build a greener, cooler Nairobi together!</p>
+    `
   }
 ];
 
@@ -549,10 +660,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('map-tutorial-overlay');
 
   // Help Button
-  document.getElementById('help-map-btn')?.addEventListener('click', () => {
+    document.getElementById('open-tutorial')?.addEventListener('click', () => {
     currentStep = 0;
     showTutorialStep();
   });
+
 
   // Navigation
   document.getElementById('prev-step')?.addEventListener('click', () => {
