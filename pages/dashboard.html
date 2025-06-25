@@ -196,20 +196,19 @@
     </div>
   </div>
 
-  <!-- Row 2: End Date + Reset -->
-  <div class="grid grid-cols-3 gap-2 sm:flex sm:items-center sm:gap-2 mt-1 sm:mt-0">
-    <div class="col-span-1 flex flex-col">
-      <label for="filter-end" class="font-medium">End Date:</label>
-    </div>
-    <div class="col-span-1">
-      <input type="date" id="filter-end" class="w-full px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
-    </div>
-    <div class="col-span-1 flex items-end">
-      <button id="reset-filters" class="w-full px-2 py-1 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600">
-        Reset
-      </button>
-    </div>
+ <!-- End Date and Reset Button Aligned Horizontally -->
+<div class="flex flex-wrap items-end gap-2 mt-2">
+  <div class="flex flex-col">
+    <label for="filter-end" class="font-medium">End Date:</label>
+    <input type="date" id="filter-end" class="px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
   </div>
+  <button id="reset-filters" class="h-9 px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600 mt-[1.6rem]">
+    Reset
+  </button>
+</div>
+
+</div>
+
 
 </section>
 
