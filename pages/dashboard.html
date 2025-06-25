@@ -214,24 +214,25 @@
 </section>
 
   <!-- Report Table -->
-  <section>
-    <h2 class="text-lg sm:text-xl font-bold mb-3">Recent Reports</h2>
-    <div class="overflow-x-auto">
-      <table class="min-w-full text-xs sm:text-sm text-left bg-white dark:bg-gray-800 rounded shadow">
-        <thead>
-          <tr class="bg-green-600 text-white">
-            <th class="p-1 sm:p-2">Title</th>
-            <th class="p-1 sm:p-2">Type</th>
-            <th class="p-1 sm:p-2">Location</th>
-            <th class="p-1 sm:p-2">Date</th>
-            <th class="p-1 sm:p-2">Image</th>
-            <th class="p-1 sm:p-2">Action</th>
-          </tr>
-        </thead>
-        <tbody id="report-table-body" class="divide-y divide-gray-300 dark:divide-gray-700"></tbody>
-      </table>
-    </div>
-  </section>
+<section>
+  <h2 class="text-lg sm:text-xl font-bold mb-3">Recent Reports</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-xs sm:text-sm text-left bg-white dark:bg-gray-800 rounded shadow">
+      <thead>
+        <tr class="bg-green-600 text-white">
+          <th class="p-1 sm:p-2">Report Type</th>
+          <th class="p-1 sm:p-2">Location</th>
+          <th class="p-1 sm:p-2">Date</th>
+          <th class="p-1 sm:p-2">Image</th>
+          <th class="p-1 sm:p-2">Video</th>
+          <th class="p-1 sm:p-2">Action</th>
+        </tr>
+      </thead>
+      <tbody id="report-table-body" class="divide-y divide-gray-300 dark:divide-gray-700"></tbody>
+    </table>
+  </div>
+</section>
+
 </main>
 <footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -371,58 +372,85 @@ if (saved === 'dark') {
   });
 </script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    if (typeof firebase === 'undefined' || typeof L === 'undefined') {
-      console.error("Firebase or Leaflet is not loaded");
-      return;
-    }
+function getIconByType(type) {
+  const colorMap = {
+    "Illegal Dumping": "blue",
+    "Illegal Tree Cutting": "green",
+    "Extreme Urban Heat Zone": "red",
+    "Restoration": "orange",
+    "Wildlife": "purple",
+    "Blocked Drainage": "gray",
+    "Other": "black"
+  };
 
-    const map = L.map('report-map').setView([-1.286389, 36.817223], 11);
+  const color = colorMap[type] || "black";
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    const db = firebase.firestore();
-    db.collection('reports').get().then(snapshot => {
-      const bounds = [];
-
-      snapshot.forEach(doc => {
-        const report = doc.data();
-        console.log("Report Data:", report);
-
-        const lat = report.location?.lat;
-        const lng = report.location?.lng;
-
-        if (lat != null && lng != null) {
-          const marker = L.marker([lat, lng]).addTo(map);
-          bounds.push([lat, lng]);
-const popup = `
-  <div class="text-sm">
-    <strong>${report.title || 'Untitled Report'}</strong><br/>
-    Type: ${report.type || 'N/A'}<br/>
-    Location: ${report.location?.lat?.toFixed(4)}, ${report.location?.lng?.toFixed(4)}<br/>
-    Date: ${report.timestamp?.toDate().toLocaleString() || 'Unknown'}<br/>
-    ${report.imageUrl 
-      ? `<a href="${report.imageUrl}" target="_blank" class="text-green-600 underline">View Image</a>` 
-      : `<span class="text-gray-400 italic">No Image Provided</span>`}
-  </div>
-`;
-
-
-          marker.bindPopup(popup);
-        }
-      });
-
-      if (bounds.length > 0) {
-        map.fitBounds(bounds, { padding: [30, 30] });
-      }
-    }).catch(error => {
-      console.error("Error fetching reports from Firebase:", error);
-    });
+  return L.icon({
+    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
+    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
   });
+}
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof firebase === 'undefined' || typeof L === 'undefined') {
+    console.error("Firebase or Leaflet is not loaded");
+    return;
+  }
+
+  const map = L.map('report-map').setView([-1.286389, 36.817223], 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const db = firebase.firestore();
+  const bounds = [];
+
+  db.collection('reports').orderBy("timestamp", "desc").limit(100).get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const report = doc.data();
+
+      // ✅ Use either locationCoords OR location
+      const lat = report.locationCoords?.lat ?? report.location?.lat ?? null;
+      const lng = report.locationCoords?.lng ?? report.location?.lng ?? null;
+
+      if (lat != null && lng != null) {
+       const icon = getIconByType(report.type);
+const marker = L.marker([lat, lng], { icon }).addTo(map);
+        bounds.push([lat, lng]);
+
+        const popup = `
+          <div class="text-sm">
+            <strong>${report.type || 'Untitled Report'}</strong><br/>
+            ${report.description ? `<em>${report.description}</em><br/>` : ""}
+            📍 Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}<br/>
+            🗓️ Date: ${report.timestamp?.toDate().toLocaleString() || 'Unknown'}<br/>
+            ${report.imageUrl 
+              ? `<a href="${report.imageUrl}" target="_blank" class="text-green-600 underline">View Image</a><br/>`
+              : `<span class="text-gray-400 italic">No Image</span><br/>`}
+            ${report.videoUrl 
+              ? `<a href="${report.videoUrl}" target="_blank" class="text-blue-600 underline">View Video</a>`
+              : ``}
+          </div>
+        `;
+        marker.bindPopup(popup);
+      }
+    });
+
+    // ✅ Fit to all markers if any
+    if (bounds.length > 0) {
+      map.fitBounds(bounds, { padding: [30, 30] });
+    }
+  }).catch(err => {
+    console.error("Failed to load markers:", err);
+  });
+});
+</script>
 
 </body>
 </html>

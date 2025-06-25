@@ -64,16 +64,22 @@ async function loadReportsFromFirebase() {
     filteredDocs.forEach(doc => {
       const r = doc.data();
       const row = document.createElement("tr");
-      row.innerHTML = `
-  <td class="p-2">${r.title || "Untitled"}</td>
+     row.innerHTML = `
   <td class="p-2">${r.type || "Unknown"}</td>
   <td class="p-2">${r.location || "—"}</td>
   <td class="p-2">${r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleString() : "N/A"}</td>
   <td class="p-2">${r.imageUrl ? `<img src="${r.imageUrl}" class="h-12 rounded shadow" />` : "—"}</td>
   <td class="p-2">
+    ${r.videoUrl 
+      ? `<a href="${r.videoUrl}" target="_blank" class="text-blue-600 underline">View</a>`
+      : `<span class="text-gray-400 italic">None</span>`}
+  </td>
+  <td class="p-2">
     <button class="text-red-600 hover:underline text-sm" onclick="deleteReport('${doc.id}')">Delete</button>
   </td>
 `;
+
+
       reportTable.appendChild(row);
     });
   } catch (err) {
@@ -270,11 +276,11 @@ document.getElementById("download-chart").addEventListener("click", () => {
 document.getElementById("export-reports").addEventListener("click", async () => {
   try {
     const snapshot = await db.collection("reports").orderBy("timestamp", "desc").limit(100).get();
-    let csv = "Title,Type,Location,Date,ImageURL\n";
+    let csv = "Type,Location,Date,ImageURL,VideoURL\n";
     snapshot.forEach(doc => {
       const r = doc.data();
       const date = r.timestamp ? new Date(r.timestamp.seconds * 1000).toISOString() : "";
-      const line = `"${r.title || ""}","${r.type || ""}","${r.location || ""}","${date}","${r.imageUrl || ""}"\n`;
+      const line = `"${r.type || ""}","${r.location || ""}","${date}","${r.imageUrl || ""}","${r.videoUrl || ""}"\n`;
       csv += line;
     });
     const blob = new Blob([csv], { type: "text/csv" });
@@ -289,6 +295,7 @@ document.getElementById("export-reports").addEventListener("click", async () => 
     alert("Could not export reports. Try again.");
   }
 });
+
 document.getElementById("filter-type").addEventListener("change", loadReportsFromFirebase);
 document.getElementById("filter-start").addEventListener("change", loadReportsFromFirebase);
 document.getElementById("filter-end").addEventListener("change", loadReportsFromFirebase);
