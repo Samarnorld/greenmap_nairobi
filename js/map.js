@@ -221,7 +221,14 @@ document.querySelectorAll('#layer-controls .mb-4').forEach(section => {
     section.querySelector('div.space-y-1')?.appendChild(wrapper);
   }
 });
-
+setTimeout(() => {
+  if (visible) {
+    const checkbox = wrapper.querySelector(".toggle-layer");
+    if (checkbox && !checkbox.checked) {
+      checkbox.checked = true;
+    }
+  }
+}, 50);
 
       // Toggle visibility
       wrapper.querySelector(".toggle-layer").addEventListener('change', e => {
@@ -282,7 +289,8 @@ const query = params.toString() ? `?${params.toString()}` : '';
 loadTileLayer(`lst${query}`, 'LST Heatmap🔥', 0.6, true); // ✅ visible
 loadTileLayer(`ndvi-mask${query}`, 'Healthy Zones', 0.75, false); // not visible by default
 loadTileLayer(`ndvi-anomaly${query}`, 'NDVI Anomaly🧭', 0.75, false);
-loadTileLayer(`rainfall${query}`, '🌧️ Rainfall (mm)', 0.6, false, range);
+loadTileLayer(`rainfall${query}`, '🌧️ Rainfall (mm)', 0.6, !!range, range);
+
 loadTileLayer(`rainfall-anomaly${query}`, '📉 Rainfall Anomaly', 0.6, false);
 
 }

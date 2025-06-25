@@ -451,6 +451,17 @@ if (saved === 'dark') {
       });
     });
   </script>
+  <script>
+  document.getElementById('rain-range')?.addEventListener('change', (e) => {
+    const range = e.target.value;
+    if (range) {
+      window.dispatchEvent(new CustomEvent('map:loadRainRange', {
+        detail: { range }
+      }));
+    }
+  });
+</script>
+
   <!-- JS -->
   <script src="../js/map.js"></script>
 </body>
