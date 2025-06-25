@@ -175,21 +175,43 @@
 </section>
 
   <!-- Filters -->
-  <section class="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-    <label class="font-medium">Filter by Type:</label>
-    <select id="filter-type" class="px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700">
-      <option value="All">All Types</option>
-      <option value="Tree Cutting">Tree Cutting</option>
-      <option value="Waste Dumping">Waste Dumping</option>
-      <option value="Fire Incident">Fire Incident</option>
-      <option value="Blocked Drainage">Blocked Drainage</option>
-    </select>
-    <label class="font-medium">Start Date:</label>
-    <input type="date" id="filter-start" class="px-1 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
-    <label class="font-medium">End Date:</label>
-    <input type="date" id="filter-end" class="px-1 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
-    <button id="reset-filters" class="px-2 py-1 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600">Reset</button>
-  </section>
+<section class="text-xs sm:text-sm mt-6 space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:items-center sm:gap-2">
+
+  <!-- Row 1: Filter Type + Start Date -->
+  <div class="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-2">
+    <div class="flex flex-col">
+      <label for="filter-type" class="font-medium">Filter by Type:</label>
+      <select id="filter-type" class="px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700">
+        <option value="All">All Types</option>
+        <option value="Tree Cutting">Tree Cutting</option>
+        <option value="Waste Dumping">Waste Dumping</option>
+        <option value="Fire Incident">Fire Incident</option>
+        <option value="Blocked Drainage">Blocked Drainage</option>
+      </select>
+    </div>
+
+    <div class="flex flex-col">
+      <label for="filter-start" class="font-medium">Start Date:</label>
+      <input type="date" id="filter-start" class="px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
+    </div>
+  </div>
+
+  <!-- Row 2: End Date + Reset -->
+  <div class="grid grid-cols-3 gap-2 sm:flex sm:items-center sm:gap-2 mt-1 sm:mt-0">
+    <div class="col-span-1 flex flex-col">
+      <label for="filter-end" class="font-medium">End Date:</label>
+    </div>
+    <div class="col-span-1">
+      <input type="date" id="filter-end" class="w-full px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" />
+    </div>
+    <div class="col-span-1 flex items-end">
+      <button id="reset-filters" class="w-full px-2 py-1 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600">
+        Reset
+      </button>
+    </div>
+  </div>
+
+</section>
 
   <!-- Report Table -->
   <section>
