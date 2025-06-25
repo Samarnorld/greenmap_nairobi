@@ -162,22 +162,6 @@ layer.on('click', () => {
 })
 .catch(err => console.error('Failed to load wards or stats:', err));
 
-// 🔥 Firebase Community Reports
-firebase.firestore().collection("reports").get().then(snapshot => {
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    if (data.location?.lat && data.location?.lng) {
-      const marker = L.marker([data.location.lat, data.location.lng]).bindPopup(`
-        <strong>${data.title}</strong><br>
-        <em>${data.type}</em><br>
-        ${data.description}<br>
-        ${data.imageUrl ? `<img src="${data.imageUrl}" class="w-full mt-1" />` : ''}
-      `);
-      reportsLayer.addLayer(marker);
-    }
-  });
-});
-
 // 🌐 Backend Server
 const BACKEND_URL = 'https://greenmap-backend.onrender.com';
 function getTooltip(label) {

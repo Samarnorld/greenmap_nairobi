@@ -68,6 +68,9 @@
   <!-- Firebase Configuration -->
   <script src="../js/firebase.js"></script>
   <link rel="stylesheet" href="../assets/style.css" />
+  <!-- AOS CSS -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
 </head>
 <body class="font-sans bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
   <!-- Header -->
@@ -122,7 +125,7 @@
       <!-- Mission & Vision Row -->
 <div class="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
   <!-- Mission -->
- <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600 animate-drop-bounce delay-100">
+ <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600" data-aos="fade-up">
 
     <div class="flex items-center mb-4">
       <lottie-player 
@@ -141,7 +144,8 @@
   </div>
 
   <!-- Vision -->
-  <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600 animate-drop-bounce delay-200">
+ <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600" data-aos="fade-up" data-aos-delay="100">
+
 
     <div class="flex items-center mb-4">
       <span class="text-2xl">🔭</span>
@@ -155,7 +159,8 @@
 
 
 <!-- Our Solutions -->
-<div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg mb-8 sm:mb-12 animate-drop-bounce delay-300">
+<div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg mb-8 sm:mb-12" data-aos="fade-up" data-aos-delay="200">
+
   <div class="flex items-center mb-4 sm:mb-6">
     <span class="text-2xl sm:text-3xl">🛠️</span>
     <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Solutions</h2>
@@ -184,7 +189,8 @@
 
 
       <!-- Impact -->
-      <div class="about-card bg-gradient-to-r from-green-700 to-green-600 p-6 sm:p-8 rounded-xl shadow-lg text-white">
+      <div class="about-card bg-gradient-to-r from-green-700 to-green-600 p-6 sm:p-8 rounded-xl shadow-lg text-white" data-aos="fade-up" data-aos-delay="300">
+
 
         <div class="flex items-center mb-4 sm:mb-6">
           <span class="text-2xl">📊</span>
@@ -198,7 +204,9 @@
     <!-- Insert this inside your <main> tag before the closing </main> -->
 
 <!-- Join the Green Movement -->
-<section class="max-w-6xl mx-auto px-4 sm:px-6 my-16">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 my-16" data-aos="zoom-in-up">
+
+
   <div class="bg-green-100 dark:bg-green-900 rounded-lg overflow-hidden shadow-md flex flex-col md:flex-row items-center md:items-start">
     <img src="../assets/green-movement.jpg" alt="Join the Movement" class="w-full md:w-1/2 h-64 object-cover md:rounded-l-lg" />
     <div class="p-6 md:w-1/2">
@@ -343,6 +351,15 @@ if (saved === 'dark') {
         mobileMenu.classList.add('hidden');
       }
     });
+  });
+</script>
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000, // Animation duration (ms)
+    once: true,     // Only animate once per scroll
+    offset: 80,     // Trigger point
   });
 </script>
 
