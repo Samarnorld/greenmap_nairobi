@@ -99,110 +99,110 @@
         </div>
       </div>
 <div class="md:w-1/2 grid grid-cols-2 gap-2 xs:gap-3 sm:gap-5 md:gap-6 animate-fade-in" style="animation-delay: 0.7s;">
-
-  <!-- 🌳 Green Coverage -->
-  <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-green-200 text-sm sm:text-base">
-    <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
-      <span class="text-lg">🌳</span>
-      <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
-        Green Coverage
-        <button onclick="toggleExplanation('info-green')" class="hover:underline text-green-300">ℹ️</button>
-      </p>
-    </div>
-    <div class="pl-[2.15rem]">
-      <h3 class="text-2xl font-bold mt-0 text-left">
-        <span id="green-coverage" class="block w-fit"></span>
-      </h3>
-      <div id="info-green" class="hidden text-xs mt-1 text-green-100 bg-green-900/20 p-2 rounded-md">
-        Higher % means more green vegetation in your area - bringing cooler air, shade, and greener neighborhoods. Below 30% means the area may be drying or less green.
-      </div>
+<!-- 🌳 Green Coverage -->
+<div class="group relative bg-white/10 dark:bg-gray-800/40 backdrop-blur-lg rounded-xl p-4 shadow-md hover:shadow-2xl border border-green-400/40 transition-all duration-300">
+  <div class="absolute inset-0 rounded-xl border border-green-300/40 group-hover:border-green-300/70 pointer-events-none shadow-[0_0_10px_2px_rgba(34,197,94,0.4)] group-hover:shadow-[0_0_20px_4px_rgba(34,197,94,0.6)] z-0"></div>
+  <div class="relative z-10 grid grid-cols-[auto,1fr] items-center gap-2 mb-1 text-green-200">
+    <span class="text-lg">🌳</span>
+    <p class="text-xs uppercase tracking-wide flex items-center gap-1 text-gray-300">
+      Green Coverage
+      <button onclick="toggleExplanation('info-green')" class="hover:underline text-green-300">ℹ️</button>
+    </p>
+  </div>
+  <div class="relative z-10 pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="green-coverage" class="block w-fit"></span>
+    </h3>
+    <div id="info-green" class="hidden text-xs mt-2 text-green-100 bg-green-900/40 border border-green-300/40 p-2 rounded-md">
+      Higher % means more green vegetation in your area - bringing cooler air, shade, and greener neighborhoods. Below 30% means the area may be drying or less green.
     </div>
   </div>
+</div>
 
 <!-- 🔥 Heat Alert Zones -->
-<div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-red-300 text-sm sm:text-base">
-  <div class="flex items-center gap-2 mb-1">
+<div class="group relative bg-white/10 dark:bg-gray-800/40 backdrop-blur-lg rounded-xl p-4 shadow-md hover:shadow-2xl border border-red-400/40 transition-all duration-300">
+  <div class="absolute inset-0 rounded-xl border border-red-300/40 group-hover:border-red-300/70 pointer-events-none shadow-[0_0_10px_2px_rgba(248,113,113,0.4)] group-hover:shadow-[0_0_20px_4px_rgba(248,113,113,0.6)] z-0"></div>
+  <div class="relative z-10 flex items-center gap-2 mb-1 text-red-300">
     <span class="text-lg">🔥</span>
     <div class="flex-1 flex justify-between items-center translate-y-[1px] sm:translate-y-0">
-      <p class="text-xs text-gray-300 uppercase tracking-wide leading-snug sm:leading-none">
+      <p class="text-xs uppercase tracking-wide leading-snug sm:leading-none text-gray-300">
         <span class="block sm:inline">Heat alert<br class="block sm:hidden">zones</span>
       </p>
       <button onclick="toggleExplanation('info-heat')" class="hover:underline text-red-300 ml-2">ℹ️</button>
     </div>
   </div>
-  <div class="pl-[2.15rem]">
+  <div class="relative z-10 pl-[2.15rem]">
     <h3 class="text-2xl font-bold mt-0 text-left">
       <span id="heat-zones" class="block w-fit"></span>
     </h3>
-    <div id="info-heat" class="hidden text-xs mt-1 text-red-100 bg-red-900/20 p-2 rounded-md">
+    <div id="info-heat" class="hidden text-xs mt-2 text-red-100 bg-red-900/40 border border-red-300/40 p-2 rounded-md">
       Number of areas where surface temperatures exceed 30°C - may feel hotter and need climate cooling efforts.
     </div>
   </div>
 </div>
 
 <!-- 🌧️ Rainfall Anomaly -->
-<div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-blue-300 text-sm sm:text-base">
-  <div class="grid grid-cols-[auto,1fr] items-start gap-2 mb-1">
+<div class="group relative bg-white/10 dark:bg-gray-800/40 backdrop-blur-lg rounded-xl p-4 shadow-md hover:shadow-2xl border border-blue-400/40 transition-all duration-300">
+  <div class="absolute inset-0 rounded-xl border border-blue-300/40 group-hover:border-blue-300/70 pointer-events-none shadow-[0_0_10px_2px_rgba(96,165,250,0.4)] group-hover:shadow-[0_0_20px_4px_rgba(96,165,250,0.6)] z-0"></div>
+  <div class="relative z-10 grid grid-cols-[auto,1fr] items-start gap-2 mb-1 text-blue-300">
     <span class="text-lg">🌧️</span>
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
-      <p class="text-xs text-gray-300 uppercase tracking-wide flex gap-1 leading-snug sm:leading-none">
+      <p class="text-xs uppercase tracking-wide flex gap-1 leading-snug sm:leading-none text-gray-300">
         <span class="block sm:inline">Rainfall<br class="block sm:hidden">anomaly</span>
         <button onclick="toggleExplanation('info-anomaly')" class="hover:underline text-blue-300 sm:ml-2">ℹ️</button>
       </p>
     </div>
   </div>
-  <div class="pl-[2.15rem]">
+  <div class="relative z-10 pl-[2.15rem]">
     <h3 class="text-2xl font-bold mt-0 text-left">
       <span id="veg-anomaly" class="block w-fit"></span>
     </h3>
-    <div id="info-anomaly" class="hidden text-xs mt-1 text-blue-100 bg-blue-900/20 p-2 rounded-md">
+    <div id="info-anomaly" class="hidden text-xs mt-2 text-blue-100 bg-blue-900/40 border border-blue-300/40 p-2 rounded-md">
       Compares this month's rainfall to the usual level in Nairobi. Big differences (±20mm or more) could signal drought or shifting patterns.
     </div>
   </div>
 </div>
 
-
-
-
-  <!-- 📈 Greening Trend -->
-  <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-emerald-200 text-sm sm:text-base">
-    <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
-      <span class="text-lg">📈</span>
-      <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
-        Greening Trend
-        <button onclick="toggleExplanation('info-trend')" class="hover:underline text-emerald-200">ℹ️</button>
-      </p>
-    </div>
-    <div class="pl-[2.15rem]">
-      <h3 class="text-2xl font-bold mt-0 text-left">
-        <span id="veg-trend" class="block w-fit"></span>
-      </h3>
-      <div id="info-trend" class="hidden text-xs mt-1 text-emerald-100 bg-emerald-900/20 p-2 rounded-md">
-        A positive % means vegetation is growing. A negative one signals drying areas or possible tree loss.
-      </div>
+<!-- 📈 Greening Trend -->
+<div class="group relative bg-white/10 dark:bg-gray-800/40 backdrop-blur-lg rounded-xl p-4 shadow-md hover:shadow-2xl border border-emerald-400/40 transition-all duration-300">
+  <div class="absolute inset-0 rounded-xl border border-emerald-300/40 group-hover:border-emerald-300/70 pointer-events-none shadow-[0_0_10px_2px_rgba(16,185,129,0.4)] group-hover:shadow-[0_0_20px_4px_rgba(16,185,129,0.6)] z-0"></div>
+  <div class="relative z-10 grid grid-cols-[auto,1fr] items-center gap-2 mb-1 text-emerald-200">
+    <span class="text-lg">📈</span>
+    <p class="text-xs uppercase tracking-wide flex items-center gap-1 text-gray-300">
+      Greening Trend
+      <button onclick="toggleExplanation('info-trend')" class="hover:underline text-emerald-200">ℹ️</button>
+    </p>
+  </div>
+  <div class="relative z-10 pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="veg-trend" class="block w-fit"></span>
+    </h3>
+    <div id="info-trend" class="hidden text-xs mt-2 text-emerald-100 bg-emerald-900/40 border border-emerald-300/40 p-2 rounded-md">
+      A positive % means vegetation is growing. A negative one signals drying areas or possible tree loss.
     </div>
   </div>
-
-  <!-- 📉 Rainfall Deficit Zones (Full Width) -->
-  <div class="col-span-2 bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-white/10 text-indigo-200 text-sm sm:text-base">
-    <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
-      <span class="text-lg">📉</span>
-      <p class="text-xs text-gray-300 uppercase tracking-wide flex items-center gap-1">
-        Rainfall Deficit Zones
-        <button onclick="toggleExplanation('info-deficit')" class="hover:underline text-indigo-200">ℹ️</button>
-      </p>
-    </div>
-    <div class="pl-[2.15rem]">
-      <h3 class="text-2xl font-bold mt-0 text-left">
-        <span id="rain-deficit" class="block w-fit"></span>
-      </h3>
-      <div id="info-deficit" class="hidden text-xs mt-1 text-indigo-100 bg-indigo-900/20 p-2 rounded-md">
-        Number of wards with below-normal rainfall than Nairobi's average for this time of year. May impact water availability and stress vegetation or crops.
-      </div>
-    </div>
-  </div>
-
 </div>
+
+<!-- 📉 Rainfall Deficit Zones -->
+<div class="group relative col-span-2 bg-white/10 dark:bg-gray-800/40 backdrop-blur-lg rounded-xl p-4 shadow-md hover:shadow-2xl border border-indigo-400/40 transition-all duration-300">
+  <div class="absolute inset-0 rounded-xl border border-indigo-300/40 group-hover:border-indigo-300/70 pointer-events-none shadow-[0_0_10px_2px_rgba(129,140,248,0.4)] group-hover:shadow-[0_0_20px_4px_rgba(129,140,248,0.6)] z-0"></div>
+  <div class="relative z-10 grid grid-cols-[auto,1fr] items-center gap-2 mb-1 text-indigo-200">
+    <span class="text-lg">📉</span>
+    <p class="text-xs uppercase tracking-wide flex items-center gap-1 text-gray-300">
+      Rainfall Deficit Zones
+      <button onclick="toggleExplanation('info-deficit')" class="hover:underline text-indigo-200">ℹ️</button>
+    </p>
+  </div>
+  <div class="relative z-10 pl-[2.15rem]">
+    <h3 class="text-2xl font-bold mt-0 text-left">
+      <span id="rain-deficit" class="block w-fit"></span>
+    </h3>
+    <div id="info-deficit" class="hidden text-xs mt-2 text-indigo-100 bg-indigo-900/40 border border-indigo-300/40 p-2 rounded-md">
+      Number of wards with below-normal rainfall than Nairobi's average for this time of year. May impact water availability and stress vegetation or crops.
+    </div>
+  </div>
+</div>
+
 
 
     <!-- Scrolling indicator -->
