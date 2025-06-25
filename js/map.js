@@ -499,9 +499,9 @@ const tutorialSteps = [
 },
 
   {
-    title: "🧭 Layers Panel – What’s That?",
+    title: "Layers Panel – What’s That?",
     content: `
-      <p>Click the <strong>🧭 Layers</strong> button on the map to open the full environmental controls sidebar.</p>
+      <p>Click the <strong>Layers</strong> button on the map to open the full environmental controls sidebar.</p>
       <p>Each group (Vegetation, Temperature, Rainfall, Field Reports) contains checkboxes to toggle map layers and sliders to adjust their opacity.</p>
     `
   },
@@ -603,17 +603,6 @@ const tutorialSteps = [
   `
 },
   {
-    title: "🗣️ Field Reports",
-    content: `
-      <div class="flex items-center gap-2 mb-2">
-        <div class="w-3 h-3 rounded-full bg-pink-600"></div>
-        <span class="text-sm">Field Reports</span>
-      </div>
-      <p>Markers on the map submitted by citizens – about tree cutting, fires, pollution, or planting.</p>
-      <p class="text-xs mt-1 text-gray-500">💡 You can contribute too from the GreenMap dashboard.</p>
-    `
-  },
-  {
     title: "✅ You're Ready!",
     content: `
       <p>Toggle layers, zoom in, click anywhere on the map to explore live ward data like:</p>
@@ -622,7 +611,6 @@ const tutorialSteps = [
         <li>🔥 Temperature</li>
         <li>🌧️ Rainfall</li>
         <li>📉 Environmental Anomalies</li>
-        <li>🗣️ Community Reports</li>
       </ul>
       <p class="mt-3 text-green-700 font-semibold">Let’s build a greener, cooler Nairobi together!</p>
     `
