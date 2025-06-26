@@ -80,7 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
         description,
         severity,
         location,
-        locationCoords: lat && lng ? { lat: parseFloat(lat), lng: parseFloat(lng) } : null,
+  locationCoords: lat && lng ? { lat: parseFloat(lat), lng: parseFloat(lng) } : null,
+latitude: lat ? parseFloat(lat) : null,
+longitude: lng ? parseFloat(lng) : null,
         imageUrl,
         videoUrl,
         timestamp

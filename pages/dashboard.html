@@ -318,7 +318,7 @@
 <script src="../js/firebase.js"></script>
 <script src="../js/dashboard.js"></script>
 
-  // Theme toggle
+  <!-- // Theme toggle -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const html = document.documentElement;
@@ -372,18 +372,17 @@ if (saved === 'dark') {
   });
 </script>
 <script>
-function getIconByType(type) {
-  const colorMap = {
-    "Illegal Dumping": "blue",
-    "Illegal Tree Cutting": "green",
-    "Extreme Urban Heat Zone": "red",
-    "Restoration": "orange",
-    "Wildlife": "purple",
-    "Blocked Drainage": "gray",
-    "Other": "black"
-  };
+  // ✅ Icon function
+  function getMarkerIconByType(type) {
+  const normalized = (type || "").toLowerCase();
+  let color = "black";
 
-  const color = colorMap[type] || "black";
+  if (normalized.includes("tree")) color = "green";
+  else if (normalized.includes("dump") || normalized.includes("waste")) color = "blue";
+  else if (normalized.includes("fire")) color = "red";
+  else if (normalized.includes("drain")) color = "gray";
+  else if (normalized.includes("wild")) color = "purple";
+  else if (normalized.includes("restore")) color = "orange";
 
   return L.icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
@@ -394,62 +393,63 @@ function getIconByType(type) {
     shadowSize: [41, 41]
   });
 }
+
+
 </script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  if (typeof firebase === 'undefined' || typeof L === 'undefined') {
-    console.error("Firebase or Leaflet is not loaded");
+  const mapContainer = document.getElementById('report-map');
+  if (!mapContainer) {
+    console.error("Map container not found");
     return;
   }
 
-  const map = L.map('report-map').setView([-1.286389, 36.817223], 11);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
+  setTimeout(() => {
+    const map = L.map('report-map').setView([-1.286389, 36.817223], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-  const db = firebase.firestore();
-  const bounds = [];
+    const bounds = [];
+    const db = firebase.firestore();
 
-  db.collection('reports').orderBy("timestamp", "desc").limit(100).get().then(snapshot => {
-    snapshot.forEach(doc => {
-      const report = doc.data();
+    db.collection('reports').orderBy("timestamp", "desc").limit(100).get().then(snapshot => {
+  snapshot.forEach(doc => {
+    const report = doc.data();
+    
+    const reportType = report.type || report.reportType || 'Other';
+    let lat = report.locationCoords?.lat ?? parseFloat(report.latitude);
+    let lng = report.locationCoords?.lng ?? parseFloat(report.longitude);
+    if (isNaN(lat) || isNaN(lng)) return;
 
-      // ✅ Use either locationCoords OR location
-      const lat = report.locationCoords?.lat ?? report.location?.lat ?? null;
-      const lng = report.locationCoords?.lng ?? report.location?.lng ?? null;
+    const marker = L.marker([lat, lng], {
+      icon: getMarkerIconByType(reportType)
+    }).addTo(map);
+    bounds.push([lat, lng]);
 
-      if (lat != null && lng != null) {
-       const icon = getIconByType(report.type);
-const marker = L.marker([lat, lng], { icon }).addTo(map);
-        bounds.push([lat, lng]);
-
-        const popup = `
-          <div class="text-sm">
-            <strong>${report.type || 'Untitled Report'}</strong><br/>
-            ${report.description ? `<em>${report.description}</em><br/>` : ""}
-            📍 Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}<br/>
-            🗓️ Date: ${report.timestamp?.toDate().toLocaleString() || 'Unknown'}<br/>
-            ${report.imageUrl 
-              ? `<a href="${report.imageUrl}" target="_blank" class="text-green-600 underline">View Image</a><br/>`
-              : `<span class="text-gray-400 italic">No Image</span><br/>`}
-            ${report.videoUrl 
-              ? `<a href="${report.videoUrl}" target="_blank" class="text-blue-600 underline">View Video</a>`
-              : ``}
-          </div>
-        `;
-        marker.bindPopup(popup);
-      }
-    });
-
-    // ✅ Fit to all markers if any
-    if (bounds.length > 0) {
-      map.fitBounds(bounds, { padding: [30, 30] });
-    }
-  }).catch(err => {
-    console.error("Failed to load markers:", err);
+    const popup = `
+      <div class="text-sm">
+        <strong>${reportType}</strong><br/>
+        ${report.description || ''}<br/>
+        📍 Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}<br/>
+        🗓️ Date: ${report.timestamp?.toDate().toLocaleString() || 'Unknown'}<br/>
+        ${report.imageUrl 
+          ? `<a href="${report.imageUrl}" target="_blank" class="text-green-600 underline">View Image</a>` 
+          : `<span class="text-gray-400 italic">No Image</span>`}
+      </div>
+    `;
+    marker.bindPopup(popup);
   });
+
+  if (bounds.length > 0) {
+    map.fitBounds(bounds, { padding: [30, 30] });
+  }
+
+    }).catch(err => {
+      console.error("⚠️ Firebase error:", err);
+    });
+  }, 100); // wait to make sure DOM is ready
 });
+
 </script>
 
 </body>
