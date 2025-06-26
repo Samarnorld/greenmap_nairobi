@@ -5,13 +5,9 @@ async function loadWardStats() {
   try {
     const res = await fetch("https://greenmap-backend.onrender.com/wards");
     const json = await res.json();
-
  wardStats = json.features.map(f => {
-
-
       const props = f.properties;
       const name = props.NAME_3 || props.ward;
-
       return {
         name,
         ndvi: props.ndvi ?? null,
@@ -22,7 +18,6 @@ async function loadWardStats() {
         anomaly: props.anomaly_mm ?? null
       };
     });
-
     const avgNDVI = (
       wardStats.reduce((sum, w) => sum + (w.ndvi ?? 0), 0) / wardStats.length
     ).toFixed(2);
@@ -34,8 +29,6 @@ async function loadWardStats() {
     console.error("Failed to load ward data from backend:", err);
   }
 }
-
-
 async function loadReportsFromFirebase() {
   const reportTable = document.getElementById("report-table-body");
   reportTable.innerHTML = "";
@@ -78,8 +71,6 @@ async function loadReportsFromFirebase() {
     <button class="text-red-600 hover:underline text-sm" onclick="deleteReport('${doc.id}')">Delete</button>
   </td>
 `;
-
-
       reportTable.appendChild(row);
     });
   } catch (err) {
@@ -132,37 +123,31 @@ function highlightPriorityZones() {
     const bScore = b.ndvi - b.lst;
     return aScore - bScore;
   });
-
   const topWards = sorted.slice(0, 5);
   topWards.forEach((ward, index) => {
     const ndviChange = ward.ndvi && ward.ndviPast
       ? `${(((ward.ndvi - ward.ndviPast) / ward.ndviPast) * 100).toFixed(1)}%`
       : "N/A";
-
     const rainChange = ward.rain && ward.rainPast
       ? `${(((ward.rain - ward.rainPast) / ward.rainPast) * 100).toFixed(1)}%`
       : "N/A";
-
     const item = document.createElement("li");
 item.className = "bg-red-100 dark:bg-red-800 text-red-900 dark:text-white p-2 sm:p-3 rounded-lg shadow-sm text-xs sm:text-sm leading-snug";
-
     item.innerHTML = `
       <strong>#${index + 1} ${ward.name}</strong><br />
-      🌳 NDVI: ${ward.ndvi?.toFixed(2) || "N/A"} (${ndviChange})<br />
-      🔥 LST: ${ward.lst?.toFixed(1) || "N/A"}°C<br />
-      🌧️ Rainfall: ${ward.rain?.toFixed(1) || "N/A"} mm (${rainChange})<br />
-      📉 Anomaly: ${ward.anomaly?.toFixed(1) || "N/A"} mm
+      NDVI: ${ward.ndvi?.toFixed(2) || "N/A"} (${ndviChange})<br />
+      LST: ${ward.lst?.toFixed(1) || "N/A"}°C<br />
+      Rainfall: ${ward.rain?.toFixed(1) || "N/A"} mm (${rainChange})<br />
+      Anomaly: ${ward.anomaly?.toFixed(1) || "N/A"} mm
     `;
     container.appendChild(item);
   });
 }
-// 🔁 Respond to ward click from map
 window.addEventListener("ward:selected", async (e) => {
   const wardName = e.detail.name;
   document.getElementById("ward-selector").value = wardName;
   await loadNdviRainfallTrend(wardName);
 });
-
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("btn-ndvi").addEventListener("click", () => {
     renderWardChart("ndvi");
@@ -175,7 +160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadWardStats();               
   await loadReportsFromFirebase();
   highlightPriorityZones();  
-  await generateReportCharts();  // Phase 8: show analytics
+  await generateReportCharts();
   renderWardChart("ndvi");
 
   await loadNdviRainfallTrend();
@@ -189,7 +174,7 @@ function setActive(onId, offId) {
   document.getElementById(onId).classList.add("bg-green-600", "text-white");
   document.getElementById(offId).classList.remove("bg-green-600", "text-white");
 }
-// Report analysis
+
 async function generateReportCharts() {
   try {
     const snapshot = await db.collection("reports").get();
@@ -253,7 +238,7 @@ async function generateReportCharts() {
     console.error("Error generating report charts:", err);
   }
 }
-// deleting report
+
 async function deleteReport(docId) {
   if (confirm("Are you sure you want to delete this report?")) {
     try {
@@ -265,14 +250,14 @@ async function deleteReport(docId) {
     }
   }
 }
-// Download chart 
+
 document.getElementById("download-chart").addEventListener("click", () => {
   const link = document.createElement("a");
   link.download = "ward_chart.png";
   link.href = document.getElementById("wardChart").toDataURL("image/png");
   link.click();
 });
-// Export reports 
+
 document.getElementById("export-reports").addEventListener("click", async () => {
   try {
     const snapshot = await db.collection("reports").orderBy("timestamp", "desc").limit(100).get();
@@ -295,7 +280,6 @@ document.getElementById("export-reports").addEventListener("click", async () => 
     alert("Could not export reports. Try again.");
   }
 });
-
 document.getElementById("filter-type").addEventListener("change", loadReportsFromFirebase);
 document.getElementById("filter-start").addEventListener("change", loadReportsFromFirebase);
 document.getElementById("filter-end").addEventListener("change", loadReportsFromFirebase);
@@ -306,7 +290,6 @@ document.getElementById("reset-filters").addEventListener("click", () => {
   loadReportsFromFirebase();
 });
 let trendChart;
-
 async function loadNdviRainfallTrend(ward = null, trendMode = "both") {
   try {
     const url = new URL('https://greenmap-backend.onrender.com/trend');
@@ -316,19 +299,15 @@ async function loadNdviRainfallTrend(ward = null, trendMode = "both") {
     const res = await fetch(url);
     const data = await res.json();
 
-    console.log("Trend API response:", data); // 🔍 Inspect here
+    console.log("Trend API response:", data); 
 
     if (!Array.isArray(data)) {
       console.error("Trend data is not an array:", data);
       return;
     }
-
-    // ... your chart code continues
-
     const labels = data.map(d => d.date);
     const ndviValues = data.map(d => d.ndvi ?? null);
     const rainValues = data.map(d => d.rain ?? null);
-
     const ctx = document.getElementById("ndviRainTrendChart").getContext("2d");
     if (trendChart) trendChart.destroy();
     trendChart = new Chart(ctx, {
@@ -380,16 +359,12 @@ async function loadNdviRainfallTrend(ward = null, trendMode = "both") {
     console.error("Trend chart load failed:", err);
   }
 }
-
 async function populateWardDropdown() {
   try {
     const res = await fetch("https://greenmap-backend.onrender.com/wards");
     const data = await res.json();
-
     const select = document.getElementById("ward-selector");
  const names = [...new Set(data.features.map(f => f.properties.NAME_3 || f.properties.ward))].sort();
-
-
     select.innerHTML = `<option value="">All Nairobi</option>` + names.map(n => `<option>${n}</option>`).join('');
   } catch (err) {
     console.error("Ward list load failed:", err);

@@ -1,16 +1,11 @@
 // js/map.js
-
-// 🌍 Initialize Leaflet map
 const map = L.map('map', {
   zoomControl: true
 }).setView([-1.286389, 36.817223], 11);
-// ✅ Scroll-friendly mobile interaction toggle
 if (window.innerWidth <= 768) {
   const mapContainer = document.getElementById('map');
-
   let isInteractive = false;
-
-  // Create floating toggle button
+ 
   const hint = document.createElement('div');
   hint.id = 'map-touch-toggle';
   hint.textContent = '👆 Tap to interact with map';
@@ -56,7 +51,6 @@ if (window.innerWidth <= 768) {
     hint.textContent = 'Tap to stop map interaction';
   }
 
-  // Initially disable map interaction
   disableMapTouch();
 
   hint.addEventListener('click', (e) => {
@@ -68,13 +62,11 @@ if (window.innerWidth <= 768) {
     }
   });
 
-  // Also allow tapping anywhere inside map to enable
   map.on('click', () => {
     if (!isInteractive) enableMapTouch();
   });
 }
 
-// 🗺️ Switch base layers
 document.querySelectorAll('input[name="basemap"]').forEach(radio => {
   radio.addEventListener('change', () => {
     if (radio.value === 'osm') {
@@ -86,7 +78,7 @@ document.querySelectorAll('input[name="basemap"]').forEach(radio => {
     }
   });
 });
-// 🗺️ Base Layers
+
 const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
@@ -97,11 +89,11 @@ const satellite = L.tileLayer(
   }
 );
 
-// 🔄 Layer containers
+
 let ndviLayer, lstLayer, ndviMaskLayer;
 const reportsLayer = L.layerGroup().addTo(map);
 
-// 📍 Add Wards with Live Stats from Backend
+
 Promise.all([
   fetch('../data/wards.geojson').then(res => res.json()),
   fetch('https://greenmap-backend.onrender.com/wards').then(res => res.json())
@@ -153,7 +145,6 @@ layer.on('click', () => {
   window.dispatchEvent(event);
 });
 
-
       } else {
         layer.bindPopup(`<strong>${name}</strong><br>No data available.`);
       }
@@ -162,7 +153,6 @@ layer.on('click', () => {
 })
 .catch(err => console.error('Failed to load wards or stats:', err));
 
-// 🌐 Backend Server
 const BACKEND_URL = 'https://greenmap-backend.onrender.com';
 function getTooltip(label) {
   if (label.includes("NDVI Anomaly")) return "Shows areas with vegetation change vs. last year";
@@ -181,15 +171,14 @@ function loadTileLayer(endpoint, label, opacity, visible = true, range = null) {
     .then(res => res.json())
     .then(data => {
       const layer = L.tileLayer(data.urlFormat, { opacity });
-      // 🔁 Update rainfall legend if it's the Rainfall layer
+ 
 if (label.includes('Rainfall (mm)') && typeof range !== 'undefined') {
   const legendLine = document.querySelector('.legend-rainfall-range');
   if (legendLine) legendLine.textContent = `Total ${range}-day rainfall`;
 }
 
-if (visible) map.addLayer(layer); // only add if visible = true
+if (visible) map.addLayer(layer);
 
-      // Create UI control
       const wrapper = document.createElement('div');
       wrapper.className = "space-y-1 text-[13px]";
 
@@ -205,8 +194,6 @@ wrapper.innerHTML = `
   <input type="range" min="0" max="1" step="0.05" value="${opacity}" data-label="${label}"
     class="w-24 h-[3px] bg-gray-200 rounded appearance-none cursor-pointer dark:bg-gray-700" />
 `;
-
-
 
  const groupKey = label.includes("NDVI") || label.includes("Healthy")
   ? "Vegetation Layers"
@@ -230,13 +217,11 @@ setTimeout(() => {
   }
 }, 50);
 
-      // Toggle visibility
       wrapper.querySelector(".toggle-layer").addEventListener('change', e => {
         if (e.target.checked) map.addLayer(layer);
         else map.removeLayer(layer);
       });
 
-      // Opacity change
       wrapper.querySelector("input[type=range]").addEventListener('input', e => {
         layer.setOpacity(parseFloat(e.target.value));
       });
@@ -244,12 +229,10 @@ setTimeout(() => {
     .catch(err => console.error(`${label} error:`, err));
 }
 
-// Function to load layers with optional date
 function loadAllLayers(date = null, range = null) {
   const layerControls = document.getElementById('layer-controls');
-layerControls.innerHTML = ''; // clear old controls
+layerControls.innerHTML = '';
 
-// Define collapsible sections
 const groups = {
   "Vegetation Layers": document.createElement('div'),
   "Temperature Layers": document.createElement('div'),
@@ -257,7 +240,6 @@ const groups = {
   "Other": document.createElement('div')
 };
 
-// Add collapsible UI blocks to sidebar
 for (const [title, container] of Object.entries(groups)) {
   container.className = "space-y-1";
 
@@ -285,9 +267,9 @@ for (const [title, container] of Object.entries(groups)) {
 if (date) params.append('date', date);
 if (range) params.append('range', range);
 const query = params.toString() ? `?${params.toString()}` : '';
-  loadTileLayer(`ndvi${query}`, '🌳NDVI ', 0.7, true); // ✅ visible
-loadTileLayer(`lst${query}`, 'LST Heatmap🔥', 0.6, true); // ✅ visible
-loadTileLayer(`ndvi-mask${query}`, 'Healthy Zones', 0.75, false); // not visible by default
+  loadTileLayer(`ndvi${query}`, '🌳NDVI ', 0.7, true);
+loadTileLayer(`lst${query}`, 'LST Heatmap🔥', 0.6, true);
+loadTileLayer(`ndvi-mask${query}`, 'Healthy Zones', 0.75, false);
 loadTileLayer(`ndvi-anomaly${query}`, 'NDVI Anomaly🧭', 0.75, false);
 loadTileLayer(`rainfall${query}`, '🌧️ Rainfall (mm)', 0.6, !!range, range);
 
@@ -295,7 +277,6 @@ loadTileLayer(`rainfall-anomaly${query}`, '📉 Rainfall Anomaly', 0.6, false);
 
 }
 
-// Load current date layers after short delay to prioritize UI
 const loadingMsg = document.createElement('div');
 loadingMsg.id = 'loading-map-msg';
 loadingMsg.textContent = '🌿 Loading GreenMap Layers...';
@@ -313,14 +294,11 @@ loadingMsg.style.cssText = `
   font-size: 14px;
 `;
 document.getElementById('map').appendChild(loadingMsg);
-
 setTimeout(() => {
   loadAllLayers();
 }, 800);
 document.getElementById('loading-map-msg')?.remove();
 
-
-// 🔁 Listen for user-selected date
 window.addEventListener('map:loadDate', (e) => {
   const selectedDate = e.detail.date;
   if (selectedDate) {
@@ -331,7 +309,6 @@ window.addEventListener('map:loadDate', (e) => {
 function loadCommunityReports() {
   const layer = reportsLayer;
 
-  // Add to sidebar
   const wrapper = document.createElement('div');
   wrapper.className = "space-y-1";
 
@@ -344,15 +321,13 @@ function loadCommunityReports() {
 
   document.getElementById('layer-controls').appendChild(wrapper);
 
-  // Toggle visibility
   wrapper.querySelector(".toggle-layer").addEventListener('change', e => {
     if (e.target.checked) map.addLayer(layer);
     else map.removeLayer(layer);
   });
 }
-// 🧭 Add Compact Legend
-const legend = L.control({ position: 'bottomright' });
 
+const legend = L.control({ position: 'bottomright' });
 legend.onAdd = function () {
   const wrapper = L.DomUtil.create('div', 'relative');
   wrapper.id = 'legend-wrapper';
@@ -423,7 +398,6 @@ legend.onAdd = function () {
 };
 
 legend.addTo(map);
-// 🔗 Share Button
 L.easyButton('fa-share-alt', () => {
   const center = map.getCenter();
   const zoom = map.getZoom();
@@ -451,23 +425,21 @@ L.easyButton({
   }]
 }).addTo(map);
 
-// 🧭 Restore URL state
 const params = new URLSearchParams(window.location.search);
 if (params.has('lat') && params.has('lng') && params.has('zoom')) {
   map.setView([+params.get('lat'), +params.get('lng')], +params.get('zoom'));
 }
-// Load community reports into control panel
+
 loadCommunityReports();
-// 🔒 Close layer panel on ❌ button click
+
 document.getElementById('close-layer-panel')?.addEventListener('click', () => {
   document.getElementById('custom-layer-panel')?.classList.add('hidden');
 });
-// Handle map resize
+
 window.addEventListener("resize", () => {
   map.invalidateSize();
 });
-// 🌿 Tutorial Logic
-// 🌿 Map Tutorial Slides – Full, Modern Version
+
 const tutorialSteps = [
   {
     title: "Welcome to GreenMap 🌍",
@@ -639,14 +611,12 @@ function showTutorialStep() {
 document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('map-tutorial-overlay');
 
-  // Help Button
     document.getElementById('open-tutorial')?.addEventListener('click', () => {
     currentStep = 0;
     showTutorialStep();
   });
 
 
-  // Navigation
   document.getElementById('prev-step')?.addEventListener('click', () => {
     if (currentStep > 0) {
       currentStep--;
@@ -666,7 +636,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Manual close
   document.getElementById('close-tutorial')?.addEventListener('click', () => {
     if (document.getElementById('dont-show-again')?.checked) {
       localStorage.setItem('greenmap_tutorial_seen', 'true');
@@ -674,12 +643,11 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.classList.add('hidden');
   });
 
-  // Show only on first visit
   const seenTutorial = localStorage.getItem('greenmap_tutorial_seen');
   if (!seenTutorial) {
     setTimeout(() => {
       currentStep = 0;
       showTutorialStep();
-    }, 1200); // delay to allow map to load first
+    }, 1200); 
   }
 });

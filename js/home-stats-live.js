@@ -1,3 +1,4 @@
+// home-stats-live.js
 function animateCount(id, value, suffix = "", duration = 1000) {
   const el = document.getElementById(id);
   let start = 0;
@@ -14,7 +15,6 @@ function animateCount(id, value, suffix = "", duration = 1000) {
   requestAnimationFrame(update);
 }
 
-// Show shimmer placeholders initially
 ["green-coverage", "heat-zones", "veg-anomaly", "veg-trend", "rain-deficit"].forEach((id) => {
   document.getElementById(id).innerHTML =
     `<div class="w-16 h-6 rounded-md bg-gray-300 dark:bg-gray-700 animate-pulse mx-auto"></div>`;

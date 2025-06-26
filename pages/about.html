@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About - GreenMap</title>
-<!-- Tailwind CSS -->
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -55,17 +55,16 @@
   };
 </script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-<!-- Firebase -->
+
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <script src="../js/firebase.js"></script>
   <link rel="stylesheet" href="../assets/style.css" />
-<!-- AOS CSS -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 </head>
 <body class="font-sans bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
-<!-- Header -->
+
   <header class="w-full bg-[#104F1F] dark:bg-[#0f3b17] shadow-md fixed top-0 z-50 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
@@ -75,7 +74,9 @@
         </a>
         <nav class="hidden md:flex items-center space-x-4 lg:space-x-6 font-medium text-sm sm:text-[15px]">
           <a href="../index.html" class="hover:text-lime-300 transition">Home</a>
+          <a href="/pages/map.html" class="block hover:text-lime-300 transition">Map</a>
           <a href="/pages/dashboard.html" class="hover:text-lime-300 transition">Dashboard</a>
+             <a href="/pages/reports.html" class="block hover:text-lime-300 transition">Reports</a>
           <a href="/pages/about.html" class="hover:text-lime-300 transition">About</a>
           <button id="theme-toggle" title="Toggle Theme" class="ml-2 sm:ml-4 p-1 sm:p-2 rounded-full bg-black text-white hover:bg-gray-800 text-sm">🌙</button>
         </nav>
@@ -97,7 +98,7 @@
   </div>
 </div>
   </header>
-  <!-- Main -->
+
   <main class="flex-grow bg-gray-50 dark:bg-gray-900 pt-28 md:pt-24 pb-12">
     <section class="max-w-5xl mx-auto px-4 sm:px-6">
 <div class="bg-gradient-to-br from-green-200 via-slate-50 to-emerald-100 dark:from-[#0c2e14] dark:via-gray-900 dark:to-[#104f1f] rounded-xl p-8 sm:p-10 text-center mb-12 sm:mb-16 shadow-[0_4px_30px_rgba(0,128,0,0.15)] animate-zoom-fade will-change-transform">
@@ -110,7 +111,7 @@
     </p>
   </div>
 </div>
-<!-- Mission and Vision -->
+
 <div class="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
  <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600" data-aos="fade-up">
     <div class="flex items-center mb-4">
@@ -138,7 +139,7 @@
     </p>
   </div>
 </div>
-<!-- Solutions -->
+
 <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg mb-8 sm:mb-12" data-aos="fade-up" data-aos-delay="200">
   <div class="flex items-center mb-4 sm:mb-6">
     <span class="text-2xl sm:text-3xl">🛠️</span>
@@ -167,7 +168,7 @@
     </div>
   </div>
 </div>
-<!-- Impact -->
+
       <div class="about-card bg-gradient-to-r from-green-700 to-green-600 p-6 sm:p-8 rounded-xl shadow-lg text-white" data-aos="fade-up" data-aos-delay="300">
         <div class="flex items-center mb-4 sm:mb-6">
           <span class="text-2xl">📊</span>
@@ -178,7 +179,7 @@
         </p>
       </div>
     </section>
-<!-- Join the Green Movement -->
+
 <section class="max-w-6xl mx-auto px-4 sm:px-6 my-16" data-aos="zoom-in-up">
   <div class="bg-green-100 dark:bg-green-900 rounded-lg overflow-hidden shadow-md flex flex-col md:flex-row items-center md:items-start">
     <img src="../assets/green-movement.jpg" alt="Join the Movement" class="w-full md:w-1/2 h-64 object-cover md:rounded-l-lg" />
@@ -195,10 +196,10 @@
   </div>
 </section>
   </main>
-  <!-- Footer -->
+
 <footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-<!-- mobile footer -->
+
       <div class="md:hidden space-y-6 text-center">
         <div class="space-y-2">
           <p class="font-semibold text-gray-800 dark:text-white">Quick Links</p>
@@ -234,7 +235,7 @@
         <p class="text-gray-800 dark:text-white font-semibold">&copy; 2025 GreenMap. All rights reserved.</p>
         <p class="mt-1 font-semibold tracking-wide text-lime-300">GAIAthon 2025</p>
       </div>
-      <!-- PC footer -->
+
       <div class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
         <div>
           <p class="text-gray-800 dark:text-white font-semibold mb-2">&copy; 2025 GreenMap. All rights reserved.</p>

@@ -1,4 +1,4 @@
-// ✅ Firebase configuration
+// firebase.js
 const firebaseConfig = {
   apiKey: "AIzaSyCMLft42d3eSj2RMAiqP9D0Q7ng9VFJBSQ",
   authDomain: "greenmap-2.firebaseapp.com",
@@ -8,7 +8,7 @@ const firebaseConfig = {
   appId: "1:1058885185947:web:dc3fe6079510b8ac09313e"
 };
 
-// ✅ Initialize Firebase
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage();
@@ -16,10 +16,9 @@ const storage = firebase.storage();
 window.db = db;
 window.storage = storage;
 
-// ✅ Form logic runs only when the report form exists
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("report-form");
-  if (!form) return; // 🛑 Exit if form doesn't exist
+  if (!form) return; 
 
   const submitBtn = form.querySelector('button[type="submit"]');
   const spinner = document.getElementById("spinner");
@@ -34,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Collect fields
     const type = form.querySelector("#reportType")?.value || "Other";
     const description = form.querySelector("#description")?.value.trim() || "";
     const severity = form.querySelector('input[name="severity"]:checked')?.value || "";
@@ -59,14 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
       let imageUrl = "";
       let videoUrl = "";
 
-      // ✅ Upload image if provided
       if (imageFile) {
         const imgRef = storage.ref(`reports/images/${Date.now()}_${imageFile.name}`);
         const imgSnap = await imgRef.put(imageFile);
         imageUrl = await imgSnap.ref.getDownloadURL();
       }
 
-      // ✅ Upload video file if provided
       if (videoFile) {
         const vidRef = storage.ref(`reports/videos/${Date.now()}_${videoFile.name}`);
         const vidSnap = await vidRef.put(videoFile);

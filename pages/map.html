@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GreenMap Nairobi</title>
 
-  <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -37,30 +36,19 @@
   };
 </script>
 
-
-  <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- Leaflet EasyButton -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
-  <!-- Firebase Config -->
   <script src="../js/firebase.js"></script>
-
   <style>
    .leaflet-top.leaflet-left {
-  margin-top: 1rem; /* smaller push */
+  margin-top: 1rem;
 }
-
-    
-    /* Custom scrollbar for layer panel */
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
     }
@@ -68,11 +56,9 @@
       background: rgba(0,0,0,0.05);
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(16, 185, 129, 0.4); /* light lime green */
+  background-color: rgba(16, 185, 129, 0.4);
   border-radius: 3px;
 }
-
-    /* Custom toggle switch */
     .toggle-switch {
       position: relative;
       display: inline-block;
@@ -116,14 +102,12 @@
   animation-play-state: paused;
   cursor: pointer;
 }
-
   </style>
-
   <link rel="stylesheet" href="../assets/style.css" />
 </head>
 <body class="font-sans bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
 
-  <!-- Header -->
+
   <header class="w-full bg-[#104F1F] dark:bg-[#0f3b17] shadow-md fixed top-0 z-50 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
@@ -133,7 +117,9 @@
         </a>
         <nav class="hidden md:flex items-center space-x-4 lg:space-x-6 font-medium text-sm sm:text-[15px]">
           <a href="../index.html" class="hover:text-lime-300 transition">Home</a>
+          <a href="/pages/map.html" class="block hover:text-lime-300 transition">Map</a>
           <a href="/pages/dashboard.html" class="hover:text-lime-300 transition">Dashboard</a>
+             <a href="/pages/reports.html" class="block hover:text-lime-300 transition">Reports</a>
           <a href="/pages/about.html" class="hover:text-lime-300 transition">About</a>
           <button id="theme-toggle" title="Toggle Theme" class="ml-2 sm:ml-4 p-1 sm:p-2 rounded-full bg-black text-white hover:bg-gray-800 text-sm">🌙</button>
         </nav>
@@ -154,21 +140,15 @@
     <button id="theme-toggle-mobile" class="w-full text-left hover:text-lime-300 transition">🌙 Theme</button>
   </div>
 </div>
-
-
   </header>
 
-  <!-- Main Map Area -->
- <main class="flex-grow pt-20 relative z-0 px-0 sm:px-6 w-full overflow-x-hidden overflow-y-auto touch-auto sm:overflow-visible">
 
+ <main class="flex-grow pt-20 relative z-0 px-0 sm:px-6 w-full overflow-x-hidden overflow-y-auto touch-auto sm:overflow-visible">
     <div class="max-w-7xl mx-auto">
       <section class="map-card relative overflow-hidden">
         <div class="relative">
-          <!-- Map container -->
           <div class="sm:px-0 px-5">
-   <!-- Date Pickers: Load NDVI/LST for selected date -->
 <div class="mb-4 flex flex-wrap sm:flex-nowrap items-center gap-3">
-  <!-- Rainfall Range Selector -->
 <label for="rain-range" class="text-sm font-medium text-gray-700 dark:text-gray-200">
   Rainfall Range:
 </label>
@@ -178,7 +158,6 @@
   <option value="90" selected>90 days</option>
 </select>
 
-  <!-- Load Single Date -->
   <label for="date-picker" class="text-sm font-medium text-gray-700 dark:text-gray-200">
     Select Date:
   </label>
@@ -190,22 +169,16 @@
     Help me understand the map
   </button>
 </div>
-
-    
  <div id="map" class="w-full h-[calc(100vh-64px)] sm:h-[75vh] rounded-2xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-[0_8px_24px_rgba(0,0,0,0.1)] hover:ring hover:ring-lime-400/40 transition-all duration-500 z-0 relative"></div>
 </div>
+      <div id="map-controls" class="absolute top-3 right-3 z-[1000] flex flex-row-reverse gap-2">
+        <button id="overlay-toggle" title="Toggle Layers" class="w-10 h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition transform hover:shadow-xl active:scale-95">
+       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+         </svg>
+         </button>
+       </div>
 
-
-          <!-- Floating Map Controls -->
-          <div id="map-controls" class="absolute top-3 right-3 z-[1000] flex flex-row-reverse gap-2">
-            <button id="overlay-toggle" title="Toggle Layers" class="w-10 h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition transform hover:shadow-xl active:scale-95">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
-            </button>
-          </div>
-
-          <!-- Layer Panel -->
 <div id="custom-layer-panel" style="width:6.0cm; height:6.5cm;" class="hidden absolute top-16 right-3 overflow-hidden flex flex-col bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl p-3 z-[999] text-sm animate-slide-in">
   <div class="flex justify-between items-center mb-3">
     <h3 class="font-bold text-gray-800 dark:text-gray-200 text-base flex items-center gap-2">
@@ -220,9 +193,8 @@
       </svg>
     </button>
   </div>
-  
+
 <div class="custom-scrollbar overflow-y-auto pr-1 space-y-3 flex-grow">
-    <!-- Base Maps -->
     <div class="bg-gray-50/80 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600">
       <h4 class="font-semibold text-gray-800 dark:text-gray-200 text-sm mb-2 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -247,8 +219,7 @@
         </label>
       </div>
     </div>
-
-    <!-- Data Layers -->
+  
     <div class="bg-gray-50/80 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600">
       <h4 class="font-semibold text-gray-800 dark:text-gray-200 text-sm mb-2 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -260,7 +231,7 @@
     </div>
   </div>
 </div>
-<!-- 🧭 Interactive Map Tutorial Modal -->
+
 <div id="map-tutorial-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[2000] hidden flex items-center justify-center px-4">
   <div class="bg-white dark:bg-gray-900 rounded-xl max-w-xl w-full p-6 shadow-xl text-sm sm:text-base relative animate-fade-in">
     <button id="close-tutorial" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 dark:hover:text-white transition text-lg">✖</button>
@@ -281,10 +252,9 @@
 </div>
 
 
-
   <footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <!-- Mobile Footer - Stacked -->
+
       <div class="md:hidden space-y-6 text-center">
         <div class="space-y-2">
           <p class="font-semibold text-gray-800 dark:text-white">Quick Links</p>
@@ -295,13 +265,11 @@
             <a href="/pages/about.html" class="text-green-700 hover:underline">About</a>
           </div>
         </div>
-        
         <div class="space-y-2">
           <p class="font-semibold text-gray-800 dark:text-white">Contact Us</p>
           <p><a href="mailto:contact@greenmap.org" class="text-green-700 hover:underline">contact@greenmap.org</a></p>
           <p><a href="tel:+254757439204" class="text-green-700 hover:underline">+254 757 439 204</a></p>
         </div>
-        
         <div class="flex justify-center space-x-4">
           <a href="https://linkedin.com/in/greenmap" target="_blank" aria-label="LinkedIn" class="text-gray-600 dark:text-gray-300 hover:text-green-700">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -319,17 +287,14 @@
             </svg>
           </a>
         </div>
-        
         <p class="text-gray-800 dark:text-white font-semibold">&copy; 2025 GreenMap. All rights reserved.</p>
         <p class="mt-1 font-semibold tracking-wide text-lime-300">GAIAthon 2025</p>
       </div>
-      
-      <!-- Desktop Footer - 3 Columns -->
+
       <div class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
         <div>
           <p class="text-gray-800 dark:text-white font-semibold mb-2">&copy; 2025 GreenMap. All rights reserved.</p>
           <p class="mt-1 font-semibold tracking-wide text-lime-300">GAIAthon 2025</p>
-          
         </div>
         <div>
           <p class="font-semibold text-gray-800 dark:text-white mb-1">Contact Us</p>
@@ -367,8 +332,6 @@
       alert('Please select a date first.');
       return;
     }
-
-    // Dispatch event that map.js can listen for
    const selectedRange = document.getElementById('rain-range').value;
 window.dispatchEvent(new CustomEvent('map:loadDate', {
   detail: {
@@ -376,7 +339,6 @@ window.dispatchEvent(new CustomEvent('map:loadDate', {
     range: selectedRange
   }
 }));
-
   });
 </script>
 
@@ -397,7 +359,6 @@ document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link =
       const html = document.documentElement;
       const themeToggle = document.getElementById('theme-toggle');
       const themeToggleMobile = document.getElementById('theme-toggle-mobile');
-
       function toggleTheme() {
         const isDark = html.classList.contains('dark');
         html.classList.toggle('dark');
@@ -406,19 +367,16 @@ document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link =
         if (themeToggleMobile) themeToggleMobile.textContent = isDark ? '☀ Light Mode' : '🌙 Dark Mode';
         localStorage.setItem('theme', isDark ? 'light' : 'dark');
       }
-
       const saved = localStorage.getItem('theme');
 if (saved === 'dark') {
   html.classList.add('dark');
   if (themeToggle) themeToggle.textContent = '☀';
   if (themeToggleMobile) themeToggleMobile.textContent = '☀ Theme';
 } else {
-  html.classList.remove('dark'); // Force light mode as default
+  html.classList.remove('dark');
   if (themeToggle) themeToggle.textContent = '🌙';
   if (themeToggleMobile) themeToggleMobile.textContent = '🌙 Theme';
 }
-
-
       themeToggle?.addEventListener('click', toggleTheme);
       themeToggleMobile?.addEventListener('click', toggleTheme);
 
@@ -427,27 +385,20 @@ if (saved === 'dark') {
     mobileMenu.classList.add('hidden');
   }
 });
-
-      // Enhanced layer panel toggle
       const overlayToggle = document.getElementById('overlay-toggle');
       const layerPanel = document.getElementById('custom-layer-panel');
       const closePanelBtn = document.getElementById('close-layer-panel');
       const mobileLayerToggle = document.getElementById('mobile-layer-toggle');
-
       overlayToggle?.addEventListener('click', (e) => {
         e.stopPropagation();
         layerPanel?.classList.toggle('hidden');
       });
-
       closePanelBtn?.addEventListener('click', () => {
         layerPanel?.classList.add('hidden');
       });
-
       mobileLayerToggle?.addEventListener('click', () => {
         layerPanel?.classList.toggle('hidden');
       });
-
-      // Close panel when clicking outside
       document.addEventListener('click', (e) => {
         if (!layerPanel?.contains(e.target) && e.target !== overlayToggle && e.target !== mobileLayerToggle) {
           layerPanel?.classList.add('hidden');
@@ -455,6 +406,7 @@ if (saved === 'dark') {
       });
     });
   </script>
+
   <script>
   document.getElementById('rain-range')?.addEventListener('change', (e) => {
     const range = e.target.value;
@@ -466,7 +418,6 @@ if (saved === 'dark') {
   });
 </script>
 
-  <!-- JS -->
   <script src="../js/map.js"></script>
 </body>
 </html>
