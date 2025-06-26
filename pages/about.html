@@ -4,10 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About - GreenMap</title>
-  <!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
-
 <!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     darkMode: 'class',
@@ -56,24 +54,18 @@
     },
   };
 </script>
-
-
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
-  <!-- Firebase SDKs -->
+<!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
-  <!-- Firebase Configuration -->
   <script src="../js/firebase.js"></script>
   <link rel="stylesheet" href="../assets/style.css" />
-  <!-- AOS CSS -->
+<!-- AOS CSS -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-
 </head>
 <body class="font-sans bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
-  <!-- Header -->
+<!-- Header -->
   <header class="w-full bg-[#104F1F] dark:bg-[#0f3b17] shadow-md fixed top-0 z-50 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
@@ -97,20 +89,18 @@
     <div id="mobile-menu" class="hidden md:hidden absolute top-16 right-4 w-48 bg-[#104F1F] dark:bg-[#0f3b17] text-sm text-white font-medium rounded-lg shadow-xl ring-1 ring-green-600 z-50">
   <div class="flex flex-col px-4 py-3 space-y-2 text-left">
     <a href="../index.html" class="block hover:text-lime-300 transition">Home</a>
+     <a href="/pages/map.html" class="block hover:text-lime-300 transition">Map</a>
     <a href="/pages/dashboard.html" class="block hover:text-lime-300 transition">Dashboard</a>
     <a href="/pages/reports.html" class="block hover:text-lime-300 transition">Reports</a>
     <a href="/pages/about.html" class="block hover:text-lime-300 transition">About</a>
     <button id="theme-toggle-mobile" class="w-full text-left hover:text-lime-300 transition">🌙 Theme</button>
   </div>
 </div>
-
   </header>
   <!-- Main -->
   <main class="flex-grow bg-gray-50 dark:bg-gray-900 pt-28 md:pt-24 pb-12">
     <section class="max-w-5xl mx-auto px-4 sm:px-6">
-  <!-- About Intro with Smooth Zoom-Fade Animation -->
 <div class="bg-gradient-to-br from-green-200 via-slate-50 to-emerald-100 dark:from-[#0c2e14] dark:via-gray-900 dark:to-[#104f1f] rounded-xl p-8 sm:p-10 text-center mb-12 sm:mb-16 shadow-[0_4px_30px_rgba(0,128,0,0.15)] animate-zoom-fade will-change-transform">
-
   <h1 class="text-3xl xs:text-4xl sm:text-5xl font-bold text-green-700 dark:text-green-400 mb-4 sm:mb-6">
     About GreenMap
   </h1>
@@ -120,13 +110,9 @@
     </p>
   </div>
 </div>
-
-
-      <!-- Mission & Vision Row -->
+<!-- Mission and Vision -->
 <div class="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
-  <!-- Mission -->
  <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600" data-aos="fade-up">
-
     <div class="flex items-center mb-4">
       <lottie-player 
         src="https://assets2.lottiefiles.com/packages/lf20_u4yrau.json"
@@ -142,11 +128,7 @@
       To empower communities and decision-makers with actionable environmental insights by democratizing access to vegetation, urban heat, and citizen-reported data - transforming science into community-driven solutions.
     </p>
   </div>
-
-  <!-- Vision -->
  <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border-l-4 border-green-600" data-aos="fade-up" data-aos-delay="100">
-
-
     <div class="flex items-center mb-4">
       <span class="text-2xl">🔭</span>
       <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Vision</h2>
@@ -156,11 +138,8 @@
     </p>
   </div>
 </div>
-
-
-<!-- Our Solutions -->
+<!-- Solutions -->
 <div class="about-card bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg mb-8 sm:mb-12" data-aos="fade-up" data-aos-delay="200">
-
   <div class="flex items-center mb-4 sm:mb-6">
     <span class="text-2xl sm:text-3xl">🛠️</span>
     <h2 class="text-xl sm:text-2xl font-semibold text-green-700 dark:text-green-400 ml-3">Our Solutions</h2>
@@ -188,14 +167,8 @@
     </div>
   </div>
 </div>
-
-
-
-
-      <!-- Impact -->
+<!-- Impact -->
       <div class="about-card bg-gradient-to-r from-green-700 to-green-600 p-6 sm:p-8 rounded-xl shadow-lg text-white" data-aos="fade-up" data-aos-delay="300">
-
-
         <div class="flex items-center mb-4 sm:mb-6">
           <span class="text-2xl">📊</span>
           <h2 class="text-xl sm:text-2xl font-semibold ml-3">Our Impact</h2>
@@ -205,12 +178,8 @@
         </p>
       </div>
     </section>
-    <!-- Insert this inside your <main> tag before the closing </main> -->
-
 <!-- Join the Green Movement -->
 <section class="max-w-6xl mx-auto px-4 sm:px-6 my-16" data-aos="zoom-in-up">
-
-
   <div class="bg-green-100 dark:bg-green-900 rounded-lg overflow-hidden shadow-md flex flex-col md:flex-row items-center md:items-start">
     <img src="../assets/green-movement.jpg" alt="Join the Movement" class="w-full md:w-1/2 h-64 object-cover md:rounded-l-lg" />
     <div class="p-6 md:w-1/2">
@@ -225,13 +194,11 @@
     </div>
   </div>
 </section>
-
   </main>
-
   <!-- Footer -->
-  <footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
+<footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <!-- Mobile Footer - Stacked -->
+<!-- mobile footer -->
       <div class="md:hidden space-y-6 text-center">
         <div class="space-y-2">
           <p class="font-semibold text-gray-800 dark:text-white">Quick Links</p>
@@ -242,13 +209,11 @@
             <a href="/pages/about.html" class="text-green-700 hover:underline">About</a>
           </div>
         </div>
-        
         <div class="space-y-2">
           <p class="font-semibold text-gray-800 dark:text-white">Contact Us</p>
           <p><a href="mailto:contact@greenmap.org" class="text-green-700 hover:underline">contact@greenmap.org</a></p>
           <p><a href="tel:+254757439204" class="text-green-700 hover:underline">+254 757 439 204</a></p>
         </div>
-        
         <div class="flex justify-center space-x-4">
           <a href="https://linkedin.com/in/greenmap" target="_blank" aria-label="LinkedIn" class="text-gray-600 dark:text-gray-300 hover:text-green-700">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -266,12 +231,10 @@
             </svg>
           </a>
         </div>
-        
         <p class="text-gray-800 dark:text-white font-semibold">&copy; 2025 GreenMap. All rights reserved.</p>
         <p class="mt-1 font-semibold tracking-wide text-lime-300">GAIAthon 2025</p>
       </div>
-      
-      <!-- Desktop Footer - 3 Columns -->
+      <!-- PC footer -->
       <div class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
         <div>
           <p class="text-gray-800 dark:text-white font-semibold mb-2">&copy; 2025 GreenMap. All rights reserved.</p>
@@ -305,7 +268,6 @@
       </div>
     </div>
   </footer>
-
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const html = document.documentElement;
@@ -313,7 +275,6 @@
     const themeToggleMobile = document.getElementById('theme-toggle-mobile');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuToggle = document.getElementById('mobile-menu-toggle');
-
     function toggleTheme() {
       const isDark = html.classList.contains('dark');
       html.classList.toggle('dark');
@@ -322,36 +283,27 @@
       if (themeToggleMobile) themeToggleMobile.textContent = icon + ' Theme';
       localStorage.setItem('theme', isDark ? 'light' : 'dark');
     }
-
    const saved = localStorage.getItem('theme');
 if (saved === 'dark') {
   html.classList.add('dark');
   if (themeToggle) themeToggle.textContent = '☀';
   if (themeToggleMobile) themeToggleMobile.textContent = '☀ Theme';
 } else {
-  html.classList.remove('dark'); // Force light mode as default
+  html.classList.remove('dark');
   if (themeToggle) themeToggle.textContent = '🌙';
   if (themeToggleMobile) themeToggleMobile.textContent = '🌙 Theme';
 }
-
-
     themeToggle?.addEventListener('click', toggleTheme);
     themeToggleMobile?.addEventListener('click', toggleTheme);
-
-    // Mobile menu toggle
     menuToggle?.addEventListener('click', e => {
       e.stopPropagation();
       mobileMenu?.classList.toggle('hidden');
     });
-
-    // Auto-close when a mobile menu link is clicked
     document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu?.classList.add('hidden');
       });
     });
-
-    // Close when clicking outside
     document.addEventListener('click', (e) => {
       if (!mobileMenu.contains(e.target) && e.target !== menuToggle) {
         mobileMenu.classList.add('hidden');
@@ -359,18 +311,15 @@ if (saved === 'dark') {
     });
   });
 </script>
-<!-- AOS JS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init({
-    once: false, // ❗ animations repeat every time you scroll into view
-    duration: 800, // animation speed in ms
-    easing: 'ease-in-out', // smooth animation
-    offset: 100, // trigger offset from viewport
-    mirror: true // animate again when scrolling back up
+    once: false,
+    duration: 800,
+    easing: 'ease-in-out', 
+    offset: 100, 
+    mirror: true 
   });
 </script>
-
-
 </body>
 </html>

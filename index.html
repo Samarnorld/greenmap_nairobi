@@ -36,15 +36,11 @@
     }
     
   </script>
-  
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" />
   <link rel="stylesheet" href="assets/style.css" />
-  <!-- AOS CSS -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
 </head>
 <body class="font-sans bg-white dark:bg-gray-900 flex flex-col min-h-screen">
-
 <!-- HEADER -->
 <header class="w-full bg-[#104F1F] dark:bg-[#0f3b17] shadow-md fixed top-0 z-50 text-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,18 +65,16 @@
 <div id="mobile-menu" class="hidden md:hidden absolute top-16 right-4 w-48 bg-[#104F1F] dark:bg-[#0f3b17] text-sm text-white font-medium rounded-lg shadow-xl ring-1 ring-green-600 z-50">
   <div class="flex flex-col px-4 py-3 space-y-2 text-left">
     <a href="../index.html" class="block hover:text-lime-300 transition">Home</a>
+     <a href="/pages/map.html" class="block hover:text-lime-300 transition">Map</a>
     <a href="/pages/dashboard.html" class="block hover:text-lime-300 transition">Dashboard</a>
     <a href="/pages/reports.html" class="block hover:text-lime-300 transition">Reports</a>
     <a href="/pages/about.html" class="block hover:text-lime-300 transition">About</a>
     <button id="theme-toggle-mobile" class="w-full text-left hover:text-lime-300 transition">🌙 Theme</button>
   </div>
 </div>
-
 </header>
-
-<!-- MAIN SECTION -->
+<!-- main -->
 <main class="relative flex-grow pt-16">
-  <!-- Hero Section -->
   <section class="relative bg-cover bg-center bg-no-repeat flex items-center text-white min-h-[92vh] sm:min-h-[calc(100vh-80px)]"
     style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)), url('../assets/nairobi-bg.webp'); background-attachment: fixed;">
     <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-24 text-center md:text-left flex flex-col md:flex-row items-center gap-8 md:gap-12">
@@ -103,8 +97,7 @@
         </div>
       </div>
 <div class="md:w-1/2 grid grid-cols-2 gap-2 xs:gap-3 sm:gap-5 md:gap-6 animate-fade-in" style="animation-delay: 0.7s;">
-
-  <!-- 🌳 Green Coverage -->
+  <!-- Green Coverage -->
 <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-green-400/30 text-green-200 text-sm sm:text-base">
   <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
     <span class="text-lg">🌳</span>
@@ -122,8 +115,7 @@
     </div>
   </div>
 </div>
-
-<!-- 🔥 Heat Alert Zones -->
+<!-- Heat Alert Zones -->
 <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-red-400/30 text-red-300 text-sm sm:text-base">
   <div class="flex items-center gap-2 mb-1">
     <span class="text-lg">🔥</span>
@@ -144,8 +136,7 @@
     </div>
   </div>
 </div>
-
-<!-- 🌧️ Rainfall Anomaly -->
+<!-- Rainfall Anomaly -->
 <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-blue-400/30 text-blue-300 text-sm sm:text-base">
   <div class="grid grid-cols-[auto,1fr] items-start gap-2 mb-1">
     <span class="text-lg">🌧️</span>
@@ -165,8 +156,7 @@
     </div>
   </div>
 </div>
-
-<!-- 📈 Greening Trend -->
+<!-- Greening Trend -->
 <div class="bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-emerald-400/30 text-emerald-200 text-sm sm:text-base">
   <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
     <span class="text-lg">📈</span>
@@ -184,8 +174,7 @@
     </div>
   </div>
 </div>
-
-<!-- 📉 Rainfall Deficit Zones (Full Width) -->
+<!-- Rainfall Deficit Zones (Full Width) -->
 <div class="col-span-2 bg-white/10 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 xs:p-3 sm:p-4 shadow-xl border border-indigo-400/30 text-indigo-200 text-sm sm:text-base">
   <div class="grid grid-cols-[auto,1fr] items-center gap-2 mb-1">
     <span class="text-lg">📉</span>
@@ -203,9 +192,6 @@
     </div>
   </div>
 </div>
-
-
-
     <!-- Scrolling indicator -->
     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
       <svg class="w-6 h-6 text-lime-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,7 +199,7 @@
       </svg>
     </div>
   </section>
-<!-- How GreenMap Works Section -->
+<!-- How GreenMap Works -->
 <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-6" data-aos="fade-zoom-in">
   <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">
     💡 How GreenMap Works
@@ -240,16 +226,11 @@
     </div>
   </div>
 </section>
-
-
-
-
 </main>
-
-<!-- Rest of your footer and scripts remain the same -->
+<!-- footer -->
 <footer class="w-full bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <!-- Mobile Footer - Stacked -->
+      <!-- Mobile -->
       <div class="md:hidden space-y-6 text-center">
         <div class="space-y-2">
           <p class="font-semibold text-gray-800 dark:text-white">Quick Links</p>
@@ -260,13 +241,11 @@
             <a href="/pages/about.html" class="text-green-700 hover:underline">About</a>
           </div>
         </div>
-        
         <div class="space-y-2">
           <p class="font-semibold text-gray-800 dark:text-white">Contact Us</p>
           <p><a href="mailto:contact@greenmap.org" class="text-green-700 hover:underline">contact@greenmap.org</a></p>
           <p><a href="tel:+254757439204" class="text-green-700 hover:underline">+254 757 439 204</a></p>
         </div>
-        
         <div class="flex justify-center space-x-4">
           <a href="https://linkedin.com/in/greenmap" target="_blank" aria-label="LinkedIn" class="text-gray-600 dark:text-gray-300 hover:text-green-700">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -284,12 +263,10 @@
             </svg>
           </a>
         </div>
-        
         <p class="text-gray-800 dark:text-white font-semibold">&copy; 2025 GreenMap. All rights reserved.</p>
         <p class="mt-1 font-semibold tracking-wide text-lime-300">GAIAthon 2025</p>
       </div>
-      
-      <!-- Desktop Footer - 3 Columns -->
+      <!-- pc Footer -->
       <div class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
         <div>
           <p class="text-gray-800 dark:text-white font-semibold mb-2">&copy; 2025 GreenMap. All rights reserved.</p>
@@ -323,9 +300,7 @@
       </div>
     </div>
   </footer>
-
-
-<!-- ✅ Theme Toggle & Mobile Menu -->
+<!-- Mobile Menu -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const html = document.documentElement;
@@ -333,8 +308,6 @@
     const themeToggleMobile = document.getElementById('theme-toggle-mobile');
     const menuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
-
-    // ✅ Theme Setup: default to light, use saved preference if exists
     const saved = localStorage.getItem('theme');
     if (saved === 'dark') {
       html.classList.add('dark');
@@ -345,8 +318,6 @@
       if (themeToggle) themeToggle.textContent = '🌙';
       if (themeToggleMobile) themeToggleMobile.textContent = '🌙 Theme';
     }
-
-    // ✅ Toggle theme on button click
     function toggleTheme() {
       const isDark = html.classList.contains('dark');
       html.classList.toggle('dark');
@@ -355,22 +326,17 @@
       if (themeToggle) themeToggle.textContent = newTheme === 'dark' ? '☀' : '🌙';
       if (themeToggleMobile) themeToggleMobile.textContent = newTheme === 'dark' ? '☀ Theme' : '🌙 Theme';
     }
-
     themeToggle?.addEventListener('click', toggleTheme);
     themeToggleMobile?.addEventListener('click', toggleTheme);
-
-    // 📱 Mobile menu logic
     menuToggle?.addEventListener('click', e => {
       e.stopPropagation();
       mobileMenu?.classList.toggle('hidden');
     });
-
     document.querySelectorAll('#mobile-menu a, #theme-toggle-mobile').forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu?.classList.add('hidden');
       });
     });
-
     document.addEventListener('click', e => {
       if (!mobileMenu.contains(e.target) && e.target !== menuToggle) {
         mobileMenu.classList.add('hidden');
@@ -378,13 +344,10 @@
     });
   });
 </script>
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script> 
 <script src="js/firebase.js"></script>
-
-
 <script src="js/home-stats-live.js"></script>
 <script>
   function toggleExplanation(id) {
@@ -392,11 +355,9 @@
     el.classList.toggle("hidden");
   }
 </script>
-<!-- AOS JS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init();
 </script>
-
 </body>
 </html>
