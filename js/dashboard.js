@@ -191,23 +191,48 @@ async function generateReportCharts() {
       }
     });
     const typeCtx = document.getElementById("report-type-chart").getContext("2d");
-    new Chart(typeCtx, {
-      type: "pie",
-      data: {
-        labels: Object.keys(typeCounts),
-        datasets: [{
-          label: "Report Types",
-          data: Object.values(typeCounts),
-          backgroundColor: ["#22c55e", "#facc15", "#ef4444", "#3b82f6", "#a855f7", "#94a3b8"]
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: "bottom" }
+new Chart(typeCtx, {
+  type: "pie",
+  data: {
+    labels: Object.keys(typeCounts),
+    datasets: [{
+      label: "Report Types",
+      data: Object.values(typeCounts),
+      backgroundColor: Object.keys(typeCounts).map(type => {
+        
+        switch(type) {
+          case 'Illegal Tree Cutting':
+          case 'Vegetation loss/ Illegal Tree Cutting':
+            return '#25c55e'; 
+          case 'Extreme Urban Heat Zone':
+          case 'Urban Heat Spot':
+            return '#eab308'; 
+          case 'Wild fire':
+          case 'Wild Fire':
+            return '#ef4444'; 
+          case 'Restoration':
+            return '#3b82f6'; 
+          case 'Illegal Dumping':
+            return '#64748b'; 
+          case 'Wildlife':
+          case 'Rogue Wildlife spotted':
+            return '#a855f7'; 
+          case 'Blocked Drainage':
+          case 'Environmental hazard (e.g blocked Drainage)':
+            return '#94a3b8'; 
+          default:
+            return '#ffffff'; 
         }
-      }
-    });
+      })
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: "bottom" }
+    }
+  }
+});
     const sortedMonths = Object.keys(monthCounts).sort((a, b) => new Date(a) - new Date(b));
     const monthCtx = document.getElementById("reports-month-chart").getContext("2d");
     new Chart(monthCtx, {

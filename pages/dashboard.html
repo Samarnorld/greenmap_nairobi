@@ -331,27 +331,44 @@ if (saved === 'dark') {
   });
 </script>
 <script>
-  function getMarkerIconByType(type) {
+ function getMarkerIconByType(type) {
   const normalized = (type || "").toLowerCase();
-  let color = "black";
+  let color = "#EDF2F7"; 
 
-  if (normalized.includes("tree")) color = "green";
-  else if (normalized.includes("dump") || normalized.includes("waste")) color = "blue";
-  else if (normalized.includes("fire")) color = "red";
-  else if (normalized.includes("drain")) color = "gray";
-  else if (normalized.includes("wild")) color = "purple";
-  else if (normalized.includes("restore")) color = "orange";
+  if (normalized.includes("tree") || normalized.includes("vegetation")) {
+    color = "#38A169"; 
+  } else if (normalized.includes("heat") || normalized.includes("urban")) {
+    color = "#F6AD55"; 
+  } else if (normalized.includes("fire")) {
+    color = "#E53E3E"; 
+  } else if (normalized.includes("restor") || normalized.includes("greening") || normalized.includes("reforest")) {
+    color = "#4299E1"; 
+  } else if (normalized.includes("dump")) {
+    color = "#4A5568"; 
+  } else if (normalized.includes("wild")) {
+    color = "#9F7AEA"; 
+  } else if (normalized.includes("drain") || normalized.includes("hazard")) {
+    color = "#A0AEC0";
+  }
 
-  return L.icon({
-    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="70" viewBox="0 0 24 41">
+      <path d="M12 0C7 0 3 4 3 9c0 7.5 9 16.5 9 16.5S21 16.5 21 9c0-5-4-9-9-9z" 
+            fill="${color}" stroke="#FFFFFF" stroke-width="1"/>
+      <circle cx="12" cy="9" r="3" fill="#FFFFFF"/>
+    </svg>`;
+
+  return L.divIcon({
+    html: svg,
+    className: "map-marker",
+    iconSize: [30, 60],
+    iconAnchor: [15, 60],
+    popupAnchor: [0, -60]
   });
 }
 </script>
+
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const mapContainer = document.getElementById('report-map');
