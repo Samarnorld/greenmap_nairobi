@@ -103,24 +103,39 @@
     </button>
   </div>
   <p class="text-xs text-gray-500 mt-1">Tip: Autofill your location using GPS.</p>
-</div>
-<input type="hidden" id="latitude" name="latitude" />
-<input type="hidden" id="longitude" name="longitude" />
-    <div>
-      <label class="block font-semibold mb-1">Upload Image (Optional)</label>
-      <input type="file"
-        class="w-full text-sm border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
-      <p class="text-xs text-gray-500 mt-1">Tip: Upload clear photos for faster resolution.</p>
-    </div>
+
 <div>
+  <label class="block font-semibold mb-1">Upload Image (Optional)</label>
+  <div class="relative">
+    <input type="file" id="image-upload"
+      class="w-full pr-10 text-sm border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+    <button type="button" id="clear-image"
+      class="absolute right-2 top-1/2 -translate-y-1/2 text-red-600 hover:text-red-800 text-lg hidden"
+      title="Remove Image">&times;</button>
+  </div>
+  <p class="text-xs text-gray-500 mt-1">Tip: Upload clear photos for faster resolution.</p>
+</div>
+<div class="mt-5">
   <label class="block font-semibold mb-1">Video Evidence (Optional)</label>
-  <input type="file" accept="video/*"
-    class="mb-2 w-full text-sm border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+  <div class="relative mb-2">
+    <input type="file" id="video-upload" accept="video/*"
+      class="w-full pr-10 text-sm border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+    <button type="button" id="clear-video"
+      class="absolute right-2 top-1/2 -translate-y-1/2 text-red-600 hover:text-red-800 text-lg hidden"
+      title="Remove Video">&times;</button>
+  </div>
   <p class="text-xs text-gray-500 mb-3">Upload a short video clip (MP4, MOV, etc.).</p>
-  <input type="url" placeholder="Or paste YouTube or TikTok link"
-    class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+
+  <div class="relative">
+    <input type="url" id="video-link" placeholder="Or paste YouTube or TikTok link"
+      class="w-full pr-10 border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+    <button type="button" id="clear-video-link"
+      class="absolute right-2 top-1/2 -translate-y-1/2 text-red-600 hover:text-red-800 text-lg hidden"
+      title="Remove Link">&times;</button>
+  </div>
   <p class="text-xs text-gray-500 mt-1">Paste a public link to your video if hosted online.</p>
 </div>
+
 <div>
   <label class="block font-semibold mb-1">Would you like to be contacted about this report?</label>
   <div class="flex gap-4 text-sm">
@@ -299,6 +314,25 @@ if (saved === 'dark') {
     });
   });
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("report-form");
+    const imageInput = form.querySelector('input[type="file"]:not([accept])');
+    const videoInput = form.querySelector('input[type="file"][accept="video/*"]');
+    const videoUrl = form.querySelector('input[type="url"]');
+
+    form.addEventListener("submit", (e) => {
+      const hasImage = imageInput && imageInput.files.length > 0;
+      const hasVideo = videoInput && videoInput.files.length > 0;
+      const hasVideoLink = videoUrl && videoUrl.value.trim() !== "";
+
+      if (hasImage || hasVideo || hasVideoLink) {
+        e.preventDefault();
+        alert("🚫 Photo and video uploads are currently not supported. Please remove them to proceed.");
+      }
+    });
+  });
+</script>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -315,5 +349,40 @@ if (saved === 'dark') {
     });
   });
 </script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const imageInput = document.getElementById("image-upload");
+    const videoInput = document.getElementById("video-upload");
+    const videoLink = document.getElementById("video-link");
+
+    const clearImageBtn = document.getElementById("clear-image");
+    const clearVideoBtn = document.getElementById("clear-video");
+    const clearVideoLinkBtn = document.getElementById("clear-video-link");
+
+    function toggleButton(input, button) {
+      button.classList.toggle("hidden", !input.value);
+    }
+
+    imageInput.addEventListener("change", () => toggleButton(imageInput, clearImageBtn));
+    clearImageBtn.addEventListener("click", () => {
+      imageInput.value = "";
+      toggleButton(imageInput, clearImageBtn);
+    });
+
+    videoInput.addEventListener("change", () => toggleButton(videoInput, clearVideoBtn));
+    clearVideoBtn.addEventListener("click", () => {
+      videoInput.value = "";
+      toggleButton(videoInput, clearVideoBtn);
+    });
+
+    videoLink.addEventListener("input", () => toggleButton(videoLink, clearVideoLinkBtn));
+    clearVideoLinkBtn.addEventListener("click", () => {
+      videoLink.value = "";
+      toggleButton(videoLink, clearVideoLinkBtn);
+    });
+  });
+</script>
+
+
 </body>
 </html>
