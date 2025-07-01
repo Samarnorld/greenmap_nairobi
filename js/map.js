@@ -169,8 +169,21 @@ function loadTileLayer(endpoint, label, opacity, visible = true, range = null) {
 
   fetch(`${BACKEND_URL}/${endpoint}`)
     .then(res => res.json())
-    .then(data => {
-      const layer = L.tileLayer(data.urlFormat, { opacity });
+   .then(data => {
+  if (!data.urlFormat) return console.error(`${label} layer failed: No tile URL received`, data);
+  const layer = L.tileLayer(data.urlFormat, {
+  opacity,
+  zIndex: 200
+});
+const normalizedLabel = label.trim().toLowerCase();
+if (normalizedLabel === '🌳ndvi') ndviLayer = layer;
+if (normalizedLabel === 'lst heatmap🔥') lstLayer = layer;
+if (normalizedLabel === 'healthy zones') ndviMaskLayer = layer;
+if (normalizedLabel === 'ndvi anomaly🧭') ndviAnomalyLayer = layer;
+
+console.log("✅ Loaded layer:", label, "→", data.urlFormat);
+
+
  
 if (label.includes('Rainfall (mm)') && typeof range !== 'undefined') {
   const legendLine = document.querySelector('.legend-rainfall-range');
@@ -267,7 +280,7 @@ for (const [title, container] of Object.entries(groups)) {
 if (date) params.append('date', date);
 if (range) params.append('range', range);
 const query = params.toString() ? `?${params.toString()}` : '';
-  loadTileLayer(`ndvi${query}`, '🌳NDVI ', 0.7, true);
+  loadTileLayer(`ndvi${query}`, '🌳NDVI', 0.7, true);
 loadTileLayer(`lst${query}`, 'LST Heatmap🔥', 0.6, true);
 loadTileLayer(`ndvi-mask${query}`, 'Healthy Zones', 0.75, false);
 loadTileLayer(`ndvi-anomaly${query}`, 'NDVI Anomaly🧭', 0.75, false);
